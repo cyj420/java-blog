@@ -1,0 +1,489 @@
+/* 폰트적용 */
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+html {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+/* 노말라이즈 */
+body,
+ul,
+li,
+h1 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body {
+  background-color: #dfdfdf;
+  position: relative;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+label[for] {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 라이브러리 */
+@media (max-width: 798.9px) {
+  .top-bar {
+    display: none;
+  }
+}
+@media (min-width: 799px) {
+  .mobile-top-bar {
+    display: none;
+  }
+  .mobile-side-bar {
+    display: none;
+  }
+}
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.absolute-left {
+  position: absolute;
+  left: 0;
+}
+
+.absolute-right {
+  position: absolute;
+  right: 0;
+}
+
+.absolute-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.absolute-top {
+  position: absolute;
+  top: 0;
+}
+
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.absolute-middle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.absolute-middle.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.relative {
+  position: relative;
+}
+
+.cell {
+  float: left;
+  box-sizing: border-box;
+}
+
+.cell-right {
+  float: right;
+  box-sizing: border-box;
+}
+
+.row::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.img-box > img {
+  width: 100%;
+  display: block;
+}
+
+.con {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.margin-0-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.line-height-0 {
+  line-height: 0;
+}
+
+.line-height-0 > * {
+  line-height: normal;
+}
+
+.width-30px {
+  width: 30px;
+}
+
+.width-35px {
+  width: 35px;
+}
+
+.width-40px {
+  width: 35px;
+}
+
+.width-45px {
+  width: 35px;
+}
+
+.width-50px {
+  width: 50px;
+}
+
+.width-80px {
+  width: 80px;
+}
+
+.width-100px {
+  width: 100px;
+}
+
+.width-100p {
+  width: 100%;
+}
+
+.width-60p {
+  width: 60%;
+}
+
+.width-55p {
+  width: 55%;
+}
+
+.width-50p {
+  width: 50%;
+}
+
+.width-45p {
+  width: 45%;
+}
+
+.width-40p {
+  width: 40%;
+}
+
+.width-30p {
+  width: 30%;
+}
+
+.width-35p {
+  width: 35%;
+}
+
+.width-100p-except-30px {
+  width: calc(100% - 30px);
+}
+
+.width-100p-except-35px {
+  width: calc(100% - 35px);
+}
+
+.width-100p-except-40px {
+  width: calc(100% - 40px);
+}
+
+.width-100p-except-50px {
+  width: calc(100% - 50px);
+}
+
+.width-100p-except-80px {
+  width: calc(100% - 80px);
+}
+
+.width-100p-except-100px {
+  width: calc(100% - 100px);
+}
+
+.height-100p {
+  height: 100%;
+}
+
+.height-50p {
+  height: 50%;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+.font-size-dot-8rem {
+  font-size: 0.8rem;
+}
+
+.table-row {
+  display: table;
+}
+
+.table-row.row::after {
+  display: inline;
+  clear: non;
+}
+
+.table-row > .cell {
+  float: none;
+  display: table-cell;
+}
+
+.border-red {
+  border: 10px solid red;
+}
+
+.border-green {
+  border: 10px solid green;
+}
+
+.border-blue {
+  border: 10px solid blue;
+}
+
+.border-gold {
+  border: 10px solid gold;
+}
+
+.border-pink {
+  border: 10px solid pink;
+}
+
+/* 라이브러리 - flex */
+* > .flex {
+  display: flex;
+}
+
+* > .flex-grow-1 {
+  flex-grow: 1;
+}
+
+* > .flex-jc-s {
+  justify-content: flex-start;
+}
+
+* > .flex-jc-e {
+  justify-content: flex-end;
+}
+
+* > .flex-jc-sb {
+  justify-content: space-between;
+}
+
+* > .flex-ai-c {
+  align-items: center;
+}
+
+* > .flex-ai-s {
+  align-items: flex-start;
+}
+
+* > .flex-ai-e {
+  align-items: flex-end;
+}
+
+* > .flex-as-s {
+  align-self: stretch;
+}
+
+* > .flex-as-c {
+  align-self: center;
+}
+
+* > .flex-as-s {
+  align-self: flex-start;
+}
+
+* > .flex-as-e {
+  align-self: flex-end;
+}
+
+* > .flex-column-nowrap {
+  flex-flow: column nowrap;
+}
+
+* > .flex-column-wrap {
+  flex-flow: column wrap;
+}
+
+.flex-ch-basis-0 > * {
+  flex-basis: 0;
+}
+
+* > .flex-1-0-0 {
+  flex: 1 0 0;
+}
+
+/* 커스텀 */
+.con {
+  max-width: 1356px;
+}
+
+/* 탑바 시작 */
+.top-bar {
+  height: 100px;
+  background-color: black;
+  color: white;
+}
+
+.top-bar .logo {
+  font-size: 3rem;
+  margin-left: 20px;
+}
+
+.top-bar .menu-box-1 > ul > li > a {
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 0 30px;
+}
+
+.top-bar .menu-box-1 > ul > li:hover > a {
+  background-color: white;
+  color: black;
+}
+
+ul ul {
+  display: none;
+}
+ul > li:hover > ul {
+  display: block;
+}
+.top-bar .menu-box-1 > ul > li:hover > ul {
+  width: 100%;
+  color: black;
+  background-color: white;
+}
+.top-bar .menu-box-1 li li {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+.top-bar .menu-box-1 li li:hover {
+  color: white;
+  background-color: black;
+}
+/* 탑바 끝 */
+
+/* 모바일 시작 이해 필요...ㅜㅜ */
+.mobile-top-bar {
+  height: 50px;
+  background-color: black;
+  color: white;
+  font-size: 1.4rem;
+}
+
+.mobile-top-bar > .con {
+  position: relative;
+}
+.btn-toggle-mobile-side-bar {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  /* position: absolute; */
+  /* display: flex; */
+  /* align-self: center; */
+}
+.btn-toggle-mobile-side-bar > div {
+  position: absolute;
+  width: 100%;
+  height: 20%;
+  top: 0;
+  background-color: white;
+  transition: top 0.2s 0.2s, transform 0.2s 0s, visibility 0s 0.2s;
+}
+.mobile-top-bar .btn-toggle-mobile-side-bar.active > div {
+  transition: top 0.2s 0s, transform 0.2s 0.2s, visibility 0s;
+}
+.btn-toggle-mobile-side-bar > div:nth-child(2) {
+  top: 40%;
+}
+.btn-toggle-mobile-side-bar > div:nth-child(3) {
+  top: 80%;
+}
+.mobile-top-bar .btn-toggle-mobile-side-bar.active > div {
+  top: 40%;
+}
+
+.mobile-top-bar .btn-toggle-mobile-side-bar.active > div:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.mobile-top-bar .btn-toggle-mobile-side-bar.active > div:nth-child(2) {
+  visibility: hidden;
+}
+
+.mobile-top-bar .btn-toggle-mobile-side-bar.active > div:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* 모바일 사이드 바 */
+.mobile-side-bar {
+  visibility: hidden;
+  background-color: rgb(31, 218, 218);
+  color: white;
+  top: 0;
+  bottom: 0;
+  position: relative;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.5s;
+}
+.mobile-side-bar.active {
+  opacity: 1;
+  visibility: visible;
+}
+.mobile-side-bar .menu-box-1 > ul {
+  display: block;
+}
+.mobile-side-bar .menu-box-1 ul > li:hover {
+  background-color: palevioletred;
+}
+.mobile-side-bar .menu-box-1 ul > li:hover > ul {
+  background-color: rgb(236, 156, 183);
+}
+.mobile-side-bar .menu-box-1 > ul > li > a {
+  justify-content: center;
+  padding: 30px;
+}
+.mobile-side-bar .menu-box-1 ul ul:hover {
+  display: block;
+}
+.mobile-side-bar .menu-box-1 ul ul > li {
+  width: 100%;
+}
+.mobile-side-bar .menu-box-1 ul ul > li > a {
+  display: flex;
+  padding: 30px;
+  justify-content: center;
+}
+.mobile-side-bar .menu-box-1 ul ul > li:hover {
+  background-color: palegreen;
+}
