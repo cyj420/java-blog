@@ -1,0 +1,62 @@
+package com.sbs.java.blog.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/s/article/doWrite")
+public class ArticleDoWriteServlet extends HttpServlet {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html; charset=UTF-8");
+
+		String url = "jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
+		String user = "sbsst";
+		String password = "sbs123414";
+		String driverName = "com.mysql.cj.jdbc.Driver";
+
+		Connection connection = null;
+		
+		String title = request.getParameter("title");
+		String body = request.getParameter("body");
+		
+		String sql = "";
+		sql += String.format("INSERT INTO article ");
+		sql += String.format("SET regDate = NOW()");
+		sql += String.format(", updateDate = NOW()");
+		sql += String.format(", title = '%s'", title);
+		sql += String.format(", `body` = '%s'", body);
+
+		try {
+			Class.forName(driverName);
+			connection = DriverManager.getConnection(url, user, password);
+			response.getWriter().append("연결되었습니다.");
+		} catch (SQLException e) {
+			System.err.printf("[SQL 예외] : %s\n", e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.err.printf("[드라이버 클래스 로딩 예외] : %s\n", e.getMessage());
+		}
+		finally {
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					System.err.printf("[SQL 예외, connection 닫기] : %s\n", e.getMessage());
+				}
+			}
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}

@@ -16,7 +16,7 @@ h1 {
   list-style: none;
 }
 body {
-  background-color: #dfdfdf;
+  background-color: #f4fce2;
   position: relative;
 }
 a {
@@ -30,16 +30,14 @@ label[for] {
 }
 
 /* 라이브러리 */
-@media (max-width: 798.9px) {
-  .top-bar {
+@media (min-width: 800px) {
+  .visible-on-sm-down {
     display: none;
   }
 }
-@media (min-width: 799px) {
-  .mobile-top-bar {
-    display: none;
-  }
-  .mobile-side-bar {
+
+@media (max-width: 799px) {
+  .visible-on-md-up {
     display: none;
   }
 }
@@ -347,29 +345,34 @@ label[for] {
 /* 커스텀 */
 .con {
   max-width: 1356px;
+  border-bottom: 5px solid #156855;
 }
 
 /* 탑바 시작 */
 .top-bar {
   height: 100px;
-  background-color: black;
-  color: white;
+  /* background-color: #4affd4; */
+  color: #156855;
 }
 
 .top-bar .logo {
   font-size: 3rem;
   margin-left: 20px;
+  /* color: #4affd4; */
 }
 
 .top-bar .menu-box-1 > ul > li > a {
   font-weight: bold;
   font-size: 1.4rem;
   padding: 0 30px;
+  transition: color 0.5s;
 }
 
 .top-bar .menu-box-1 > ul > li:hover > a {
-  background-color: white;
-  color: black;
+  color: #4affd4;
+  border-bottom: 5px solid #4affd4;
+  /* color: #2f9df7;
+  border-bottom: 5px solid #2f9df7; */
 }
 
 ul ul {
@@ -381,7 +384,7 @@ ul > li:hover > ul {
 .top-bar .menu-box-1 > ul > li:hover > ul {
   width: 100%;
   color: black;
-  background-color: white;
+  background-color: #78c1fd;
 }
 .top-bar .menu-box-1 li li {
   display: flex;
@@ -390,14 +393,16 @@ ul > li:hover > ul {
 }
 .top-bar .menu-box-1 li li:hover {
   color: white;
-  background-color: black;
+  background-color: #1793f8;
+  font-weight: bold;
+  transition: 0.3s;
 }
 /* 탑바 끝 */
 
 /* 모바일 시작 이해 필요...ㅜㅜ */
 .mobile-top-bar {
   height: 50px;
-  background-color: black;
+  background-color: #4affd5;
   color: white;
   font-size: 1.4rem;
 }
@@ -447,13 +452,25 @@ ul > li:hover > ul {
 }
 
 /* 모바일 사이드 바 */
-.mobile-side-bar {
+/* .mobile-side-bar {
   visibility: hidden;
-  background-color: rgb(31, 218, 218);
-  color: white;
+  background-color: #9cfce5;
+  color: black;
   top: 0;
   bottom: 0;
   position: relative;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.5s;
+} */
+.mobile-side-bar {
+  /* display: none; */
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  color: #000;
   opacity: 0;
   transition: visibility 0.5s, opacity 0.5s;
 }
@@ -462,17 +479,29 @@ ul > li:hover > ul {
   visibility: visible;
 }
 .mobile-side-bar .menu-box-1 > ul {
+  display: none;
+}
+.mobile-side-bar.active .menu-box-1 > ul {
   display: block;
 }
 .mobile-side-bar .menu-box-1 ul > li:hover {
-  background-color: palevioletred;
+  background-color: rgb(252, 158, 189);
+  color: white;
+  position: relative;
 }
 .mobile-side-bar .menu-box-1 ul > li:hover > ul {
-  background-color: rgb(236, 156, 183);
+  background-color: rgb(255, 217, 230);
+  color: black;
 }
 .mobile-side-bar .menu-box-1 > ul > li > a {
   justify-content: center;
   padding: 30px;
+}
+.mobile-side-bar .menu-box-1 > ul > li > a.has-list::after {
+  content: "[+]";
+}
+.mobile-side-bar .menu-box-1 > ul > li:hover > a.has-list::after {
+  content: "[-]";
 }
 .mobile-side-bar .menu-box-1 ul ul:hover {
   display: block;
@@ -486,5 +515,18 @@ ul > li:hover > ul {
   justify-content: center;
 }
 .mobile-side-bar .menu-box-1 ul ul > li:hover {
-  background-color: palegreen;
+  background-color: rgb(184, 241, 167);
+}
+.mobile-side-bar .menu-box-1 ul > li > i.fa-paw {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s;
+}
+.mobile-side-bar .menu-box-1 ul > li:hover > i.fa-paw {
+  display: flex;
+  margin-left: 75%;
+  top: 40%;
+  opacity: 1;
+  visibility: visible;
 }
