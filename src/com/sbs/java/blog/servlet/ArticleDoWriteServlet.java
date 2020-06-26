@@ -45,6 +45,7 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			stmt = connection.createStatement();
 			int affectedRows = stmt.executeUpdate(sql);
 			response.getWriter().append(affectedRows+"개의 데이터가 추가됨.");
+			response.getWriter().append("연결되었습니다.");
 		} catch (SQLException e) {
 			System.err.printf("[SQL 예외] : %s\n", e.getMessage());
 		} catch (ClassNotFoundException e) {

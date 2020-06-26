@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +32,6 @@ public class ArticleListServlet extends HttpServlet {
 			Class.forName(driverName);
 			connection = DriverManager.getConnection(url, user, password);
 			response.getWriter().append("연결되었습니다.");
-
 			request.getRequestDispatcher("/jsp/home/list.jsp").forward(request, response);
 		} catch (SQLException e) {
 			System.err.printf("[SQL 예외] : %s\n", e.getMessage());
