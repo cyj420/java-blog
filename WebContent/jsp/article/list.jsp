@@ -10,6 +10,10 @@
 .article-list-box-1 td {
 	text-align: center;
 }
+
+td>a:hover {
+	color: red;
+}
 </style>
 <title>게시물 리스트</title>
 
@@ -27,9 +31,9 @@
 			<thead>
 				<tr>
 					<th>ID</th>
+					<th>제목</th>
 					<th>등록날짜</th>
 					<th>갱신날짜</th>
-					<th>제목</th>
 				</tr>
 			<tbody>
 				<%
@@ -37,9 +41,11 @@
 				%>
 				<tr>
 					<td><%=article.getId()%></td>
+					<td class="text-align-left"><a
+						href="./detail?id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
+						<!-- ./부분은 없어도 ㄱㅊ -->
 					<td><%=article.getRegDate()%></td>
 					<td><%=article.getUpdateDate()%></td>
-					<td class="text-align-left"><a href="./detail?id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
 				</tr>
 				<%
 					}

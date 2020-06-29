@@ -22,10 +22,10 @@ public class ArticleListServlet extends HttpServlet {
 	private List<Article> getArticles(){
 		String url = "jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
 		// 위에서 blog는 데이터베이스 이름
-//		String user = "sbsst";
-//		String password = "sbs123414";
-		String user = "root";
-		String password = "";
+		String user = "sbsst";
+		String password = "sbs123414";
+//		String user = "root";
+//		String password = "";
 		String driverName = "com.mysql.cj.jdbc.Driver";
 
 		String sql="";
@@ -49,8 +49,6 @@ public class ArticleListServlet extends HttpServlet {
 			for(Map<String, Object>row:rows) {
 				articles.add(new Article(row));
 			}
-			
-			System.out.println(rows);
 		} catch (ClassNotFoundException e) {
 			System.err.println("[ClassNotFoundException 예외]");
 			System.err.println("msg : "+e.getMessage());

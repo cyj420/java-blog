@@ -19,10 +19,10 @@ public class ArticleDoWriteServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 
 		String url = "jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
-//		String user = "sbsst";
-//		String password = "sbs123414";
-		String user = "root";
-		String password = "";
+		String user = "sbsst";
+		String password = "sbs123414";
+//		String user = "root";
+//		String password = "";
 		String driverName = "com.mysql.cj.jdbc.Driver";
 
 		Connection connection = null;
