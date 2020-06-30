@@ -23,11 +23,11 @@ td>a:hover {
 
 	<div class="article-list-box-1 con table-box">
 		<table>
-			<colgrou>
+			<colgroup>
 			<col width="50" />
 			<col width="150" />
 			<col width="150" />
-			</colgrou>
+			</colgroup>
 			<thead>
 				<tr>
 					<th>ID</th>

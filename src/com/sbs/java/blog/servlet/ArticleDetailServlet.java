@@ -23,9 +23,9 @@ public class ArticleDetailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("text/html; charset=utf-8");
 		
-		String url = "jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
+		String url = "jdbc:mysql://site29.iu.gy:3306/site29?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
 		// 위에서 blog는 데이터베이스 이름
-		String user = "sbsst";
+		String user = "site29";
 		String password = "sbs123414";
 //		String user = "root";
 //		String password = "";

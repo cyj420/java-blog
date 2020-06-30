@@ -7,12 +7,38 @@
 	Article a = (Article) request.getAttribute("a");
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 %>
+<%-- 
 <style>
 .article-list-box-1 td {
 	text-align: center;
 }
+
+img {
+	width: 500px;
+}
+
+.another-post {
+	position: absolute;
+	padding: 20px;
+	text-align: center;
+	background-color: #bff038;
+	padding: 20px;
+}
+
+.con {
+	position: relative;
+}
+
+.left {
+	left: 0;
+}
+
+.right {
+	right: 0;
+}
 </style>
-<%-- <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
+--%>
+<!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <link rel="stylesheet"
@@ -48,36 +74,40 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
-<script
+<%-- <script
 	src="${pageContext.request.contextPath}/resource/js/home/detail.js"></script> --%>
-
 </head>
 <body>
-	<h1 class="con">게시물 상세보기</h1>
 
-	<div class="article-list-box-1 con">
-		<div>
-			번호 :
-			<%=a.getId()%>
-		</div>
+	<div class="con">
+		<h1><%=a.getId()%>
+			|
+			<%=a.getTitle()%></h1>
+
 		<div>
 			등록날짜 :
 			<%=a.getRegDate()%></div>
-		<div>
-			갱신날짜 :
-			<%=a.getUpdateDate()%></div>
-		<div>
-			제목 :
-			<%=a.getTitle()%></div>
-		<div>
-			내용 :
-			<%=a.getBody()%></div>
+		<div id="origin1" style="display: none"><%=a.getBody()%></div>
+		<div id="viewer1"></div>
+
+		<script>
+			var editor1__initialValue = $('#origin1').html();
+			var editor1 = new toastui.Editor({
+				el : document.querySelector('#viewer1'),
+				height : '600px',
+				initialValue : editor1__initialValue,
+				viewer : true,
+				plugins : [ toastui.Editor.plugin.codeSyntaxHighlight ]
+			});
+		</script>
+	</div>
+	<div class="con">
 		<%
 			for (int i = 0; i < articles.size(); i++) {
 				if (a.getId() == articles.get(i).getId()) {
 					if (i != 0) {
 		%>
-		<div>
+		<div class="another-post left">
 			<a href="./detail?id=<%=articles.get(i - 1).getId()%>">이전글</a>
 		</div>
 		<%
@@ -91,7 +121,7 @@
 				if (a.getId() == articles.get(i).getId()) {
 					if (i != articles.size() - 1) {
 		%>
-		<div>
+		<div class="another-post right">
 			<a href="./detail?id=<%=articles.get(i + 1).getId()%>">다음글</a>
 		</div>
 		<%
