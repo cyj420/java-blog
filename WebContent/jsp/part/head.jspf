@@ -2,32 +2,34 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=`, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YJ BLOG</title>
+
+<!-- 구글 폰트 불러오기 -->
+<!-- rotobo(400/900), notosanskr(400/900) -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&family=Roboto:wght@400;900&display=swap"
+	rel="stylesheet">
+
+<!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resource/css/common.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resource/css/home/main.css" />
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/common.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/home/main.css">
+
+<!-- 제이쿼리 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
 
-<!-- <script
-	src="${pageContext.request.contextPath}/resource/js/home/main.js"></script> -->
-	
-<title>YJ BLOG</title>
+<script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/home/main.js"></script>
+
 </head>
 <body>
-	<!-- 폰트어썸 사이트 : https://fontawesome.com/icons?d=gallery&m=free -->
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" />
-
-	<!--
-폰트어썸 적용 예
-<i class="fas fa-angle-double-down"></i>
--->
 	<div class="top-bar visible-on-md-up">
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main"
@@ -37,7 +39,8 @@
 				<ul class="flex height-100p">
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="height-100p flex flex-ai-c">Home</a></li>
-					<li><a href="${pageContext.request.contextPath}/s/article/list"
+					<li><a
+						href="${pageContext.request.contextPath}/s/article/list"
 						class="height-100p flex flex-ai-c">Articles</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/s/home/aboutMe"

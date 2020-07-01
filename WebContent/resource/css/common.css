@@ -463,7 +463,6 @@ ul > li:hover > ul {
   transition: visibility 0.5s, opacity 0.5s;
 } */
 .mobile-side-bar {
-  /* display: none; */
   position: fixed;
   top: 50px;
   left: 0;
@@ -472,6 +471,7 @@ ul > li:hover > ul {
   background-color: white;
   color: #000;
   opacity: 0;
+  visibility: hidden;
   transition: visibility 0.5s, opacity 0.5s;
 }
 .mobile-side-bar.active {

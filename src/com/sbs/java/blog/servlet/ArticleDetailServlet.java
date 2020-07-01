@@ -27,19 +27,24 @@ public class ArticleDetailServlet extends HttpServlet {
 		// 위에서 blog는 데이터베이스 이름
 		String user = "site29";
 		String password = "sbs123414";
-//		String user = "root";
-//		String password = "";
 		String driverName = "com.mysql.cj.jdbc.Driver";
 
 		int id = Integer.parseInt(req.getParameter("id"));
+		int cateItemId = Integer.parseInt(req.getParameter("cateItemId"));
 		
 		String sql1="";
 		
-		sql1+=String.format("SELECT * ");
-		sql1+=String.format("FROM article ");
+//		sql += String.format("SELECT * FROM article ");
+//		sql += String.format("WHERE displayStatus = 1 ");
+//		sql += String.format("AND cateItemId = %d ", cateItemId);
+//		sql += String.format("ORDER BY id DESC ");
+//		sql += String.format("LIMIT %d, %d", (page - 1) * itemsInAPage, itemsInAPage);
 		
+		sql1+=String.format("SELECT * FROM article ");
+		sql1+=String.format("WHERE displayStatus = 1 ");
+		sql1 += String.format("AND cateItemId = %d ", cateItemId);
 		String sql2=sql1;
-		sql2+=String.format("WHERE id="+id);
+		sql2+=String.format("AND id="+id);
 		
 		Connection conn = null;
 
