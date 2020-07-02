@@ -345,7 +345,6 @@ label[for] {
 /* 커스텀 */
 .con {
   max-width: 1356px;
-  border-bottom: 5px solid #156855;
 }
 
 /* 탑바 시작 */
@@ -353,6 +352,7 @@ label[for] {
   height: 100px;
   /* background-color: #4affd4; */
   color: #156855;
+  border-bottom: 5px solid #156855;
 }
 
 .top-bar .logo {
@@ -399,7 +399,7 @@ ul > li:hover > ul {
 }
 /* 탑바 끝 */
 
-/* 모바일 시작 이해 필요...ㅜㅜ */
+/* 모바일 시작 이해 필요 */
 .mobile-top-bar {
   height: 50px;
   background-color: #4affd5;
@@ -473,6 +473,7 @@ ul > li:hover > ul {
   opacity: 0;
   visibility: hidden;
   transition: visibility 0.5s, opacity 0.5s;
+  z-index:100;
 }
 .mobile-side-bar.active {
   opacity: 1;
@@ -529,4 +530,26 @@ ul > li:hover > ul {
   top: 40%;
   opacity: 1;
   visibility: visible;
+}
+.table{
+	border: 5px solid #e6f8bc;
+	border-collapse: collapse;
+	line-height: 1.5;
+	margin: 20px 20px;
+	font-size: 1.4rem;
+}
+.table thead{
+	background-color: #e6f8bc;
+}
+.table th, td{
+	padding: 10px 0;
+}
+.table tr{
+	border-bottom: 5px solid #e6f8bc;
+}
+.table tr{
+	border-bottom: 5px solid #e6f8bc;
+}
+.article-table {
+	font-size: 1.1rem;
 }

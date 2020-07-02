@@ -7,16 +7,18 @@
 <%
 	List<Article> articles = null;
 	List<Category> categories = null;
-	
+	int fullPage = 0;
+
 	if (request.getAttribute("articles") != null) {
 		articles = (List<Article>) request.getAttribute("articles");
-	}else{
+		fullPage = (int) request.getAttribute("fullPage");
+	} else {
 		categories = (List<Category>) request.getAttribute("categories");
 	}
 
+	System.out.println(fullPage);
 	int cateItemId = (int) request.getAttribute("cateItemId");
 	int nowPage = (int) request.getAttribute("page");
-	int fullPage = (int) request.getAttribute("fullPage");
 %>
 <style>
 .article-list-box-1 td {
@@ -39,30 +41,29 @@ span>.not-select-page:hover {
 	%>
 	<h1 class="con">카테고리 리스트</h1>
 	<div class="article-list-box-1 con table-box">
-		<table>
+		<table class="table">
 			<colgroup>
-				<col width="50" />
-				<col width="150" />
-				<col width="150" />
+				<col width="10%" />
+				<col width="50%" />
 			</colgroup>
 			<thead>
 				<tr>
 					<th>No.</th>
 					<th>게시판</th>
 				</tr>
+			</thead>
 			<tbody>
 				<%
 					for (Category c : categories) {
 				%>
 				<tr>
 					<td><%=c.getId()%></td>
-					<td><a href="./list?cateItemId=<%=c.getId() %>&page=1"><%=c.getName()%></a></td>
+					<td><a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a></td>
 				</tr>
 				<%
 					}
 				%>
 			</tbody>
-			</thead>
 		</table>
 	</div>
 	<%
@@ -77,11 +78,12 @@ span>.not-select-page:hover {
 	<h1 class="con">게시물 리스트</h1>
 
 	<div class="article-list-box-1 con table-box">
-		<table>
+		<table class="table article-table">
 			<colgroup>
 				<col width="50" />
-				<col width="150" />
-				<col width="150" />
+				<col width="200" />
+				<col width="250" />
+				<col width="250" />
 			</colgroup>
 			<thead>
 				<tr>
@@ -90,6 +92,7 @@ span>.not-select-page:hover {
 					<th>등록날짜</th>
 					<th>갱신날짜</th>
 				</tr>
+			</thead>
 			<tbody>
 				<%
 					for (Article article : articles) {
@@ -97,7 +100,7 @@ span>.not-select-page:hover {
 				<tr>
 					<td><%=article.getId()%></td>
 					<td class="text-align-left"><a
-						href="./detail?cateItemId=<%=cateItemId %>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
+						href="./detail?cateItemId=<%=cateItemId%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
 					<td><%=article.getRegDate()%></td>
 					<td><%=article.getUpdateDate()%></td>
 				</tr>
@@ -105,43 +108,47 @@ span>.not-select-page:hover {
 					}
 				%>
 			</tbody>
-			</thead>
 		</table>
 	</div>
-	<div class="con">
-		<%
-			for (int i = 1; i <= fullPage; i++) {
-					if (i == nowPage) {
-		%>
-		<span><a href="./list?cateItemId=<%=cateItemId %>&page=<%=i%>"
-			style="font-weight: bold; color: red">[<%=i%>]</a></span>
-		<%
-			} else {
-		%>
-		<span><a class="not-select-page" href="./list?cateItemId=<%=cateItemId %>&page=<%=i%>">[<%=i%>]</a></span>
-		<%
-			}
+		<div class="con">
+			<%
+				for (int i = 1; i <= fullPage; i++) {
+							if (i == nowPage) {
+			%>
+			<span><a href="./list?cateItemId=<%=cateItemId%>&page=<%=i%>"
+				style="font-weight: bold; color: red">[<%=i%>]
+			</a></span>
+			<%
+				} else {
+			%>
+			<span><a class="not-select-page"
+				href="./list?cateItemId=<%=cateItemId%>&page=<%=i%>">[<%=i%>]
+			</a></span>
+			<%
 				}
-		%>
-		<%
-			if (nowPage >1) {
-		%>
-		<div>
-			<a href="./list?cateItemId=<%=cateItemId %>&page=<%=nowPage - 1%>">이전 페이지</a>
+						}
+			%>
+			<%
+				if (nowPage > 1) {
+			%>
+			<div>
+				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage - 1%>">이전
+					페이지</a>
+			</div>
+			<%
+				}
+			%>
+			<%
+				if (nowPage < fullPage) {
+			%>
+			<div>
+				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage + 1%>">다음
+					페이지</a>
+			</div>
+			<%
+				}
+			%>
 		</div>
-		<%
-			}
-		%>
-		<%
-			if (nowPage < fullPage) {
-		%>
-		<div>
-			<a href="./list?cateItemId=<%=cateItemId %>&page=<%=nowPage + 1%>">다음 페이지</a>
-		</div>
-		<%
-			}
-		%>
-	</div>
 	<%
 		}
 	%>
