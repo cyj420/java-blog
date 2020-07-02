@@ -45,7 +45,7 @@ public class ArticleController extends Controller {
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);
 		
-		return "article/detail";
+		return "article/detail.jsp";
 	}
 
 	// list
@@ -81,6 +81,6 @@ public class ArticleController extends Controller {
 		req.setAttribute("page", page);
 		req.setAttribute("cateItemId", cateItemId);
 		
-		return "article/list";
+		return "article/list.jsp";
 	}
 }

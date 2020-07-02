@@ -7,7 +7,7 @@
 	Article a = (Article) request.getAttribute("a");
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 %>
-<%-- 
+
 <style>
 .article-list-box-1 td {
 	text-align: center;
@@ -19,25 +19,41 @@ img {
 
 .another-post {
 	position: absolute;
-	padding: 20px;
+	padding: 5px;
+	margin: 20px;
 	text-align: center;
-	background-color: #bff038;
-	padding: 20px;
+	border: 2px solid #bff038;
 }
-
+.another-post:hover{
+	background: #bff038;
+	transition: .5s;
+}
 .con {
 	position: relative;
 }
-
 .left {
 	left: 0;
 }
-
 .right {
 	right: 0;
 }
+.detail-article{
+	border: 1px solid #ccc;
+	padding : 20px 30px;
+	z-index:-3;
+}
+.detail-article>div:nth-child(2){
+	margin: 10px 0;
+	color:#949494;
+}
+.article-body{
+	border-top: 5px double #ccc;
+	margin-top: 20px;
+	padding-top: 10px;
+	z-index:-3;
+}
 </style>
---%>
+
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
@@ -78,16 +94,17 @@ img {
 	src="${pageContext.request.contextPath}/resource/js/home/detail.js"></script> --%>
 
 	<div>
-		<div class="con">
+		<div class="con detail-article">
 			<h1><%=a.getId()%>
 				|
 				<%=a.getTitle()%></h1>
-
 			<div>
 				등록날짜 :
 				<%=a.getRegDate()%></div>
+			<div class="article-body">
 			<div id="origin1" style="display: none"><%=a.getBody()%></div>
 			<div id="viewer1"></div>
+			</div>
 
 			<script>
 				var editor1__initialValue = $('#origin1').html();

@@ -73,7 +73,7 @@ public class DispatcherServlet extends HttpServlet {
 				if (viewPath.equals("")) {
 					resp.getWriter().append("ERROR, CODE 1");
 				}
-				viewPath = "/jsp/" + viewPath + ".jsp";
+				viewPath = "/jsp/" + viewPath;
 				req.getRequestDispatcher(viewPath).forward(req, resp);
 				// jsp 파일 열기
 			} else {

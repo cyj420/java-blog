@@ -17,11 +17,11 @@ public class HomeController extends Controller {
 	}
 
 	private String doActionAboutMe(HttpServletRequest req, HttpServletResponse resp) {
-		return "home/aboutMe";
+		return "home/aboutMe.jsp";
 	}
 
 	private String doActionHome(HttpServletRequest req, HttpServletResponse resp) {
-		return "home/main";
+		return "home/main.jsp";
 	}
 
 }

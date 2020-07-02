@@ -1,0 +1,16 @@
+.contact{
+	margin-top: 20px;
+	margin-left:5%;
+	position: relative;
+}
+.contact img{
+	margin: 10px 0;
+	width: 150px;
+    height: 150px; 
+    border-radius: 70%;
+    overflow: hidden;
+}
+.contact>h3{
+	margin-top: 30px;
+	margin-bottom: 15px;
+}

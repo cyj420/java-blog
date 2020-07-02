@@ -26,10 +26,15 @@
 }
 
 td>a:hover {
+	font-weight: bold;
 	color: red;
+	transition:.3s;
 }
 
-span>.not-select-page:hover {
+span>.not-selected-page:hover {
+	color: blue;
+}
+.paging a:hover{
 	color: blue;
 }
 </style>
@@ -110,7 +115,7 @@ span>.not-select-page:hover {
 			</tbody>
 		</table>
 	</div>
-		<div class="con">
+		<div class="con paging">
 			<%
 				for (int i = 1; i <= fullPage; i++) {
 							if (i == nowPage) {
@@ -121,33 +126,38 @@ span>.not-select-page:hover {
 			<%
 				} else {
 			%>
-			<span><a class="not-select-page"
+			<span><a class="not-selected-page"
 				href="./list?cateItemId=<%=cateItemId%>&page=<%=i%>">[<%=i%>]
 			</a></span>
 			<%
 				}
 						}
 			%>
+			<div>
 			<%
 				if (nowPage > 1) {
 			%>
-			<div>
-				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage - 1%>">이전
-					페이지</a>
-			</div>
+				<div class="previous-article paging-only-one">
+					<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage - 1%>">이전
+						페이지</a>
+				</div>
+				<%
+					}
+			if(nowPage>1 && nowPage<fullPage){
+				%>
+				&nbsp;&nbsp;&nbsp;
+				<%
+			}
+					if (nowPage < fullPage) {
+				%>
+				<div class="next-article paging-only-one">
+					<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage + 1%>">다음
+						페이지</a>
+				</div>
 			<%
 				}
 			%>
-			<%
-				if (nowPage < fullPage) {
-			%>
-			<div>
-				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage + 1%>">다음
-					페이지</a>
 			</div>
-			<%
-				}
-			%>
 		</div>
 	<%
 		}
