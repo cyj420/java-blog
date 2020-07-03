@@ -35,4 +35,8 @@ public class ArticleService {
 		return articleDao.getArticlesByCateItemId(cateItemId);
 	}
 
+	public List<Article> getArticles() {
+		return articleDao.getArticles();
+	}
+
 }

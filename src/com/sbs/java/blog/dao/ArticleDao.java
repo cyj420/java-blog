@@ -105,4 +105,18 @@ public class ArticleDao {
 		}
 		return articles;
 	}
+
+	public List<Article> getArticles() {
+		String sql = "";
+		sql += String.format("SELECT * from article ");
+		sql += String.format("WHERE displayStatus = 1 ");
+		
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
+		List<Article> articles = new ArrayList<>();
+
+		for (Map<String, Object> row : rows) {
+			articles.add(new Article(row));
+		}
+		return articles;
+	}
 }

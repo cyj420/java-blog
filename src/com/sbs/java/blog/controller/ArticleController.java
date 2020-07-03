@@ -67,6 +67,7 @@ public class ArticleController extends Controller {
 		
 		if(cateItemId==0) {
 			categories = articleService.getCategories();
+			articles = articleService.getArticles();
 			req.setAttribute("categories", categories);
 		}
 		else {
@@ -75,9 +76,9 @@ public class ArticleController extends Controller {
 			int fullPage = articleService.getFullPage(cateItemId, itemsInAPage);
 			System.out.println("fullPage : "+fullPage);
 			req.setAttribute("fullPage", fullPage);
-			req.setAttribute("articles", articles);
 		}
 		
+		req.setAttribute("articles", articles);
 		req.setAttribute("page", page);
 		req.setAttribute("cateItemId", cateItemId);
 		

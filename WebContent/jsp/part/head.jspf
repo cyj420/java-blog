@@ -18,18 +18,20 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/common.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/css/common.css">
 
 <!-- 제이쿼리 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
-<script src="${pageContext.request.contextPath}/resource/js/home/main.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resource/js/home/main.js"></script>
 
 </head>
 <body>
-	<div class="top-bar visible-on-md-up">
+	<div class="con top-bar visible-on-md-up">
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main"
 				class="logo flex flex-ai-c"> <i class="fas fa-dog"></i>
@@ -45,7 +47,7 @@
 						href="${pageContext.request.contextPath}/s/home/aboutMe"
 						class="height-100p flex flex-ai-c">About Me</a></li>
 					<li><a href="#" class="height-100p flex flex-ai-c">SNS</a>
-						<ul class="snsList">
+						<ul>
 							<li><a href="https://github.com/cyj420" target="blank">GITHUB</a>
 							</li>
 							<li><a href="https://cyj42.tistory.com/" target="blank">TISTORY</a>
@@ -89,3 +91,4 @@
 			</ul>
 		</nav>
 	</div>
+	<div class="visible-on-sm-down for-mobile-content-down"></div>
