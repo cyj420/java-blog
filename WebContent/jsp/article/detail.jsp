@@ -93,7 +93,7 @@ img {
 <%-- <script
 	src="${pageContext.request.contextPath}/resource/js/home/detail.js"></script> --%>
 
-	<div>
+	<div class="con">
 		<div class="con detail-article">
 			<h1><%=a.getId()%>
 				|
