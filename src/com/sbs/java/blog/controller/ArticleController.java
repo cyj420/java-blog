@@ -18,14 +18,14 @@ import com.sbs.java.blog.util.DBUtil;
 public class ArticleController extends Controller {
 
 	private ArticleService articleService;
-	
+
 	public ArticleController(Connection dbConn) {
 		articleService = new ArticleService(dbConn);
 	}
 
 	@Override
 	public String doAction(String actionMethodName, HttpServletRequest req, HttpServletResponse resp) {
-		switch(actionMethodName) {
+		switch (actionMethodName) {
 		case "list":
 			return doActionList(req, resp);
 		case "detail":
@@ -38,13 +38,13 @@ public class ArticleController extends Controller {
 	private String doActionDetail(HttpServletRequest req, HttpServletResponse resp) {
 		int id = Integer.parseInt(req.getParameter("id"));
 		int cateItemId = Integer.parseInt(req.getParameter("cateItemId"));
-		
+
 		Article a = articleService.getArticle(id, cateItemId);
 		List<Article> articles = articleService.getArticlesByCateItemId(cateItemId);
-		
+
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);
-		
+
 		return "article/detail.jsp";
 	}
 
@@ -61,27 +61,22 @@ public class ArticleController extends Controller {
 			page = Integer.parseInt(req.getParameter("page"));
 		} catch (NumberFormatException e) {
 		}
-		
+
 		List<Category> categories = null;
 		List<Article> articles = null;
-		
-		if(cateItemId==0) {
-			categories = articleService.getCategories();
-			articles = articleService.getArticles();
-			req.setAttribute("categories", categories);
-		}
-		else {
-			int itemsInAPage = 5;
-			articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage);
-			int fullPage = articleService.getFullPage(cateItemId, itemsInAPage);
-			System.out.println("fullPage : "+fullPage);
-			req.setAttribute("fullPage", fullPage);
-		}
-		
+		int itemsInAPage = 5;
+
+		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage);
+		categories = articleService.getCategories();
+		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage);
+		System.out.println("fullPage : " + fullPage);
+
+		req.setAttribute("fullPage", fullPage);
+		req.setAttribute("categories", categories);
 		req.setAttribute("articles", articles);
 		req.setAttribute("page", page);
 		req.setAttribute("cateItemId", cateItemId);
-		
+
 		return "article/list.jsp";
 	}
 }

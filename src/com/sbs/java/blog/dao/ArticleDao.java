@@ -45,8 +45,11 @@ public class ArticleDao {
 		String sql = "";
 
 		sql += String.format("SELECT * FROM article ");
-		sql += String.format("WHERE displayStatus = 1 ");
-		sql += String.format("AND cateItemId = %d ", cateItemId);
+		sql += String.format("WHERE 1 ");
+		sql += String.format("AND displayStatus = 1 ");
+		if (cateItemId != 0) {
+			sql += String.format("AND cateItemId = %d ", cateItemId);
+		}
 		sql += String.format("ORDER BY id DESC");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
@@ -110,7 +113,7 @@ public class ArticleDao {
 		String sql = "";
 		sql += String.format("SELECT * from article ");
 		sql += String.format("WHERE displayStatus = 1 ");
-		
+
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
 

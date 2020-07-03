@@ -6,19 +6,12 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 <%
-	List<Article> articles = null;
-	List<Category> categories = null;
-	int fullPage = 0;
+	List<Article> articles = (List<Article>) request.getAttribute("articles");
+	List<Category> categories = (List<Category>) request.getAttribute("categories");
+	int fullPage = (int) request.getAttribute("fullPage");
 	int cateItemId = (int) request.getAttribute("cateItemId");
+	System.out.println(cateItemId);
 	int nowPage = (int) request.getAttribute("page");
-
-	if (cateItemId == 0) {
-		categories = (List<Category>) request.getAttribute("categories");
-	} else {
-		fullPage = (int) request.getAttribute("fullPage");
-	}
-	articles = (List<Article>) request.getAttribute("articles");
-	System.out.println(fullPage);
 %>
 <style>
 .article-list-box-1 td {
@@ -43,6 +36,17 @@ span>.not-selected-page:hover {
 	color: blue;
 }
 
+.category-list {
+	display: flex;
+	max-width: 1000px;
+	justify-content: space-around;
+}
+
+.category-name {
+	display: inline-block;
+	font-size: 1.4rem;
+}
+
 .category-name>a::after {
 	content: "📁";
 	opacity: 0;
@@ -56,47 +60,39 @@ span>.not-selected-page:hover {
 </head>
 <body>
 	<!-- 카테고리 리스트 시작 -->
-	<%
-		if (cateItemId==0) {
-	%>
-	<h1 class="con">카테고리 리스트</h1>
+	<!-- <h1 class="con">카테고리 리스트</h1> -->
 	<div class="article-list-box-1 con table-box category-list">
-		<table class="table">
-			<colgroup>
-				<col width="150" />
-				<col width="200" />
-			</colgroup>
-			<thead>
-				<tr>
-					<th>No.</th>
-					<th>게시판</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
-					for (Category c : categories) {
-				%>
-				<tr>
-					<td><%=c.getId()%></td>
-					<td class="category-name"><a
-						href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a></td>
-				</tr>
-				<%
-					}
-				%>
-			</tbody>
-		</table>
+		<%
+			for (Category c : categories) {
+		%>
+		<%-- <div><%=c.getId()%></div> --%>
+		<div class="category-name">
+			<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
+		</div>
+		<%
+			}
+		%>
 	</div>
-	<%
-		}
-	%>
 	<!-- 카테고리 리스트 끝 -->
 
 	<!-- 게시물 리스트 시작 -->
 	<%
-		if (articles != null) {
+		String categoryName = "";
+		if (cateItemId == 0) {
 	%>
-	<h1 class="con">📂 게시물 리스트</h1>
+	<h1 class="con">📂 전체 게시물 리스트</h1>
+	<%
+		} else {
+	%>
+	<h1 class="con">
+		📋
+		<%=categoryName = categories.get(cateItemId - 1).getName()%></h1>
+		<div class="con back-to-list">
+		<a href="./list">전체 게시판으로 돌아가기&#8594;</a>
+		</div>
+	<%
+		}
+	%>
 
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
@@ -117,12 +113,11 @@ span>.not-selected-page:hover {
 			<tbody>
 				<%
 					for (Article article : articles) {
-						cateItemId = article.getCateItemId();
 				%>
 				<tr>
 					<td><%=article.getId()%></td>
 					<td class="text-align-left"><a
-						href="./detail?cateItemId=<%=cateItemId%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
+						href="./detail?cateItemId=<%=article.getCateItemId()%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
 					<td><%=article.getRegDate()%></td>
 					<td><%=article.getUpdateDate()%></td>
 				</tr>
@@ -135,12 +130,13 @@ span>.not-selected-page:hover {
 	<div class="con paging">
 		<%
 			for (int i = 1; i <= fullPage; i++) {
-					if (i == nowPage) {
+				if (i == nowPage) {
 		%>
 		<span><a href="./list?cateItemId=<%=cateItemId%>&page=<%=i%>"
 			style="font-weight: bold; color: red">[<%=i%>]
 		</a></span>
 		<%
+		System.out.println(cateItemId);
 			} else {
 		%>
 		<span><a class="not-selected-page"
@@ -148,7 +144,7 @@ span>.not-selected-page:hover {
 		</a></span>
 		<%
 			}
-				}
+			}
 		%>
 		<div>
 			<%
@@ -160,12 +156,12 @@ span>.not-selected-page:hover {
 			</div>
 			<%
 				}
-					if (nowPage > 1 && nowPage < fullPage) {
+				if (nowPage > 1 && nowPage < fullPage) {
 			%>
 			&nbsp;&nbsp;&nbsp;
 			<%
 				}
-					if (nowPage < fullPage) {
+				if (nowPage < fullPage) {
 			%>
 			<div class="next-article paging-only-one">
 				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage + 1%>">다음
@@ -176,8 +172,5 @@ span>.not-selected-page:hover {
 			%>
 		</div>
 	</div>
-	<%
-		}
-	%>
 	<!-- 게시물 리스트 끝 -->
 	<%@ include file="/jsp/part/foot.jspf"%>

@@ -378,25 +378,23 @@ ul ul {
 ul>li:hover>ul {
 	display: block;
 }
-
 .top-bar .menu-box-1>ul>li:hover>ul {
 	width: 100%;
 	color: black;
 	background-color: #b5ffed;
 }
-
 .top-bar .menu-box-1 li li {
 	display: flex;
 	justify-content: center;
 	padding: 20px 0;
 }
-
 .top-bar .menu-box-1 li li:hover {
 	color: white;
 	background-color: #00fbbc;
 	font-weight: bold;
 	transition: 0.3s;
 }
+
 /* 탑바 끝 */
 
 /* 모바일 시작 이해 필요 */
