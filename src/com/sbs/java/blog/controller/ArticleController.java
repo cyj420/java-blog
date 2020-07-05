@@ -1,11 +1,7 @@
 package com.sbs.java.blog.controller;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,23 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.service.ArticleService;
-import com.sbs.java.blog.util.DBUtil;
 
 public class ArticleController extends Controller {
 
-	private ArticleService articleService;
-
-	public ArticleController(Connection dbConn) {
-		articleService = new ArticleService(dbConn);
+	public ArticleController(Connection dbConn, String actionMethodName, HttpServletRequest req,
+			HttpServletResponse resp) {
+		super(dbConn, actionMethodName, req, resp);
 	}
 
 	@Override
-	public String doAction(String actionMethodName, HttpServletRequest req, HttpServletResponse resp) {
+	public String doAction() {
 		switch (actionMethodName) {
 		case "list":
 			return doActionList(req, resp);
 		case "detail":
 			return doActionDetail(req, resp);
+//		case "doWrite":
+//			return doActionDoWrite(req, resp);
 		}
 		return "";
 	}
@@ -61,14 +57,21 @@ public class ArticleController extends Controller {
 			page = Integer.parseInt(req.getParameter("page"));
 		} catch (NumberFormatException e) {
 		}
+		
+		String searchKeyword = "";
+		if(req.getParameter("searchKeyword")!=null) {
+			123
+			System.out.println("11");
+			searchKeyword = req.getParameter("searchKeyword");
+		}
 
 		List<Category> categories = null;
 		List<Article> articles = null;
 		int itemsInAPage = 5;
 
-		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage);
+		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage, searchKeyword);
 		categories = articleService.getCategories();
-		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage);
+		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage, searchKeyword);
 		System.out.println("fullPage : " + fullPage);
 
 		req.setAttribute("fullPage", fullPage);
@@ -79,4 +82,5 @@ public class ArticleController extends Controller {
 
 		return "article/list.jsp";
 	}
+
 }

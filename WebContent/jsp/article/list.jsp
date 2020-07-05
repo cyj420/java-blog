@@ -93,6 +93,12 @@ span>.not-selected-page:hover {
 	<%
 		}
 	%>
+	<div class="con">
+		<form action="./list" method="GET">
+	      <input type="text" name="searchKeyword" />
+	      <input type="submit" value="검색" />
+	    </form>
+	</div>
 
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">

@@ -1,5 +1,10 @@
+<%@ page import="java.util.List"%>
+<%@ page import="com.sbs.java.blog.dto.Category"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	List<Category> cateItems = (List<Category>) request.getAttribute("cateItems");
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +47,19 @@
 						class="height-100p flex flex-ai-c">Home</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/s/article/list"
-						class="height-100p flex flex-ai-c">Articles</a></li>
+						class="height-100p flex flex-ai-c">Articles</a>
+						<ul>
+							<%
+								for (Category c : cateItems) {
+							%>
+								<li><a
+								href="${pageContext.request.contextPath}/s/article/list?cateItemId=<%=c.getId()%>&page=1" class="block">
+								<%=c.getName()%></a></li>
+							<%
+								}
+							%>
+						</ul>
+						</li>
 					<li><a
 						href="${pageContext.request.contextPath}/s/home/aboutMe"
 						class="height-100p flex flex-ai-c">About Me</a></li>

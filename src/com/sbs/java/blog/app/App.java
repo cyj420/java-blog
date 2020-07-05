@@ -1,0 +1,131 @@
+package com.sbs.java.blog.app;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.sbs.java.blog.controller.ArticleController;
+import com.sbs.java.blog.controller.Controller;
+import com.sbs.java.blog.controller.HomeController;
+import com.sbs.java.blog.controller.MemberController;
+
+public class App {
+	private HttpServletRequest req;
+	private HttpServletResponse resp;
+
+	public App(HttpServletRequest req, HttpServletResponse resp) {
+		this.req = req;
+		this.resp = resp;
+	}
+
+	public void start() throws IOException {
+		// DB 커넥터 로딩 시작
+		loadDbDriver();
+
+		// DB 접속정보 세팅
+		String url = getDbUrl();
+		String user = getDbId();
+		String password = getDbPassword();
+
+		Connection dbConn = null;
+
+		try {
+			// DB 접속 성공
+			dbConn = DriverManager.getConnection(url, user, password);
+
+			// 올바른 컨트롤러로 라우팅
+			route(dbConn, req, resp);
+		} catch (SQLException e) {
+			//여기 아래 있는 에러 출력문들 싹 다 Util로 옮길 준비 하기.
+			System.err.printf("[SQLException 예외, %s]\n", e.getMessage());
+			resp.getWriter().append("DB연결 실패");
+			return;
+		} catch (Exception e) {
+			System.err.printf("[기타Exception 예외, %s]\n", e.getMessage());
+			resp.getWriter().append("기타 실패");
+			return;
+		} finally {
+			if (dbConn != null) {
+				try {
+					dbConn.close();
+				} catch (SQLException e) {
+					System.err.printf("[SQLException 예외, %s]\n", e.getMessage());
+					resp.getWriter().append("DB연결닫기 실패");
+				}
+			}
+		}
+	}
+
+	private void route(Connection dbConn, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
+		resp.setContentType("text/html; charset=UTF-8");
+		String contextPath = req.getContextPath();
+		String requestURI = req.getRequestURI();
+		String actionStr = requestURI.replace(contextPath + "/s/", "");
+		String[] actionStrBits = actionStr.split("/");
+
+		String controllerName = actionStrBits[0];
+		// 기존 : home, article
+		String actionMethodName = actionStrBits[1];
+		// 기존 : aboutMe, main, list, doWrite, detail
+
+		Controller controller = null;
+
+		switch (controllerName) {
+		case "home":
+			controller = new HomeController(dbConn, actionMethodName, req, resp);
+			break;
+		case "article":
+			controller = new ArticleController(dbConn, actionMethodName, req, resp);
+			break;
+		case "member":
+			controller = new MemberController(dbConn, actionMethodName, req, resp);
+			break;
+		}
+
+		if (controller != null) {
+			String actionResult = controller.executeAction();
+//			String actionResult = controller.doAction();
+			if (actionResult.equals("")) {
+				resp.getWriter().append("액션의 결과가 없습니다.");
+			} else if (actionResult.endsWith(".jsp")) {
+				String viewPath = "/jsp/" + actionResult;
+				req.getRequestDispatcher(viewPath).forward(req, resp);
+			} else if (actionResult.startsWith("html:")) {
+				resp.getWriter().append("처리할 수 없는 액션 결과입니다.");
+			}
+		} else {
+			resp.getWriter().append("존재하지 않는 페이지 입니다.");
+		}
+	}
+
+	private String getDbPassword() {
+		return "sbs123414";
+	}
+
+	private String getDbId() {
+		return "site29";
+	}
+
+	private String getDbUrl() {
+		return "jdbc:mysql://site29.iu.gy:3306/site29?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
+	}
+
+	private void loadDbDriver() throws IOException {
+		String driverName = "com.mysql.cj.jdbc.Driver";
+
+		try {
+			Class.forName(driverName);
+		} catch (ClassNotFoundException e) {
+			System.err.printf("[ClassNotFoundException 예외, %s]\n", e.getMessage());
+			resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
+			return;
+		}
+	}
+
+}

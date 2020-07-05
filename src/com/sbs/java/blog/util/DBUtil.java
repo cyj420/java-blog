@@ -11,7 +11,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class DBUtil {
+	private HttpServletRequest req;
+	private HttpServletResponse resp;
+
+	public DBUtil(HttpServletRequest req, HttpServletResponse resp) {
+		this.req = req;
+		this.resp = resp;
+	}
+
 	public static Map<String, Object> selectRow(Connection conn, String sql) {
 		List<Map<String, Object>> rows = selectRows(conn, sql);
 
