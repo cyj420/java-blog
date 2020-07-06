@@ -30,8 +30,6 @@ public abstract class Controller {
 		// 액션 전 실행
 		// 이 메서드는 모든 컨트롤러의 모든 액션이 실행되기 전에 실행된다.
 		List<Category> cateItems = articleService.getCategories();
-		System.out.println("cateItems size : "+cateItems.size());
-		System.out.println("cateItems.get(0).getName()"+cateItems.get(0).getName());
 		req.setAttribute("cateItems", cateItems);
 	}
 

@@ -386,6 +386,8 @@ ul>li:hover>ul {
 .top-bar .menu-box-1 li li {
 	display: flex;
 	justify-content: center;
+}
+.top-bar .menu-box-1 li li a {
 	padding: 20px 0;
 }
 .top-bar .menu-box-1 li li:hover {
@@ -393,6 +395,9 @@ ul>li:hover>ul {
 	background-color: #00fbbc;
 	font-weight: bold;
 	transition: 0.3s;
+}
+.top-bar .menu-box-1 li li:hover>a {
+	display: block;
 }
 
 /* 탑바 끝 */
@@ -578,4 +583,7 @@ ul>li:hover>ul {
 
 .paging .paging-only-one {
 	display: inline-block;
+}
+.has-list{
+	z-index: 100;
 }

@@ -10,8 +10,8 @@
 	List<Category> categories = (List<Category>) request.getAttribute("categories");
 	int fullPage = (int) request.getAttribute("fullPage");
 	int cateItemId = (int) request.getAttribute("cateItemId");
-	System.out.println(cateItemId);
 	int nowPage = (int) request.getAttribute("page");
+	String searchKeyword = (String) request.getAttribute("searchKeyword");
 %>
 <style>
 .article-list-box-1 td {
@@ -93,13 +93,16 @@ span>.not-selected-page:hover {
 	<%
 		}
 	%>
+	
+	<!-- 
 	<div class="con">
 		<form action="./list" method="GET">
 	      <input type="text" name="searchKeyword" />
 	      <input type="submit" value="검색" />
 	    </form>
 	</div>
-
+ 	-->
+ 	
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
 			<colgroup>

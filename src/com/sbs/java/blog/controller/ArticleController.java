@@ -37,10 +37,10 @@ public class ArticleController extends Controller {
 
 		Article a = articleService.getArticle(id, cateItemId);
 		List<Article> articles = articleService.getArticlesByCateItemId(cateItemId);
-
+		
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);
-
+		
 		return "article/detail.jsp";
 	}
 
@@ -60,8 +60,6 @@ public class ArticleController extends Controller {
 		
 		String searchKeyword = "";
 		if(req.getParameter("searchKeyword")!=null) {
-			123
-			System.out.println("11");
 			searchKeyword = req.getParameter("searchKeyword");
 		}
 
@@ -79,6 +77,7 @@ public class ArticleController extends Controller {
 		req.setAttribute("articles", articles);
 		req.setAttribute("page", page);
 		req.setAttribute("cateItemId", cateItemId);
+		req.setAttribute("searchKeyword", searchKeyword);
 
 		return "article/list.jsp";
 	}

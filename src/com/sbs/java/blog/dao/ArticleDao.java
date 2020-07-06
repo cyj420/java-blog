@@ -35,13 +35,9 @@ public class ArticleDao {
 			sql += String.format("AND cateItemId = %d ", cateItemId);
 		}
 		if(!searchKeyword.equals("")) {
-			123
-			System.out.println("에러뜰듯");
+//			에러 발생
 			sql += String.format("AND (title LIKE '%s%' ", searchKeyword);
 			sql += String.format("OR `body` LIKE '%s%') ", searchKeyword);
-		}
-		else {
-			System.out.println("공백이넹..");
 		}
 		sql += String.format("ORDER BY id DESC ");
 		sql += String.format("LIMIT %d, %d", limitFrom, itemsInAPage);

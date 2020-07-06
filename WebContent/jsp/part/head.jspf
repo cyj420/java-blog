@@ -45,7 +45,7 @@
 				<ul class="flex height-100p">
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="height-100p flex flex-ai-c">Home</a></li>
-					<li><a
+					<li class="has-list"><a
 						href="${pageContext.request.contextPath}/s/article/list"
 						class="height-100p flex flex-ai-c">Articles</a>
 						<ul>
@@ -63,7 +63,7 @@
 					<li><a
 						href="${pageContext.request.contextPath}/s/home/aboutMe"
 						class="height-100p flex flex-ai-c">About Me</a></li>
-					<li><a href="#" class="height-100p flex flex-ai-c">SNS</a>
+					<li class="has-list"><a href="#" class="height-100p flex flex-ai-c">SNS</a>
 						<ul>
 							<li><a href="https://github.com/cyj420" target="blank">GITHUB</a>
 							</li>
