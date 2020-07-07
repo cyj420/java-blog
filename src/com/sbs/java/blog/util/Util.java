@@ -22,7 +22,7 @@ public class Util {
 		return true;
 	}
 	
-	public static boolean isNum(Object obj) {
+	public static boolean isNum(HttpServletRequest req, Object obj) {
 		if(obj == null) {
 			return false;
 		}

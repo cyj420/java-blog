@@ -13,6 +13,8 @@ import com.sbs.java.blog.controller.ArticleController;
 import com.sbs.java.blog.controller.Controller;
 import com.sbs.java.blog.controller.HomeController;
 import com.sbs.java.blog.controller.MemberController;
+import com.sbs.java.blog.exception.SQLErrorException;
+import com.sbs.java.blog.util.Util;
 
 public class App {
 	private HttpServletRequest req;
@@ -41,21 +43,17 @@ public class App {
 			// 올바른 컨트롤러로 라우팅
 			route(dbConn, req, resp);
 		} catch (SQLException e) {
-			//여기 아래 있는 에러 출력문들 싹 다 Util로 옮길 준비 하기.
-			System.err.printf("[SQLException 예외, %s]\n", e.getMessage());
-			resp.getWriter().append("DB연결 실패");
-			return;
+			Util.printEx("SQL 예외(커넥션 열기)", resp, e);
+		} catch (SQLErrorException e) {
+			Util.printEx(e.getMessage(), resp, e);
 		} catch (Exception e) {
-			System.err.printf("[기타Exception 예외, %s]\n", e.getMessage());
-			resp.getWriter().append("기타 실패");
-			return;
+			Util.printEx("기타 예외", resp, e);
 		} finally {
 			if (dbConn != null) {
 				try {
 					dbConn.close();
 				} catch (SQLException e) {
-					System.err.printf("[SQLException 예외, %s]\n", e.getMessage());
-					resp.getWriter().append("DB연결닫기 실패");
+					Util.printEx("SQL 예외(커넥션 닫기)", resp, e);
 				}
 			}
 		}
