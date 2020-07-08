@@ -72,6 +72,12 @@ public class ArticleController extends Controller {
 		} catch (NumberFormatException e) {
 		}
 		
+		String searchKeywordType = "";
+
+		if (!Util.empty(req, "searchKeywordType")) {
+			searchKeywordType = Util.getString(req, "searchKeywordType");
+		}
+		
 		String searchKeyword = "";
 		if(req.getParameter("searchKeyword")!=null) {
 			searchKeyword = req.getParameter("searchKeyword");
@@ -79,11 +85,13 @@ public class ArticleController extends Controller {
 
 		List<Category> categories = null;
 		List<Article> articles = null;
+
+		// 페이지당 존재하는 게시물 수
 		int itemsInAPage = 5;
 
-		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage, searchKeyword);
+		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
 		categories = articleService.getCategories();
-		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage, searchKeyword);
+		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
 		System.out.println("fullPage : " + fullPage);
 
 		req.setAttribute("fullPage", fullPage);

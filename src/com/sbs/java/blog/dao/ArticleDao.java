@@ -23,8 +23,8 @@ public class ArticleDao {
 		this.dbConn = dbConn;
 		this.dbUtil = new DBUtil(req, resp);
 	}
-
-	public List<Article> getForPrintListArticles(int page, int cateItemId, int itemsInAPage, String searchKeyword) {
+	
+	public List<Article> getForPrintListArticles(int page, int cateItemId, int itemsInAPage, String searchKeywordType, String searchKeyword) {
 		String sql = "";
 
 		int limitFrom = (page - 1) * itemsInAPage;
@@ -34,10 +34,13 @@ public class ArticleDao {
 		if (cateItemId != 0) {
 			sql += String.format("AND cateItemId = %d ", cateItemId);
 		}
-		if(!searchKeyword.equals("")) {
+		if(searchKeywordType.equals("title") && searchKeyword.length()>0) {
+//		if(!searchKeyword.equals("")) {
 //			에러 발생
-			sql += String.format("AND (title LIKE '%s%' ", searchKeyword);
-			sql += String.format("OR `body` LIKE '%s%') ", searchKeyword);
+//			sql += String.format("AND (title LIKE '%s%' ", searchKeyword);
+//			sql += String.format("OR `body` LIKE '%s%') ", searchKeyword);
+			
+			sql += String.format("AND title LIKE CONCAT('%%', '%s', '%%')", searchKeyword);
 		}
 		sql += String.format("ORDER BY id DESC ");
 		sql += String.format("LIMIT %d, %d", limitFrom, itemsInAPage);
@@ -51,16 +54,38 @@ public class ArticleDao {
 		return articles;
 	}
 
-	public int getFullPage(int cateItemId, int itemsInAPage, String searchKeyword) {
+	
+//	public int getForPrintListArticlesCount(int cateItemId, String searchKeywordType, String searchKeyword) {
+//		String sql = "";
+//
+//		sql += String.format("SELECT COUNT(*) AS cnt ");
+//		sql += String.format("FROM article ");
+//		sql += String.format("WHERE displayStatus = 1 ");
+//
+//		if (cateItemId != 0) {
+//			sql += String.format("AND cateItemId = %d ", cateItemId);
+//		}
+//
+//		if (searchKeywordType.equals("title") && searchKeyword.length() > 0) {
+//			sql += String.format("AND title LIKE CONCAT('%%', '%s', '%%')", searchKeyword);
+//		}
+//
+//		int count = dbUtil.selectRowIntValue(dbConn, sql);
+//		return count;
+//	}
+	public int getFullPage(int cateItemId, int itemsInAPage, String searchKeywordType, String searchKeyword) {
 		String sql = "";
 
 		sql += String.format("SELECT * FROM article ");
 		sql += String.format("WHERE 1 ");
 		sql += String.format("AND displayStatus = 1 ");
-//		sql += String.format("AND (title LIKE '%s%' ");
+//		sql += String.format("AND (title LIKE '%s%' ", searchKeyword);
 //		sql += String.format("OR `body` LIKE '%s%') ", searchKeyword);
 		if (cateItemId != 0) {
 			sql += String.format("AND cateItemId = %d ", cateItemId);
+		}
+		if (searchKeywordType.equals("title") && searchKeyword.length() > 0) {
+			sql += String.format("AND title LIKE CONCAT('%%', '%s', '%%')", searchKeyword);
 		}
 		sql += String.format("ORDER BY id DESC");
 

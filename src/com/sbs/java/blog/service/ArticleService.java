@@ -19,12 +19,12 @@ public class ArticleService extends Service{
 		articleDao = new ArticleDao(dbConn, req, resp);
 	}
 
-	public List<Article> getForPrintListArticles(int page, int itemsInAPage, int cateItemId, String searchKeyword) {
-		return articleDao.getForPrintListArticles(page, itemsInAPage, cateItemId, searchKeyword);
+	public List<Article> getForPrintListArticles(int page, int itemsInAPage, int cateItemId, String searchKeywordType, String searchKeyword) {
+		return articleDao.getForPrintListArticles(page, itemsInAPage, cateItemId, searchKeywordType, searchKeyword);
 	}
 	
-	public int getFullPage(int cateItemId, int itemsInAPage, String searchKeyword) {
-		return articleDao.getFullPage(cateItemId, itemsInAPage, searchKeyword);
+	public int getFullPage(int cateItemId, int itemsInAPage, String searchKeywordType, String searchKeyword) {
+		return articleDao.getFullPage(cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
 	}
 
 //	public int getForPrintListArticlesCount(int cateItemId, ) {

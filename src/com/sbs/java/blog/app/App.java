@@ -25,7 +25,7 @@ public class App {
 		this.resp = resp;
 	}
 
-	public void start() throws IOException {
+	public void start() throws IOException, ServletException {
 		// DB 커넥터 로딩 시작
 		loadDbDriver();
 

@@ -14,6 +14,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sbs.java.blog.exception.SQLErrorException;
+
 public class DBUtil {
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
@@ -67,8 +69,7 @@ public class DBUtil {
 				rows.add(row);
 			}
 		} catch (SQLException e) {
-			System.err.printf("[SQL 예외, SQL : %s] : %s\n", sql, e.getMessage());
-			e.printStackTrace();
+			throw new SQLErrorException("SQL 예외, SQL : " + sql);
 		} finally {
 			if (stmt != null) {
 				try {

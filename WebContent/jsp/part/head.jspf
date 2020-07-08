@@ -52,23 +52,26 @@
 							<%
 								for (Category c : cateItems) {
 							%>
-								<li><a
-								href="${pageContext.request.contextPath}/s/article/list?cateItemId=<%=c.getId()%>&page=1" class="block">
-								<%=c.getName()%></a></li>
+							<li><a
+								href="${pageContext.request.contextPath}/s/article/list?cateItemId=<%=c.getId()%>&page=1"
+								class="block"> <%=c.getName()%></a></li>
 							<%
 								}
 							%>
-						</ul>
-						</li>
+						</ul></li>
 					<li><a
 						href="${pageContext.request.contextPath}/s/home/aboutMe"
 						class="height-100p flex flex-ai-c">About Me</a></li>
-					<li class="has-list"><a href="#" class="height-100p flex flex-ai-c">SNS</a>
+					<li class="has-list"><a href="#"
+						class="height-100p flex flex-ai-c">SNS</a>
 						<ul>
 							<li><a href="https://github.com/cyj420" target="blank">GITHUB</a>
 							</li>
 							<li><a href="https://cyj42.tistory.com/" target="blank">TISTORY</a>
 							</li>
+							<li><a
+								href="https://www.youtube.com/channel/UC8GgQcJXvBlPM1OGFv47Rxg/featured"
+								target="blank">YOUTUBE</a></li>
 						</ul></li>
 				</ul>
 			</nav>
@@ -103,6 +106,10 @@
 						<li><a href="https://github.com/cyj420" target="blank">GITHUB</a>
 							<i class="fa fa-paw"></i></li>
 						<li><a href="https://cyj42.tistory.com/" target="blank">TISTORY</a>
+							<i class="fa fa-paw"></i></li>
+						<li><a
+							href="https://www.youtube.com/channel/UC8GgQcJXvBlPM1OGFv47Rxg/featured"
+							target="blank">YOUTUBE</a>
 							<i class="fa fa-paw"></i></li>
 					</ul></li>
 			</ul>

@@ -87,9 +87,9 @@ span>.not-selected-page:hover {
 	<h1 class="con">
 		📋
 		<%=categoryName = categories.get(cateItemId - 1).getName()%></h1>
-		<div class="con back-to-list">
+	<div class="con back-to-list">
 		<a href="./list">전체 게시판으로 돌아가기&#8594;</a>
-		</div>
+	</div>
 	<%
 		}
 	%>
@@ -102,7 +102,7 @@ span>.not-selected-page:hover {
 	    </form>
 	</div>
  	-->
- 	
+
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
 			<colgroup>
@@ -136,20 +136,21 @@ span>.not-selected-page:hover {
 			</tbody>
 		</table>
 	</div>
+	
 	<div class="con paging">
 		<%
 			for (int i = 1; i <= fullPage; i++) {
 				if (i == nowPage) {
 		%>
-		<span><a href="./list?cateItemId=<%=cateItemId%>&page=<%=i%>"
+		<span><a href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>"
 			style="font-weight: bold; color: red">[<%=i%>]
 		</a></span>
 		<%
-		System.out.println(cateItemId);
-			} else {
+			System.out.println(cateItemId);
+				} else {
 		%>
 		<span><a class="not-selected-page"
-			href="./list?cateItemId=<%=cateItemId%>&page=<%=i%>">[<%=i%>]
+			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>">[<%=i%>]
 		</a></span>
 		<%
 			}
@@ -160,7 +161,7 @@ span>.not-selected-page:hover {
 				if (nowPage > 1) {
 			%>
 			<div class="previous-article paging-only-one">
-				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage - 1%>">이전
+				<a href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage - 1%>">이전
 					페이지</a>
 			</div>
 			<%
@@ -173,7 +174,7 @@ span>.not-selected-page:hover {
 				if (nowPage < fullPage) {
 			%>
 			<div class="next-article paging-only-one">
-				<a href="./list?cateItemId=<%=cateItemId%>&page=<%=nowPage + 1%>">다음
+				<a href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage + 1%>">다음
 					페이지</a>
 			</div>
 			<%
@@ -182,4 +183,17 @@ span>.not-selected-page:hover {
 		</div>
 	</div>
 	<!-- 게시물 리스트 끝 -->
+	<!-- 검색 시작 -->
+	<div class="con search-box flex flex-jc-c">
+
+		<form action="${pageContext.request.contextPath}/s/article/list">
+			<input type="hidden" name="page" value="1" /> <input type="hidden"
+				name="cateItemId" value="${param.cateItemId}" /> <input
+				type="hidden" name="searchKeywordType" value="title" /> <input
+				type="text" name="searchKeyword" value="${param.searchKeyword}" />
+			<button type="submit">검색</button>
+		</form>
+
+	</div>
+	<!-- 검색 끝 -->
 	<%@ include file="/jsp/part/foot.jspf"%>
