@@ -1,27 +1,19 @@
 package com.sbs.java.blog.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.util.DBUtil;
 
-public class ArticleDao {
-
+public class ArticleDao extends Dao {
 	private Connection dbConn;
-	private DBUtil dbUtil;
 
-	public ArticleDao(Connection dbConn, HttpServletRequest req, HttpServletResponse resp) {
+	public ArticleDao(Connection dbConn) {
 		this.dbConn = dbConn;
-		this.dbUtil = new DBUtil(req, resp);
 	}
 	
 	public List<Article> getForPrintListArticles(int page, int cateItemId, int itemsInAPage, String searchKeywordType, String searchKeyword) {
@@ -45,7 +37,7 @@ public class ArticleDao {
 		sql += String.format("ORDER BY id DESC ");
 		sql += String.format("LIMIT %d, %d", limitFrom, itemsInAPage);
 
-		List<Map<String, Object>> rows = dbUtil.selectRows(dbConn, sql);
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
 
 		for (Map<String, Object> row : rows) {
@@ -89,7 +81,7 @@ public class ArticleDao {
 		}
 		sql += String.format("ORDER BY id DESC");
 
-		List<Map<String, Object>> rows = dbUtil.selectRows(dbConn, sql);
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
 
 		for (Map<String, Object> row : rows) {
@@ -108,7 +100,7 @@ public class ArticleDao {
 
 		sql += String.format("SELECT * FROM cateItem");
 
-		List<Map<String, Object>> rows = dbUtil.selectRows(dbConn, sql);
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Category> categories = new ArrayList<>();
 
 		for (Map<String, Object> row : rows) {
@@ -125,7 +117,7 @@ public class ArticleDao {
 		sql += String.format("AND cateItemId = %d ", cateItemId);
 		sql += String.format("AND id=" + id);
 
-		Map<String, Object> row = dbUtil.selectRow(dbConn, sql);
+		Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
 		Article article = new Article(row);
 		return article;
 	}
@@ -137,7 +129,7 @@ public class ArticleDao {
 		sql += String.format("WHERE displayStatus = 1 ");
 		sql += String.format("AND cateItemId = %d ", cateItemId);
 
-		List<Map<String, Object>> rows = dbUtil.selectRows(dbConn, sql);
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
 
 		for (Map<String, Object> row : rows) {
@@ -151,12 +143,26 @@ public class ArticleDao {
 		sql += String.format("SELECT * from article ");
 		sql += String.format("WHERE displayStatus = 1 ");
 
-		List<Map<String, Object>> rows = dbUtil.selectRows(dbConn, sql);
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
 
 		for (Map<String, Object> row : rows) {
 			articles.add(new Article(row));
 		}
 		return articles;
+	}
+
+	public int write(int cateItemId, String title, String body) {
+		String sql = "";
+		
+		sql += String.format("INSERT INTO article ");
+		sql += String.format("SET regDate = NOW() ");
+		sql += String.format(", updateDate = NOW() ");
+		sql += String.format(", title = '%s' ", title);
+		sql += String.format(", body = '%s' ", body);
+		sql += String.format(", displayStatus = 1 ");
+		sql += String.format(", cateItemId = '%d' ", cateItemId);
+		
+		return DBUtil.insert(dbConn, sql);
 	}
 }

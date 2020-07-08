@@ -88,14 +88,15 @@ public class App {
 
 		if (controller != null) {
 			String actionResult = controller.executeAction();
-//			String actionResult = controller.doAction();
 			if (actionResult.equals("")) {
 				resp.getWriter().append("액션의 결과가 없습니다.");
 			} else if (actionResult.endsWith(".jsp")) {
 				String viewPath = "/jsp/" + actionResult;
 				req.getRequestDispatcher(viewPath).forward(req, resp);
 			} else if (actionResult.startsWith("html:")) {
-				resp.getWriter().append("처리할 수 없는 액션 결과입니다.");
+				resp.getWriter().append(actionResult.substring(5));
+			} else {
+				resp.getWriter().append("처리할 수 없는 액션결과입니다.");
 			}
 		} else {
 			resp.getWriter().append("존재하지 않는 페이지 입니다.");

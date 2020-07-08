@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
-import com.sbs.java.blog.service.ArticleService;
 import com.sbs.java.blog.util.Util;
 
 public class ArticleController extends Controller {
@@ -25,10 +24,26 @@ public class ArticleController extends Controller {
 			return doActionList(req, resp);
 		case "detail":
 			return doActionDetail(req, resp);
-//		case "doWrite":
-//			return doActionDoWrite(req, resp);
+		case "write":
+			return doActionWrite(req, resp);
+		case "doWrite":
+			return doActionDoWrite(req, resp); 
 		}
 		return "";
+	}
+
+	private String doActionDoWrite(HttpServletRequest req, HttpServletResponse resp) {
+		String title = req.getParameter("title");
+		String body = req.getParameter("body");
+		int cateItemId = Util.getInt(req, "cateItemId");
+		
+		int id = articleService.write(cateItemId, title, body);
+		
+		return "html:<script> alert('" + id + "번 게시물이 생성되었습니다.'); location.replace('list'); </script>";
+	}
+
+	private String doActionWrite(HttpServletRequest req, HttpServletResponse resp) {
+		return "article/write.jsp";
 	}
 
 	// detail
