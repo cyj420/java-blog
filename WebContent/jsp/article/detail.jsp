@@ -127,7 +127,7 @@ img {
 <!-- ============================ -->
 
 <script
-	src="${pageContext.request.contextPath}/resource/js/home/detail.js"></script>
+	src="${pageContext.request.contextPath}/resource/js/article/detail.js"></script>
 
 <div class="con">
 	<div class="con detail-article">

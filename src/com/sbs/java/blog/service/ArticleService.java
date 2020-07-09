@@ -48,4 +48,8 @@ public class ArticleService extends Service{
 	public int write(int cateItemId, String title, String body) {
 		return articleDao.write(cateItemId, title, body);
 	}
+
+	public int join(String loginId, String name, String nickname, String loginPw) {
+		return articleDao.join(loginId, name, nickname, loginPw);
+	}
 }

@@ -50,9 +50,10 @@
 	margin-top: 30px;
 }
 </style>
-
+<script
+	src="${pageContext.request.contextPath}/resource/js/article/write.js"></script>
 <div class="write-form-box con">
-	<form action="doWrite" method="POST" class="write-form form1">
+	<form action="doWrite" method="POST" class="write-form form1" onsubmit="submitJoinForm(this); return false;">
 		<div class="form-row">
 			<div class="label">카테고리 선택</div>
 			<div class="input">
