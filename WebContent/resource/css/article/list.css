@@ -1,0 +1,42 @@
+.article-list-box-1 td {
+	text-align: center;
+}
+
+.category-list tbody>tr>td:nth-child(2) {
+	text-align: left;
+	padding-left: 20px;
+}
+
+td>a:hover {
+	font-weight: bold;
+	transition: .3s;
+}
+
+span>.not-selected-page:hover {
+	color: blue;
+}
+
+.paging a:hover {
+	color: blue;
+}
+
+.category-list {
+	display: flex;
+	max-width: 1000px;
+	justify-content: space-around;
+}
+
+.category-name {
+	display: inline-block;
+	font-size: 1.4rem;
+}
+
+.category-name>a::after {
+	content: "📁";
+	opacity: 0;
+	transition: opacity .3s;
+}
+
+.category-name>a:hover::after {
+	opacity: 1;
+}

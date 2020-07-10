@@ -7,7 +7,7 @@ import com.sbs.java.blog.dao.ArticleDao;
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
 
-public class ArticleService extends Service{
+public class ArticleService extends Service {
 
 	private ArticleDao articleDao;
 
@@ -15,33 +15,24 @@ public class ArticleService extends Service{
 		articleDao = new ArticleDao(dbConn);
 	}
 
-	public List<Article> getForPrintListArticles(int page, int itemsInAPage, int cateItemId, String searchKeywordType, String searchKeyword) {
+	public List<Article> getForPrintListArticles(int page, int itemsInAPage, int cateItemId, String searchKeywordType,
+			String searchKeyword) {
 		return articleDao.getForPrintListArticles(page, itemsInAPage, cateItemId, searchKeywordType, searchKeyword);
 	}
-	
+
 	public int getFullPage(int cateItemId, int itemsInAPage, String searchKeywordType, String searchKeyword) {
 		return articleDao.getFullPage(cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
 	}
-
-//	public int getForPrintListArticlesCount(int cateItemId, ) {
-//		return articleDao.getForPrintListArticlesCount(cateItemId);
-//	}
 
 	public Article getArticle(int id, int cateItemId) {
 		return articleDao.getArticle(id, cateItemId);
 	}
 
-//	public List<Category> getForPrintCateItems() {
-//		return articleDao.getForPrintCateItems();
-//	}
-
-//	public Category getCategory(int cateItemId) {
-//		return articleDao.getCategory(cateItemId);
-//	}
 	public List<Category> getCategories() {
 		return articleDao.getCategories();
 	}
-	public List<Article> getArticlesByCateItemId(int cateItemId){
+
+	public List<Article> getArticlesByCateItemId(int cateItemId) {
 		return articleDao.getArticlesByCateItemId(cateItemId);
 	}
 
@@ -49,7 +40,7 @@ public class ArticleService extends Service{
 		return articleDao.write(cateItemId, title, body);
 	}
 
-	public int join(String loginId, String name, String nickname, String loginPw) {
-		return articleDao.join(loginId, name, nickname, loginPw);
+	public void increaseHit(int id) {
+		articleDao.increaseHit(id);
 	}
 }

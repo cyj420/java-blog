@@ -13,51 +13,9 @@
 	int nowPage = (int) request.getAttribute("page");
 	String searchKeyword = (String) request.getAttribute("searchKeyword");
 %>
-<style>
-.article-list-box-1 td {
-	text-align: center;
-}
-
-.category-list tbody>tr>td:nth-child(2) {
-	text-align: left;
-	padding-left: 20px;
-}
-
-td>a:hover {
-	font-weight: bold;
-	transition: .3s;
-}
-
-span>.not-selected-page:hover {
-	color: blue;
-}
-
-.paging a:hover {
-	color: blue;
-}
-
-.category-list {
-	display: flex;
-	max-width: 1000px;
-	justify-content: space-around;
-}
-
-.category-name {
-	display: inline-block;
-	font-size: 1.4rem;
-}
-
-.category-name>a::after {
-	content: "📁";
-	opacity: 0;
-	transition: opacity .3s;
-}
-
-.category-name>a:hover::after {
-	opacity: 1;
-}
-</style>
 </head>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/css/article/list.css">
 <body>
 	<!-- 카테고리 리스트 시작 -->
 	<!-- <h1 class="con">카테고리 리스트</h1> -->
@@ -109,14 +67,14 @@ span>.not-selected-page:hover {
 				<col width="50" />
 				<col width="200" />
 				<col width="250" />
-				<col width="250" />
+				<col width="100" />
 			</colgroup>
 			<thead>
 				<tr>
 					<th>No.</th>
 					<th>제목</th>
 					<th>등록날짜</th>
-					<th>갱신날짜</th>
+					<th>조회수</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -128,7 +86,7 @@ span>.not-selected-page:hover {
 					<td class="text-align-left"><a
 						href="./detail?cateItemId=<%=article.getCateItemId()%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
 					<td><%=article.getRegDate()%></td>
-					<td><%=article.getUpdateDate()%></td>
+					<td><%=article.getHit()%></td>
 				</tr>
 				<%
 					}

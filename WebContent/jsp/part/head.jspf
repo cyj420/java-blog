@@ -34,17 +34,15 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resource/js/home/main.js"></script>
 
 </head>
 <body>
 	<div class="con top-bar visible-on-md-up">
-		<div style="position: absolute; right: 0;">
+		<div class="member-form">
 			<%
 				if (m != null) {
 			%>
-			<div style="align-self: center; color: tomato;"><%=m.getName()%>님,
+			<div style="align-self: center; color: tomato;"><%=m.getNickname()%>님,
 				안녕하세요.
 			</div>
 			<div><a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a></div>

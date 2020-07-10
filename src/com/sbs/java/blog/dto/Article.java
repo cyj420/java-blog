@@ -6,6 +6,15 @@ public class Article extends Dto{
 	private String updateDate;
 	private String title;
 	private String body;
+	public int getHit() {
+		return hit;
+	}
+
+	public void setHit(int hit) {
+		this.hit = hit;
+	}
+
+	private int hit;
 	private int cateItemId;
 	private int displayStatus;
 	
@@ -15,10 +24,12 @@ public class Article extends Dto{
 	
 	public Article(Map<String, Object> row) {
 		super(row);
-		this.updateDate=(String)row.get("updateDate");
-		this.title=(String)row.get("title");
-		this.body=(String)row.get("body");
-		this.cateItemId=(int)row.get("cateItemId");
+
+		this.updateDate = (String) row.get("updateDate");
+		this.cateItemId = (int) row.get("cateItemId");
+		this.title = (String) row.get("title");
+		this.body = (String) row.get("body");
+		this.hit = (int) row.get("hit");
 		this.displayStatus=(int)row.get("displayStatus");
 	}
 	

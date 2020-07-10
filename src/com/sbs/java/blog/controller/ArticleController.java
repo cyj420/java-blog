@@ -64,6 +64,8 @@ public class ArticleController extends Controller {
 		}
 		int cateItemId = Integer.parseInt(req.getParameter("cateItemId"));
 
+		articleService.increaseHit(id);
+		
 		Article a = articleService.getArticle(id, cateItemId);
 		List<Article> articles = articleService.getArticlesByCateItemId(cateItemId);
 		

@@ -8,6 +8,7 @@ import java.util.Map;
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Member;
 import com.sbs.java.blog.util.DBUtil;
+import com.sbs.java.blog.util.SecSql;
 
 public class MemberDao extends Dao {
 	private Connection dbConn;
@@ -22,24 +23,24 @@ public class MemberDao extends Dao {
 			return -1;
 		}
 		else {
-			String sql = "";
+			SecSql sql = new SecSql();
 			
-			sql += String.format("INSERT INTO member ");
-			sql += String.format("SET regDate = NOW() ");
-			sql += String.format(", loginId = '%s' ", loginId);
-			sql += String.format(", name = '%s' ", name);
-			sql += String.format(", nickname = '%s' ", nickname);
-			sql += String.format(", loginPw = '%s' ", loginPw);
+			sql.append("INSERT INTO member ");
+			sql.append("SET regDate = NOW() ");
+			sql.append(", loginId = ? ", loginId);
+			sql.append(", name = ? ", name);
+			sql.append(", nickname = ? ", nickname);
+			sql.append(", loginPw = ? ", loginPw);
 			
 			return DBUtil.insert(dbConn, sql);
 		}
 	}
 
 	private boolean checkIdExists(String loginId) {
-		String sql = "";
+		SecSql sql = new SecSql();
 		
-		sql += String.format("SELECT * FROM member ");
-		sql += String.format("WHERE loginId = '%s' ", loginId);
+		sql.append("SELECT * FROM member ");
+		sql.append("WHERE loginId = ? ", loginId);
 		
 		if(DBUtil.selectRow(dbConn, sql).isEmpty()) {
 			return false;
@@ -48,11 +49,11 @@ public class MemberDao extends Dao {
 	}
 
 	public Member login(String loginId, String loginPw) {
-		String sql = "";
+		SecSql sql = new SecSql();
 		
-		sql += String.format("SELECT * FROM member ");
-		sql += String.format("WHERE loginId = '%s' ", loginId);
-		sql += String.format("AND loginPw = '%s' ", loginPw);
+		sql.append("SELECT * FROM member ");
+		sql.append("WHERE loginId = ? ", loginId);
+		sql.append("AND loginPw = ? ", loginPw);
 		
 		if(!DBUtil.selectRow(dbConn, sql).isEmpty()) {
 			Map<String, Object> row = DBUtil.selectRow(dbConn, sql);

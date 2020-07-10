@@ -8,6 +8,7 @@ import java.util.Map;
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.util.DBUtil;
+import com.sbs.java.blog.util.SecSql;
 
 public class ArticleDao extends Dao {
 	private Connection dbConn;
@@ -18,25 +19,20 @@ public class ArticleDao extends Dao {
 
 	public List<Article> getForPrintListArticles(int page, int cateItemId, int itemsInAPage, String searchKeywordType,
 			String searchKeyword) {
-		String sql = "";
+		SecSql sql = new SecSql();
 
 		int limitFrom = (page - 1) * itemsInAPage;
 
-		sql += String.format("SELECT * FROM article ");
-		sql += String.format("WHERE displayStatus = 1 ");
+		sql.append("SELECT * FROM article ");
+		sql.append("WHERE displayStatus = 1 ");
 		if (cateItemId != 0) {
-			sql += String.format("AND cateItemId = %d ", cateItemId);
+			sql.append("AND cateItemId = ? ", cateItemId);
 		}
 		if (searchKeywordType.equals("title") && searchKeyword.length() > 0) {
-//		if(!searchKeyword.equals("")) {
-//			에러 발생
-//			sql += String.format("AND (title LIKE '%s%' ", searchKeyword);
-//			sql += String.format("OR `body` LIKE '%s%') ", searchKeyword);
-
-			sql += String.format("AND title LIKE CONCAT('%%', '%s', '%%')", searchKeyword);
+			sql.append("AND title LIKE CONCAT('%%', ?, '%%') ", searchKeyword);
 		}
-		sql += String.format("ORDER BY id DESC ");
-		sql += String.format("LIMIT %d, %d", limitFrom, itemsInAPage);
+		sql.append("ORDER BY id DESC ");
+		sql.append("LIMIT ?, ?", limitFrom, itemsInAPage);
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
@@ -47,58 +43,33 @@ public class ArticleDao extends Dao {
 		return articles;
 	}
 
-//	public int getForPrintListArticlesCount(int cateItemId, String searchKeywordType, String searchKeyword) {
-//		String sql = "";
-//
-//		sql += String.format("SELECT COUNT(*) AS cnt ");
-//		sql += String.format("FROM article ");
-//		sql += String.format("WHERE displayStatus = 1 ");
-//
-//		if (cateItemId != 0) {
-//			sql += String.format("AND cateItemId = %d ", cateItemId);
-//		}
-//
-//		if (searchKeywordType.equals("title") && searchKeyword.length() > 0) {
-//			sql += String.format("AND title LIKE CONCAT('%%', '%s', '%%')", searchKeyword);
-//		}
-//
-//		int count = dbUtil.selectRowIntValue(dbConn, sql);
-//		return count;
-//	}
 	public int getFullPage(int cateItemId, int itemsInAPage, String searchKeywordType, String searchKeyword) {
-		String sql = "";
+		SecSql sql = new SecSql();
 
-		sql += String.format("SELECT * FROM article ");
-		sql += String.format("WHERE 1 ");
-		sql += String.format("AND displayStatus = 1 ");
-//		sql += String.format("AND (title LIKE '%s%' ", searchKeyword);
-//		sql += String.format("OR `body` LIKE '%s%') ", searchKeyword);
+		sql.append("SELECT COUNT(*) AS cnt FROM article ");
+		sql.append("WHERE 1 ");
+		sql.append("AND displayStatus = 1 ");
 		if (cateItemId != 0) {
-			sql += String.format("AND cateItemId = %d ", cateItemId);
+			sql.append("AND cateItemId = ? ", cateItemId);
 		}
 		if (searchKeywordType.equals("title") && searchKeyword.length() > 0) {
-			sql += String.format("AND title LIKE CONCAT('%%', '%s', '%%')", searchKeyword);
+			sql.append("AND title LIKE CONCAT('%%', ?, '%%') ", searchKeyword);
 		}
-		sql += String.format("ORDER BY id DESC");
+		sql.append("ORDER BY id DESC");
 
-		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
-		List<Article> articles = new ArrayList<>();
-
-		for (Map<String, Object> row : rows) {
-			articles.add(new Article(row));
-		}
+		int numberOfArticles = DBUtil.selectRowIntValue(dbConn, sql);
 
 		int fullPage = 0;
-		if (articles.size() != 0) {
-			fullPage = (articles.size() - 1) / itemsInAPage + 1;
+		if (numberOfArticles != 0) {
+			fullPage = (numberOfArticles - 1) / itemsInAPage + 1;
 		}
 		return fullPage;
 	}
 
 	public List<Category> getCategories() {
-		String sql = "";
+		SecSql sql = new SecSql();
 
-		sql += String.format("SELECT * FROM cateItem");
+		sql.append("SELECT * FROM cateItem");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Category> categories = new ArrayList<>();
@@ -110,12 +81,12 @@ public class ArticleDao extends Dao {
 	}
 
 	public Article getArticle(int id, int cateItemId) {
-		String sql = "";
-
-		sql += String.format("SELECT * FROM article ");
-		sql += String.format("WHERE displayStatus = 1 ");
-		sql += String.format("AND cateItemId = %d ", cateItemId);
-		sql += String.format("AND id=" + id);
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM article ");
+		sql.append("WHERE displayStatus = 1 ");
+		sql.append("AND cateItemId = ? ", cateItemId);
+		sql.append("AND id=" + id);
 
 		Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
 		Article article = new Article(row);
@@ -123,11 +94,11 @@ public class ArticleDao extends Dao {
 	}
 
 	public List<Article> getArticlesByCateItemId(int cateItemId) {
-		String sql = "";
-
-		sql += String.format("SELECT * FROM article ");
-		sql += String.format("WHERE displayStatus = 1 ");
-		sql += String.format("AND cateItemId = %d ", cateItemId);
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM article ");
+		sql.append("WHERE displayStatus = 1 ");
+		sql.append("AND cateItemId = ? ", cateItemId);
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
@@ -139,9 +110,10 @@ public class ArticleDao extends Dao {
 	}
 
 	public List<Article> getArticles() {
-		String sql = "";
-		sql += String.format("SELECT * from article ");
-		sql += String.format("WHERE displayStatus = 1 ");
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * from article ");
+		sql.append("WHERE displayStatus = 1 ");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
@@ -153,46 +125,25 @@ public class ArticleDao extends Dao {
 	}
 
 	public int write(int cateItemId, String title, String body) {
-		String sql = "";
+		SecSql sql = new SecSql();
 
-		sql += String.format("INSERT INTO article ");
-		sql += String.format("SET regDate = NOW() ");
-		sql += String.format(", updateDate = NOW() ");
-		sql += String.format(", title = '%s' ", title);
-		sql += String.format(", body = '%s' ", body);
-		sql += String.format(", displayStatus = 1 ");
-		sql += String.format(", cateItemId = '%d' ", cateItemId);
+		sql.append("INSERT INTO article ");
+		sql.append("SET regDate = NOW() ");
+		sql.append(", updateDate = NOW() ");
+		sql.append(", title = ? ", title);
+		sql.append(", body = ? ", body);
+		sql.append(", displayStatus = 1 ");
+		sql.append(", hit = 0 ");
+		sql.append(", cateItemId = ? ", cateItemId);
 
 		return DBUtil.insert(dbConn, sql);
 	}
 
-	public int join(String loginId, String name, String nickname, String loginPw) {
-		// 기존에 존재하는 ID인지 확인
-		if(checkIdExists(loginId)) {
-			return -1;
-		}
-		else {
-			String sql = "";
-			
-			sql += String.format("INSERT INTO member ");
-			sql += String.format("SET loginId = '%s' ", loginId);
-			sql += String.format(", name = '%s' ", name);
-			sql += String.format(", nickname = '%s' ", nickname);
-			sql += String.format(", loginPw = '%s' ", loginPw);
-			
-			return DBUtil.insert(dbConn, sql);
-		}
-	}
+	public int increaseHit(int id) {
+		SecSql sql = SecSql.from("UPDATE article");
+		sql.append("SET hit = hit + 1");
+		sql.append("WHERE id = ?", id);
 
-	private boolean checkIdExists(String loginId) {
-		String sql = "";
-		
-		sql += String.format("SELECT * FROM member ");
-		sql += String.format("WHERE loginId = '%s' ", loginId);
-		
-		if(DBUtil.selectRow(dbConn, sql).isEmpty()) {
-			return false;
-		}
-		return true;
+		return DBUtil.update(dbConn, sql);
 	}
 }

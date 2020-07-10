@@ -8,86 +8,6 @@
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 %>
 
-<style>
-.article-list-box-1 td {
-	text-align: center;
-}
-
-img {
-	width: 500px;
-}
-
-.another-post {
-	position: absolute;
-	padding: 5px;
-	margin: 20px;
-	text-align: center;
-	border: 2px solid #bff038;
-}
-
-.another-post:hover {
-	background: #bff038;
-	transition: .5s;
-}
-
-.con {
-	position: relative;
-}
-
-.left {
-	left: 0;
-}
-
-.right {
-	right: 0;
-}
-
-.detail-article {
-	border: 1px solid #ccc;
-	padding: 20px 30px;
-}
-
-.detail-article>div:nth-child(2) {
-	margin: 10px 0;
-	color: #949494;
-}
-
-.article-body {
-	border-top: 5px double #ccc;
-	margin-top: 20px;
-	padding-top: 10px;
-}
-
-/* 200707 */
-.toast-youtube-embed {
-	background-color: red;
-}
-
-.toast-youtube-embed {
-	position: relative;
-}
-
-.ratio-16-9::after {
-	content: "";
-	display: block;
-	padding-top: 56.25%;
-}
-
-.ratio-1-1::after {
-	content: "";
-	display: block;
-	padding-top: 100%;
-}
-
-.abs-full {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
-</style>
-
 <!-- ============================ -->
 <!-- 제이쿼리 로딩 -->
 <script
@@ -126,6 +46,9 @@ img {
 	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <!-- ============================ -->
 
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/css/article/detail.css">
+
 <script
 	src="${pageContext.request.contextPath}/resource/js/article/detail.js"></script>
 
@@ -137,6 +60,7 @@ img {
 		<div>
 			등록날짜 :
 			<%=a.getRegDate()%></div>
+		<div>조회수 : <%=a.getHit()%></div>
 		<div class="article-body">
 
 			<script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script>
