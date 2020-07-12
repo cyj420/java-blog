@@ -82,7 +82,7 @@ public class ArticleDao extends Dao {
 
 	public Article getArticle(int id, int cateItemId) {
 		SecSql sql = new SecSql();
-		
+
 		sql.append("SELECT * FROM article ");
 		sql.append("WHERE displayStatus = 1 ");
 		sql.append("AND cateItemId = ? ", cateItemId);
@@ -95,7 +95,7 @@ public class ArticleDao extends Dao {
 
 	public List<Article> getArticlesByCateItemId(int cateItemId) {
 		SecSql sql = new SecSql();
-		
+
 		sql.append("SELECT * FROM article ");
 		sql.append("WHERE displayStatus = 1 ");
 		sql.append("AND cateItemId = ? ", cateItemId);
@@ -111,7 +111,7 @@ public class ArticleDao extends Dao {
 
 	public List<Article> getArticles() {
 		SecSql sql = new SecSql();
-		
+
 		sql.append("SELECT * from article ");
 		sql.append("WHERE displayStatus = 1 ");
 
@@ -145,5 +145,38 @@ public class ArticleDao extends Dao {
 		sql.append("WHERE id = ?", id);
 
 		return DBUtil.update(dbConn, sql);
+	}
+
+	public int delete(int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("DELETE FROM article ");
+		sql.append("WHERE id = ? ", id);
+
+		return DBUtil.update(dbConn, sql);
+	}
+
+	public int revise(int id, int cateItemId, String title, String body) {
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE article SET ");
+		sql.append("cateItemId = ? ", cateItemId);
+		sql.append(", title = ? ", title);
+		sql.append(", body = ? ", body);
+		sql.append("WHERE id = ? ", id);
+
+		return DBUtil.update(dbConn, sql);
+	}
+
+	public Article getArticleById(int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM article ");
+		sql.append("WHERE displayStatus = 1 ");
+		sql.append("AND id=" + id);
+
+		Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
+		Article article = new Article(row);
+		return article;
 	}
 }

@@ -52,6 +52,29 @@
 <script
 	src="${pageContext.request.contextPath}/resource/js/article/detail.js"></script>
 
+<style>
+.detail-article{
+}
+.detail-article > div:nth-child(3) {
+	background: tomato;
+	display: inline-block;
+}
+.detail-article > div:nth-child(4) {
+	background: yellow;
+	display: inline-block;
+}
+.detail-article > div:nth-child(4):hover {
+	color: red;
+}
+.detail-article > div:nth-child(5) {
+	background: aqua;
+	display: inline-block;
+}
+.detail-article > div:nth-child(5):hover {
+	color: red;
+}
+
+</style>
 <div class="con">
 	<div class="con detail-article">
 		<h1><%=a.getId()%>
@@ -60,7 +83,9 @@
 		<div>
 			등록날짜 :
 			<%=a.getRegDate()%></div>
-		<div>조회수 : <%=a.getHit()%></div>
+		<div>조회수 : <%=a.getHit()%>&nbsp&nbsp&nbsp&nbsp</div>
+		<div><a href="./revise?id=<%=a.getId()%>">수정</a></div>
+		<div><a href="./delete?id=<%=a.getId()%>">삭제</a></div>
 		<div class="article-body">
 
 			<script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script>

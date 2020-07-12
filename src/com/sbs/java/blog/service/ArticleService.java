@@ -27,6 +27,10 @@ public class ArticleService extends Service {
 	public Article getArticle(int id, int cateItemId) {
 		return articleDao.getArticle(id, cateItemId);
 	}
+	
+	public Article getArticleById(int id) {
+		return articleDao.getArticleById(id);
+	}
 
 	public List<Category> getCategories() {
 		return articleDao.getCategories();
@@ -42,5 +46,13 @@ public class ArticleService extends Service {
 
 	public void increaseHit(int id) {
 		articleDao.increaseHit(id);
+	}
+
+	public void delete(int id) {
+		articleDao.delete(id);
+	}
+
+	public void revise(int id, int cateItemId, String title, String body) {
+		articleDao.revise(id, cateItemId, title, body);
 	}
 }

@@ -27,9 +27,47 @@ public class ArticleController extends Controller {
 		case "write":
 			return doActionWrite(req, resp);
 		case "doWrite":
-			return doActionDoWrite(req, resp); 
+			return doActionDoWrite(req, resp);
+		case "delete":
+			return doActionDelete(req, resp);
+		case "revise":
+			return doActionRevise(req, resp);
+		case "doRevise":
+			return doActionDoRevise(req, resp);
 		}
 		return "";
+	}
+
+	private String doActionDoRevise(HttpServletRequest req, HttpServletResponse resp) {
+		String title = req.getParameter("title");
+		String body = req.getParameter("body");
+		int cateItemId = Util.getInt(req, "cateItemId");
+		int id = Util.getInt(req, "id");
+		
+		articleService.revise(id, cateItemId, title, body);
+		
+		return "html:<script> alert('" + id + "번 게시물이 수정되었습니다.'); location.replace('list'); </script>";
+	}
+
+	private String doActionRevise(HttpServletRequest req, HttpServletResponse resp) {
+		if(Util.empty(req, "id")) {
+			return "html:수정할 게시물의 id를 입력해주세요.";
+		}
+		int id = Util.getInt(req, "id");
+		
+		Article a = articleService.getArticleById(id);
+		
+		req.setAttribute("a", a);
+		return "article/revise.jsp";
+	}
+
+	private String doActionDelete(HttpServletRequest req, HttpServletResponse resp) {
+		if(Util.empty(req, "id")) {
+			return "html:삭제할 게시물의 id를 입력해주세요.";
+		}
+		int id = Util.getInt(req, "id");
+		articleService.delete(id);
+		return "html:<script> alert('" + id + "번 게시물이 삭제되었습니다.'); location.replace('list'); </script>";
 	}
 
 	private String doActionDoWrite(HttpServletRequest req, HttpServletResponse resp) {
