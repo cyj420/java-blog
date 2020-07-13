@@ -98,7 +98,8 @@
 		<div class="form-row">
 			<div class="label">내용</div>
 			<input type="hidden" name="body" />
-  			<div id="editor1"></div>
+			<script type="text/x-template" id="origin1" style="display:none;"><%=a.getBodyForXTemplate()%></script>
+  			<div id="editor1" style="width:100%"></div>
 		</div>
 		<div class="form-row">
 			<div class="label">제출</div>
@@ -112,7 +113,7 @@
 				height : "600px",
 				initialEditType : "markdown",
 				previewStyle : "vertical",
-				initialValue : "<%=a.getBody()%>",
+				initialValue : $('#origin1').html().trim().replace(/<!--REPLACE:script-->/gi, 'script'),
 				plugins : [ toastui.Editor.plugin.codeSyntaxHighlight,
 						youtubePlugin, replPlugin, codepenPlugin ]
 			});

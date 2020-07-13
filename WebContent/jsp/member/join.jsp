@@ -59,6 +59,12 @@
 			</div>
 		</div>
 		<div class="form-row">
+			<div class="label">이메일</div>
+			<div class="input">
+				<input name="email" type="email" placeholder="email" />
+			</div>
+		</div>
+		<div class="form-row">
 			<div class="label">PW</div>
 			<div class="input">
 				<input name="loginPw" type="password" placeholder="비밀번호" />

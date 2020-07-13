@@ -104,7 +104,6 @@
 			style="font-weight: bold; color: red">[<%=i%>]
 		</a></span>
 		<%
-			System.out.println(cateItemId);
 				} else {
 		%>
 		<span><a class="not-selected-page"

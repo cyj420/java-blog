@@ -6,6 +6,10 @@ img {
 	width: 500px;
 }
 
+.another-post-con {
+	position: relative;
+}
+
 .another-post {
 	position: absolute;
 	padding: 5px;
@@ -17,10 +21,6 @@ img {
 .another-post:hover {
 	background: #bff038;
 	transition: .5s;
-}
-
-.con {
-	position: relative;
 }
 
 .left {

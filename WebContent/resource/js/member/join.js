@@ -41,7 +41,6 @@ function submitJoinForm(form) {
 
 	form.loginPw.value = sha256(form.loginPw.value);
 	form.loginPwConfirm.value = sha256(form.loginPwConfirm.value);
-//	form.loginPw.value = '';
 
 	form.submit();
 	joinFormSubmitted = true;

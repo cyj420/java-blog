@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
+import com.sbs.java.blog.dto.ArticleReply;
 import com.sbs.java.blog.util.Util;
 
 public class ArticleController extends Controller {
@@ -34,8 +35,19 @@ public class ArticleController extends Controller {
 			return doActionRevise(req, resp);
 		case "doRevise":
 			return doActionDoRevise(req, resp);
+		case "doArticleReply":
+			return doActionDoArticleReply(req, resp);
 		}
 		return "";
+	}
+
+	private String doActionDoArticleReply(HttpServletRequest req, HttpServletResponse resp) {
+		int writerId = Util.getInt(req, "writerId");
+		int articleId = Util.getInt(req, "articleId");
+		String body = req.getParameter("body");
+		
+		articleService.addArticleReply(writerId, articleId, body);
+		return "html:<script> alert('댓글을 작성하였습니다.'); location.replace('list'); </script>";
 	}
 
 	private String doActionDoRevise(HttpServletRequest req, HttpServletResponse resp) {
@@ -106,9 +118,14 @@ public class ArticleController extends Controller {
 		
 		Article a = articleService.getArticle(id, cateItemId);
 		List<Article> articles = articleService.getArticlesByCateItemId(cateItemId);
+		List<ArticleReply> articleReplies = articleService.getArticleRepliesByArticleId(id);
+		
+		// 콘솔 확인용
+		System.out.println("articleReplies size : "+articleReplies.size());
 		
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);
+		req.setAttribute("articleReplies", articleReplies);
 		
 		return "article/detail.jsp";
 	}
@@ -147,7 +164,6 @@ public class ArticleController extends Controller {
 		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
 		categories = articleService.getCategories();
 		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
-		System.out.println("fullPage : " + fullPage);
 
 		req.setAttribute("fullPage", fullPage);
 		req.setAttribute("categories", categories);

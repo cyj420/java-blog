@@ -1,11 +1,14 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.sbs.java.blog.dto.Article"%>
+<%@ page import="com.sbs.java.blog.dto.ArticleReply"%>
+<%@ page import="com.sbs.java.blog.util.Util"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 <%
 	Article a = (Article) request.getAttribute("a");
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
+	List<ArticleReply> articleReplies = (List<ArticleReply>) request.getAttribute("articleReplies");
 %>
 
 <!-- ============================ -->
@@ -51,29 +54,41 @@
 
 <script
 	src="${pageContext.request.contextPath}/resource/js/article/detail.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resource/js/article/articleReply.js"></script>
 
 <style>
-.detail-article{
-}
-.detail-article > div:nth-child(3) {
-	background: tomato;
+.detail-article>div:nth-child(3) {
 	display: inline-block;
-}
-.detail-article > div:nth-child(4) {
-	background: yellow;
-	display: inline-block;
-}
-.detail-article > div:nth-child(4):hover {
-	color: red;
-}
-.detail-article > div:nth-child(5) {
-	background: aqua;
-	display: inline-block;
-}
-.detail-article > div:nth-child(5):hover {
-	color: red;
 }
 
+.detail-article>div:nth-child(4) {
+	border: 1px solid black;
+	display: inline-block;
+}
+
+.detail-article>div:nth-child(4):hover {
+	color: red;
+	background: #666666;
+	transition: background .5s;
+}
+
+.detail-article>div:nth-child(5) {
+	border: 1px solid black;
+	display: inline-block;
+}
+
+.detail-article>div:nth-child(5):hover {
+	color: red;
+	background: #666666;
+	transition: background .5s;
+	background: #666666;
+}
+
+.articleReply {
+	border: 1px solid red;
+	padding: 10px;
+}
 </style>
 <div class="con">
 	<div class="con detail-article">
@@ -83,13 +98,19 @@
 		<div>
 			등록날짜 :
 			<%=a.getRegDate()%></div>
-		<div>조회수 : <%=a.getHit()%>&nbsp&nbsp&nbsp&nbsp</div>
-		<div><a href="./revise?id=<%=a.getId()%>">수정</a></div>
-		<div><a href="./delete?id=<%=a.getId()%>">삭제</a></div>
+		<div>
+			조회수 :
+			<%=a.getHit()%>&nbsp&nbsp&nbsp&nbsp
+		</div>
+		<div>
+			<a href="./revise?id=<%=a.getId()%>">수정</a>
+		</div>
+		<div>
+			<a href="./delete?id=<%=a.getId()%>">삭제</a>
+		</div>
 		<div class="article-body">
 
 			<script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script>
-			<%-- <div id="origin1" style="display: none"><%=a.getBody()%></div> --%>
 			<div id="viewer1"></div>
 
 			<script type="text/javascript">
@@ -98,14 +119,54 @@
 					el : document.querySelector('#viewer1'),
 					initialValue : editor1__initialValue,
 					viewer : true,
-					plugins: [toastui.Editor.plugin.codeSyntaxHighlight, youtubePlugin, replPlugin, codepenPlugin]
+					plugins : [ toastui.Editor.plugin.codeSyntaxHighlight,
+							youtubePlugin, replPlugin, codepenPlugin ]
 				});
 			</script>
 
 		</div>
-
+		<div class="articleReply">
+			<%
+				// 댓글 작성은 로그인 상태여야만 가능
+				if (Util.m != null) {
+			%>
+			<form action="doArticleReply" method="POST" class="comment-form"
+				onsubmit="submitArticleReplyForm(this); return false;">
+				<div class="form-row">
+					<div class="label">댓글</div>
+					<div class="input">
+						<input name="writerId" type="hidden" value=<%=Util.m.getId()%> readonly /> 
+						<input name="articleId" type="hidden" value=<%=a.getId()%> readonly /> 
+						<input name="body" type="text" placeholder="댓글을 입력해주세요." />
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="input">
+						<input type="submit" value="댓글 작성" />
+					</div>
+				</div>
+			</form>
+			<%
+				}
+				if (!articleReplies.isEmpty()) {
+					for (ArticleReply ar : articleReplies) {
+			%>
+			<div>
+				<%=ar.getWriterId()%>
+				:
+				<%=ar.getBody()%>
+			</div>
+			<%
+				}
+				} else {
+			%>
+			<div>첫번째 댓글을 남겨주세요!</div>
+			<%
+				}
+			%>
+		</div>
 	</div>
-	<div class="con">
+	<div class="con another-post-con">
 		<%
 			for (int i = 0; i < articles.size(); i++) {
 				if (a.getId() == articles.get(i).getId()) {

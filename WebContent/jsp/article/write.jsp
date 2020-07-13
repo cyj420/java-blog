@@ -68,7 +68,7 @@
 		<div class="form-row">
 			<div class="label">내용</div>
 			<input type="hidden" name="body" />
-  			<div id="editor1"></div>
+  			<div id="editor1" style="width:100%"></div>
 				<!-- <textarea name="body" placeholder="내용을 입력해주세요."></textarea> -->
 		</div>
 		<div class="form-row">

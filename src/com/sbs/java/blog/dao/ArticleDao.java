@@ -7,8 +7,10 @@ import java.util.Map;
 
 import com.sbs.java.blog.dto.Article;
 import com.sbs.java.blog.dto.Category;
+import com.sbs.java.blog.dto.ArticleReply;
 import com.sbs.java.blog.util.DBUtil;
 import com.sbs.java.blog.util.SecSql;
+import com.sbs.java.blog.util.Util;
 
 public class ArticleDao extends Dao {
 	private Connection dbConn;
@@ -130,6 +132,7 @@ public class ArticleDao extends Dao {
 		sql.append("INSERT INTO article ");
 		sql.append("SET regDate = NOW() ");
 		sql.append(", updateDate = NOW() ");
+		sql.append(", writerId = ? ", Util.m.getId());
 		sql.append(", title = ? ", title);
 		sql.append(", body = ? ", body);
 		sql.append(", displayStatus = 1 ");
@@ -163,6 +166,7 @@ public class ArticleDao extends Dao {
 		sql.append("cateItemId = ? ", cateItemId);
 		sql.append(", title = ? ", title);
 		sql.append(", body = ? ", body);
+		sql.append(", updateDate = NOW() ");
 		sql.append("WHERE id = ? ", id);
 
 		return DBUtil.update(dbConn, sql);
@@ -178,5 +182,33 @@ public class ArticleDao extends Dao {
 		Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
 		Article article = new Article(row);
 		return article;
+	}
+
+	public List<ArticleReply> getArticleRepliesByArticleId(int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM articleReply ");
+		sql.append("WHERE articleId = ? ", id);
+
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
+		List<ArticleReply> comments = new ArrayList<>();
+
+		for (Map<String, Object> row : rows) {
+			comments.add(new ArticleReply(row));
+		}
+		return comments;
+	}
+
+	public void addArticleReply(int writerId, int articleId, String body) {
+		SecSql sql = new SecSql();
+
+		sql.append("INSERT INTO articleReply ");
+		sql.append("SET regDate = NOW() ");
+		sql.append(", updateDate = NOW() ");
+		sql.append(", writerId = ? ", writerId);
+		sql.append(", articleId = ? ", articleId);
+		sql.append(", body = ? ", body);
+
+		DBUtil.insert(dbConn, sql);
 	}
 }

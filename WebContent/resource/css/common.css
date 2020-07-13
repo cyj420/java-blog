@@ -409,18 +409,18 @@ ul>li:hover>ul {
 	display: block;
 }
 
-.top-bar .member-form {
+.member-form {
 	position: absolute;
 	right: 0;
 	border: 1px solid red;
 	z-index: 999;
 }
-.top-bar .member-form > div{
+.member-form > div{
 	display: inline-block;
 	padding-right: 10px;
 	padding-top: 10px;
 }
-.top-bar .member-form a:hover{
+.member-form a:hover{
 	color: red;
 }
 

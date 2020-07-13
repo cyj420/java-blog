@@ -37,24 +37,28 @@
 
 </head>
 <body>
-	<div class="con top-bar visible-on-md-up">
-		<div class="member-form">
-			<%
-				if (m != null) {
-			%>
-			<div style="align-self: center; color: tomato;"><%=m.getNickname()%>님,
-				안녕하세요.
-			</div>
-			<div><a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a></div>
-			<%
-				}else{
-			%>
-			<div><a href="${pageContext.request.contextPath}/s/member/join">JOIN</a></div>
-			<div><a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a></div>
-			<%
-				}
-			%>
+	<div class="member-form">
+		<%
+			if (m != null) {
+		%>
+		<div style="align-self: center; color: tomato;"><%=m.getNickname()%>님</div>
+		<div>
+			<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
 		</div>
+		<%
+			} else {
+		%>
+		<div>
+			<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+		</div>
+		<div>
+			<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+		</div>
+		<%
+			}
+		%>
+	</div>
+	<div class="con top-bar visible-on-md-up">
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main"
 				class="logo flex flex-ai-c"> <i class="fas fa-dog"></i>
@@ -64,11 +68,15 @@
 				<ul class="flex height-100p">
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="height-100p flex flex-ai-c">Home</a></li>
-					<li><a href="${pageContext.request.contextPath}/s/member/join"
-						class="height-100p flex flex-ai-c">Join</a></li>
+					<%
+						if (m != null) {
+					%>
 					<li><a
 						href="${pageContext.request.contextPath}/s/article/write"
 						class="height-100p flex flex-ai-c">Write</a></li>
+					<%
+						}
+					%>
 					<li class="has-list"><a
 						href="${pageContext.request.contextPath}/s/article/list"
 						class="height-100p flex flex-ai-c">Articles</a>
@@ -119,9 +127,15 @@
 			<ul class="flex height-100p">
 				<li><a href="${pageContext.request.contextPath}/s/home/main"
 					class="height-100p flex flex-ai-c">Home</a> <i class="fa fa-paw"></i></li>
+				<%
+					if (m != null) {
+				%>
 				<li><a
 					href="${pageContext.request.contextPath}/s/article/write"
 					class="height-100p flex flex-ai-c">Write</a> <i class="fa fa-paw"></i></li>
+				<%
+					}
+				%>
 				<li><a href="${pageContext.request.contextPath}/s/article/list"
 					class="height-100p flex flex-ai-c">Articles</a> <i
 					class="fa fa-paw"></i></li>
