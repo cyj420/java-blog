@@ -1,3 +1,4 @@
+<%@page import="com.sbs.java.blog.service.MemberService"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.sbs.java.blog.dto.Category"%>
 <%@ page import="com.sbs.java.blog.dto.Member"%>
@@ -6,7 +7,6 @@
 	pageEncoding="UTF-8"%>
 <%
 	List<Category> cateItems = (List<Category>) request.getAttribute("cateItems");
-	Member m = Util.m;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,22 +39,24 @@
 <body>
 	<div class="member-form">
 		<%
-			if (m != null) {
-		%>
-		<div style="align-self: center; color: tomato;"><%=m.getNickname()%>님</div>
-		<div>
-			<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
-		</div>
-		<%
+			if (session.getAttribute("loginedMemberId") != null) {
+				%>
+				<div style="align-self: center; color: tomato;">
+				<%=MemberService.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
+				</div>
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+				</div>
+				<%
 			} else {
-		%>
-		<div>
-			<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
-		</div>
-		<div>
-			<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
-		</div>
-		<%
+				%>
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+				</div>
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+				</div>
+				<%
 			}
 		%>
 	</div>
@@ -69,12 +71,12 @@
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="height-100p flex flex-ai-c">Home</a></li>
 					<%
-						if (m != null) {
-					%>
-					<li><a
-						href="${pageContext.request.contextPath}/s/article/write"
-						class="height-100p flex flex-ai-c">Write</a></li>
-					<%
+						if (session.getAttribute("loginedMemberId") != null) {
+							%>
+							<li>
+							<a href="${pageContext.request.contextPath}/s/article/write" class="height-100p flex flex-ai-c">Write</a>
+							</li>
+							<%
 						}
 					%>
 					<li class="has-list"><a
@@ -128,7 +130,7 @@
 				<li><a href="${pageContext.request.contextPath}/s/home/main"
 					class="height-100p flex flex-ai-c">Home</a> <i class="fa fa-paw"></i></li>
 				<%
-					if (m != null) {
+					if (session.getAttribute("loginedMemberId") != null) {
 				%>
 				<li><a
 					href="${pageContext.request.contextPath}/s/article/write"

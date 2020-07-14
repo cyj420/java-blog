@@ -6,6 +6,11 @@ public class Article extends Dto{
 	private String updateDate;
 	private String title;
 	private String body;
+	private int writerId;
+	private int hit;
+	private int cateItemId;
+	private int displayStatus;
+	
 	public int getHit() {
 		return hit;
 	}
@@ -13,10 +18,6 @@ public class Article extends Dto{
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
-
-	private int hit;
-	private int cateItemId;
-	private int displayStatus;
 	
 	public Article() {
 		
@@ -82,4 +83,14 @@ public class Article extends Dto{
 	public void setDisplayStatus(int displayStatus) {
 		this.displayStatus = displayStatus;
 	}
+
+	public int getWriterId() {
+		return writerId;
+	}
+
+	public void setWriterId(int writerId) {
+		this.writerId = writerId;
+	}
+	
+	
 }

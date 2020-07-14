@@ -75,3 +75,18 @@ img {
 	width: 100%;
 	height: 100%;
 }
+
+.detail-article>.hits {
+	display: inline-block;
+}
+
+.detail-article>.articleModifyAndDelete {
+	border: 1px solid black;
+	display: inline-block;
+}
+
+.detail-article>.articleModifyAndDelete:hover {
+	color: red;
+	background: #666666;
+	transition: background .5s;
+}

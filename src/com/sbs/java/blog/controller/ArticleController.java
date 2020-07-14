@@ -31,14 +31,45 @@ public class ArticleController extends Controller {
 			return doActionDoWrite(req, resp);
 		case "delete":
 			return doActionDelete(req, resp);
-		case "revise":
-			return doActionRevise(req, resp);
-		case "doRevise":
-			return doActionDoRevise(req, resp);
+		case "modify":
+			return doActionModify(req, resp);
+		case "doModify":
+			return doActionDoModify(req, resp);
 		case "doArticleReply":
 			return doActionDoArticleReply(req, resp);
+		case "doArticleReplyDelete":
+			return doActionDoArticleReplyDelete(req, resp);
+		case "doArticleReplyModify":
+			return doActionDoArticleReplyModify(req, resp);
+		case "doArticleReplyDoModify":
+			return doActionDoArticleReplyDoModify(req, resp);
 		}
 		return "";
+	}
+
+	private String doActionDoArticleReplyDoModify(HttpServletRequest req, HttpServletResponse resp) {
+		int arId = Util.getInt(req, "arId");
+		String arBody = req.getParameter("arBody");
+		articleService.modifyArticleReply(arId, arBody);
+		
+		return "html:<script> alert('댓글을 수정하였습니다.'); location.replace('list'); </script>";
+	}
+
+	private String doActionDoArticleReplyModify(HttpServletRequest req, HttpServletResponse resp) {
+		int articleReplyId = Util.getInt(req, "articleReplyId");
+		String articleReplyBody = req.getParameter("articleReplyBody");
+		
+		req.setAttribute("articleReplyId", articleReplyId);
+		req.setAttribute("articleReplyBody", articleReplyBody);
+		
+		return "article/articleReply.jsp";
+	}
+
+	private String doActionDoArticleReplyDelete(HttpServletRequest req, HttpServletResponse resp) {
+		int articleReplyId = Util.getInt(req, "articleReplyId");
+		articleService.deleteArticleReply(articleReplyId);
+		
+		return "html:<script> alert('댓글을 삭제하였습니다.'); location.replace('list'); </script>";
 	}
 
 	private String doActionDoArticleReply(HttpServletRequest req, HttpServletResponse resp) {
@@ -50,18 +81,18 @@ public class ArticleController extends Controller {
 		return "html:<script> alert('댓글을 작성하였습니다.'); location.replace('list'); </script>";
 	}
 
-	private String doActionDoRevise(HttpServletRequest req, HttpServletResponse resp) {
+	private String doActionDoModify(HttpServletRequest req, HttpServletResponse resp) {
 		String title = req.getParameter("title");
 		String body = req.getParameter("body");
 		int cateItemId = Util.getInt(req, "cateItemId");
 		int id = Util.getInt(req, "id");
 		
-		articleService.revise(id, cateItemId, title, body);
+		articleService.modify(id, cateItemId, title, body);
 		
 		return "html:<script> alert('" + id + "번 게시물이 수정되었습니다.'); location.replace('list'); </script>";
 	}
 
-	private String doActionRevise(HttpServletRequest req, HttpServletResponse resp) {
+	private String doActionModify(HttpServletRequest req, HttpServletResponse resp) {
 		if(Util.empty(req, "id")) {
 			return "html:수정할 게시물의 id를 입력해주세요.";
 		}
@@ -70,7 +101,7 @@ public class ArticleController extends Controller {
 		Article a = articleService.getArticleById(id);
 		
 		req.setAttribute("a", a);
-		return "article/revise.jsp";
+		return "article/modify.jsp";
 	}
 
 	private String doActionDelete(HttpServletRequest req, HttpServletResponse resp) {

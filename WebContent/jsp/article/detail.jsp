@@ -58,36 +58,16 @@
 	src="${pageContext.request.contextPath}/resource/js/article/articleReply.js"></script>
 
 <style>
-.detail-article>div:nth-child(3) {
-	display: inline-block;
-}
-
-.detail-article>div:nth-child(4) {
-	border: 1px solid black;
-	display: inline-block;
-}
-
-.detail-article>div:nth-child(4):hover {
-	color: red;
-	background: #666666;
-	transition: background .5s;
-}
-
-.detail-article>div:nth-child(5) {
-	border: 1px solid black;
-	display: inline-block;
-}
-
-.detail-article>div:nth-child(5):hover {
-	color: red;
-	background: #666666;
-	transition: background .5s;
-	background: #666666;
-}
-
 .articleReply {
 	border: 1px solid red;
 	padding: 10px;
+}
+
+.articleReplyDetail > form{
+	display: inline-block;
+}
+.articleReplyDetail > form:first-child{
+	padding-left: 10px;
 }
 </style>
 <div class="con">
@@ -98,16 +78,22 @@
 		<div>
 			등록날짜 :
 			<%=a.getRegDate()%></div>
-		<div>
+		<div class="hits">
 			조회수 :
 			<%=a.getHit()%>&nbsp&nbsp&nbsp&nbsp
 		</div>
-		<div>
-			<a href="./revise?id=<%=a.getId()%>">수정</a>
+		<%
+		if((session.getAttribute("loginedMemberId") != null) && (int)session.getAttribute("loginedMemberId") == a.getWriterId()){
+		%>
+		<div class="articleModifyAndDelete">
+			<a href="./modify?id=<%=a.getId()%>">수정</a>
 		</div>
-		<div>
+		<div class="articleModifyAndDelete">
 			<a href="./delete?id=<%=a.getId()%>">삭제</a>
 		</div>
+		<%
+		}
+		%>
 		<div class="article-body">
 
 			<script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script>
@@ -128,15 +114,15 @@
 		<div class="articleReply">
 			<%
 				// 댓글 작성은 로그인 상태여야만 가능
-				if (Util.m != null) {
+				if (session.getAttribute("loginedMemberId") != null) {
 			%>
 			<form action="doArticleReply" method="POST" class="comment-form"
 				onsubmit="submitArticleReplyForm(this); return false;">
 				<div class="form-row">
 					<div class="label">댓글</div>
 					<div class="input">
-						<input name="writerId" type="hidden" value=<%=Util.m.getId()%> readonly /> 
-						<input name="articleId" type="hidden" value=<%=a.getId()%> readonly /> 
+						<input name="writerId" type="hidden" value=<%=Util.loginedMemberId%> readonly /> 
+						<input name="articleId" type="hidden" value=<%=a.getId()%> readonly />
 						<input name="body" type="text" placeholder="댓글을 입력해주세요." />
 					</div>
 				</div>
@@ -151,11 +137,27 @@
 				if (!articleReplies.isEmpty()) {
 					for (ArticleReply ar : articleReplies) {
 			%>
-			<div>
+			<div class="articleReplyDetail">
 				<%=ar.getWriterId()%>
 				:
 				<%=ar.getBody()%>
+				<%
+				if((session.getAttribute("loginedMemberId") != null) && (int)session.getAttribute("loginedMemberId") == ar.getWriterId()){
+				%>
+				<form action="doArticleReplyModify" method="POST" class="comment-form">
+					<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
+					<input name="articleReplyBody" type="hidden" value=<%=ar.getBody()%> />
+					<input type="submit" value="수정" />
+				</form>
+				<form action="doArticleReplyDelete" method="POST" class="comment-form">
+					<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
+					<input type="submit" value="삭제" />
+				</form>
+				<%
+				}
+				%>
 			</div>
+
 			<%
 				}
 				} else {
@@ -173,8 +175,7 @@
 					if (i != 0) {
 		%>
 		<div class="another-post left">
-			<a
-				href="./detail?cateItemId=<%=a.getCateItemId()%>&id=<%=articles.get(i - 1).getId()%>">이전글</a>
+			<a href="./detail?cateItemId=<%=a.getCateItemId()%>&id=<%=articles.get(i - 1).getId()%>">이전글</a>
 		</div>
 		<%
 			}
@@ -188,8 +189,7 @@
 					if (i != articles.size() - 1) {
 		%>
 		<div class="another-post right">
-			<a
-				href="./detail?cateItemId=<%=a.getCateItemId()%>&id=<%=articles.get(i + 1).getId()%>">다음글</a>
+			<a href="./detail?cateItemId=<%=a.getCateItemId()%>&id=<%=articles.get(i + 1).getId()%>">다음글</a>
 		</div>
 		<%
 			}

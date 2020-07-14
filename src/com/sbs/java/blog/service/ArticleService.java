@@ -53,8 +53,8 @@ public class ArticleService extends Service {
 		articleDao.delete(id);
 	}
 
-	public void revise(int id, int cateItemId, String title, String body) {
-		articleDao.revise(id, cateItemId, title, body);
+	public void modify(int id, int cateItemId, String title, String body) {
+		articleDao.modify(id, cateItemId, title, body);
 	}
 
 	public List<ArticleReply> getArticleRepliesByArticleId(int id) {
@@ -63,5 +63,13 @@ public class ArticleService extends Service {
 
 	public void addArticleReply(int writerId, int articleId, String body) {
 		articleDao.addArticleReply(writerId, articleId, body);
+	}
+
+	public void deleteArticleReply(int articleReplyId) {
+		articleDao.deleteArticleReply(articleReplyId);
+	}
+
+	public void modifyArticleReply(int arId, String arBody) {
+		articleDao.modifyArticleReply(arId, arBody);
 	}
 }

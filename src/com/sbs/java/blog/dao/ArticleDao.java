@@ -132,7 +132,7 @@ public class ArticleDao extends Dao {
 		sql.append("INSERT INTO article ");
 		sql.append("SET regDate = NOW() ");
 		sql.append(", updateDate = NOW() ");
-		sql.append(", writerId = ? ", Util.m.getId());
+		sql.append(", writerId = ? ", );
 		sql.append(", title = ? ", title);
 		sql.append(", body = ? ", body);
 		sql.append(", displayStatus = 1 ");
@@ -159,7 +159,7 @@ public class ArticleDao extends Dao {
 		return DBUtil.update(dbConn, sql);
 	}
 
-	public int revise(int id, int cateItemId, String title, String body) {
+	public int modify(int id, int cateItemId, String title, String body) {
 		SecSql sql = new SecSql();
 
 		sql.append("UPDATE article SET ");
@@ -210,5 +210,24 @@ public class ArticleDao extends Dao {
 		sql.append(", body = ? ", body);
 
 		DBUtil.insert(dbConn, sql);
+	}
+
+	public void deleteArticleReply(int articleReplyId) {
+		SecSql sql = new SecSql();
+
+		sql.append("DELETE FROM articleReply ");
+		sql.append("WHERE id = ? ", articleReplyId);
+
+		DBUtil.update(dbConn, sql);
+	}
+
+	public void modifyArticleReply(int arId, String arBody) {
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE articleReply SET ");
+		sql.append("body = ? ", arBody);
+		sql.append("WHERE id = ? ", arId);
+
+		DBUtil.update(dbConn, sql);
 	}
 }

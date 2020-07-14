@@ -4,8 +4,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 <%
-	Article a = (Article) request.getAttribute("a");
-	String body = a.getBody();
+	/* Article a = (Article) request.getAttribute("a"); */
+	int articleReplyId = Util.getInt(request, "articleReplyId");
+	String articleReplyBody = request.getParameter("articleReplyBody");
 %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,74 +51,18 @@
 <script
 	src="${pageContext.request.contextPath}/resource/js/article/write.js"></script>
 <div class="write-form-box con">
-	<form action="doRevise" method="POST" class="write-form form1"
-		onsubmit="submitJoinForm(this); return false;">
-		<div class="form-row">
-			<div class="label">카테고리 선택</div>
-			<div class="input">
-				<select name="cateItemId">
-					<%-- <%
-					/* 이 부분 수정 필요 */
-						for (Category c : cateItems) {
-							if(a!=null){
-								if(c.getId()==a.getCateItemId()){
-									%>
-									<option value="<%=c.getId()%>"><%=c.getName()%></option>
-									<%
-								}
-							}
-							else{
-								%>
-								<option value="<%=c.getId()%>"><%=c.getName()%></option>
-								<%
-							}
-						}
-					%> --%>
-					<%
-						for (Category c : cateItems) {
-					%>
-					<option value="<%=c.getId()%>"><%=c.getName()%></option>
-					<%
-						}
-					%>
-				</select>
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="label">게시물 번호</div>
-			<div class="input">
-				<input name="id" type="text" value="<%=a.getId()%>" readonly/>
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="label">제목</div>
-			<div class="input">
-				<input name="title" type="text" placeholder="" value="<%=a.getTitle()%>"/>
-			</div>
-		</div>
+	<form action="doArticleReplyDoModify" method="POST" class="write-form form1">
 		<div class="form-row">
 			<div class="label">내용</div>
-			<input type="hidden" name="body" />
-			<script type="text/x-template" id="origin1" style="display:none;"><%=a.getBodyForXTemplate()%></script>
-  			<div id="editor1" style="width:100%"></div>
+			<input type="hidden" name="arId" value="<%=articleReplyId%>"/>
+			<input type="text" name="arBody" value="<%=articleReplyBody%>"/>
 		</div>
 		<div class="form-row">
-			<div class="label">제출</div>
 			<div class="input">
-				<input type="submit" value="제출" /> <a href="list">취소</a>
+				<input type="submit" value="제출" style="width: 50px; height: 50px;  display: inline-block;"/>
 			</div>
 		</div>
-		<script>
-			var editor1 = new toastui.Editor({
-				el : document.querySelector("#editor1"),
-				height : "600px",
-				initialEditType : "markdown",
-				previewStyle : "vertical",
-				initialValue : $('#origin1').html().trim().replace(/<!--REPLACE:script-->/gi, 'script'),
-				plugins : [ toastui.Editor.plugin.codeSyntaxHighlight,
-						youtubePlugin, replPlugin, codepenPlugin ]
-			});
-		</script>
 	</form>
+	<button onclick="history.back()" style="width: 50px; height: 50px; display: inline-block;">취소</button>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>

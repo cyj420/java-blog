@@ -4,11 +4,14 @@ import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sbs.java.blog.dto.Member;
+import com.sbs.java.blog.service.MemberService;
 import com.sbs.java.blog.util.Util;
 
 public class MemberController extends Controller {
+	HttpSession session = req.getSession();
 
 	public MemberController(Connection dbConn, String actionMethodName, HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -33,9 +36,10 @@ public class MemberController extends Controller {
 	}
 
 	private String doActionLogout(HttpServletRequest req, HttpServletResponse resp) {
-		Member m = Util.m;
-		Util.m = null;
-		return "html:<script> alert('" + m.getNickname() + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
+		String nickname = memberService.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname();
+		session.removeAttribute("loginedMemberId");
+
+		return "html:<script> alert('" + nickname + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
 	}
 
 	private String doActionDoLogin(HttpServletRequest req, HttpServletResponse resp) {
@@ -44,11 +48,11 @@ public class MemberController extends Controller {
 
 		Member m = null;
 		m = memberService.login(loginId, loginPw);
-		if(m!=null) {
-			Util.m = m;
-			return "html:<script> alert('" + m.getNickname() + "님, 안녕하세요.'); location.replace('../home/main'); </script>";
-		}
-		else {
+		session.setAttribute("loginedMemberId", m.getId());
+		if (session.getAttribute("loginedMemberId") != null) {
+			return "html:<script> alert('" + memberService.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()
+					+ "님, 안녕하세요.'); location.replace('../home/main'); </script>";
+		} else {
 			return "html:<script> alert('ID 혹은 PW가 틀렸습니다.'); location.replace('login');</script>";
 		}
 	}
