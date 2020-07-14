@@ -60,6 +60,7 @@
 <style>
 .articleReply {
 	border: 1px solid red;
+	margin: 10px 0;
 	padding: 10px;
 }
 
@@ -83,15 +84,17 @@
 			<%=a.getHit()%>&nbsp&nbsp&nbsp&nbsp
 		</div>
 		<%
-		if((session.getAttribute("loginedMemberId") != null) && (int)session.getAttribute("loginedMemberId") == a.getWriterId()){
-		%>
-		<div class="articleModifyAndDelete">
-			<a href="./modify?id=<%=a.getId()%>">수정</a>
-		</div>
-		<div class="articleModifyAndDelete">
-			<a href="./delete?id=<%=a.getId()%>">삭제</a>
-		</div>
+		if(session.getAttribute("loginedMemberId")!=null){
+			if((int)session.getAttribute("loginedMemberId") == a.getWriterId()){
+			%>
+			<div class="articleModifyAndDelete">
+				<a href="./modify?id=<%=a.getId()%>">수정</a>
+			</div>
+			<div class="articleModifyAndDelete">
+				<a href="./delete?id=<%=a.getId()%>">삭제</a>
+			</div>
 		<%
+			}
 		}
 		%>
 		<div class="article-body">
@@ -118,42 +121,49 @@
 			%>
 			<form action="doArticleReply" method="POST" class="comment-form"
 				onsubmit="submitArticleReplyForm(this); return false;">
-				<div class="form-row">
-					<div class="label">댓글</div>
+				<div class="form-row"  style="display: inline-block; width:40%;">
 					<div class="input">
-						<input name="writerId" type="hidden" value=<%=Util.loginedMemberId%> readonly /> 
-						<input name="articleId" type="hidden" value=<%=a.getId()%> readonly />
-						<input name="body" type="text" placeholder="댓글을 입력해주세요." />
+						<input name="writerId" type="hidden" value=<%=session.getAttribute("loginedMemberId")%> /> 
+						<input name="articleId" type="hidden" value=<%=a.getId()%> />
+						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
+						<input name="body" type="text" placeholder="댓글을 입력해주세요." style="width: 95%;"/>
 					</div>
 				</div>
-				<div class="form-row">
+				<div class="form-row" style="display: inline-block;">
 					<div class="input">
-						<input type="submit" value="댓글 작성" />
+						<input type="submit" value="댓글 작성"/>
 					</div>
 				</div>
 			</form>
+				<div class="label">댓글(<%=articleReplies.size() %>)</div>
 			<%
 				}
 				if (!articleReplies.isEmpty()) {
 					for (ArticleReply ar : articleReplies) {
 			%>
 			<div class="articleReplyDetail">
-				<%=ar.getWriterId()%>
+				<%=ms.getMemberById(ar.getWriterId()).getNickname()%>
 				:
 				<%=ar.getBody()%>
 				<%
-				if((session.getAttribute("loginedMemberId") != null) && (int)session.getAttribute("loginedMemberId") == ar.getWriterId()){
-				%>
-				<form action="doArticleReplyModify" method="POST" class="comment-form">
-					<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
-					<input name="articleReplyBody" type="hidden" value=<%=ar.getBody()%> />
-					<input type="submit" value="수정" />
-				</form>
-				<form action="doArticleReplyDelete" method="POST" class="comment-form">
-					<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
-					<input type="submit" value="삭제" />
-				</form>
+				if(session.getAttribute("loginedMemberId")!=null){
+					if((int)session.getAttribute("loginedMemberId") == ar.getWriterId()){
+					%>
+					<form action="doArticleReplyModify" method="POST" class="comment-form">
+						<input name="articleId" type="hidden" value=<%=a.getId()%> />
+						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
+						<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
+						<input name="articleReplyBody" type="hidden" value=<%=ar.getBody()%> />
+						<input type="submit" value="수정" />
+					</form>
+					<form action="doArticleReplyDelete" method="POST" class="comment-form">
+						<input name="articleId" type="hidden" value=<%=a.getId()%> />
+						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
+						<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
+						<input type="submit" value="삭제" />
+					</form>
 				<%
+					}
 				}
 				%>
 			</div>

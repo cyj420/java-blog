@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.service.ArticleService;
@@ -17,6 +18,8 @@ public abstract class Controller {
 	protected HttpServletRequest req;
 	protected HttpServletResponse resp;
 
+	HttpSession session;
+	
 	protected ArticleService articleService;
 	protected MemberService memberService;
 
@@ -27,6 +30,7 @@ public abstract class Controller {
 		this.resp = resp;
 		articleService = new ArticleService(dbConn);
 		memberService = new MemberService(dbConn);
+		this.session = req.getSession();
 	}
 
 	public void beforeAction() {
@@ -34,6 +38,7 @@ public abstract class Controller {
 		// 이 메서드는 모든 컨트롤러의 모든 액션이 실행되기 전에 실행된다.
 		List<Category> cateItems = articleService.getCategories();
 		req.setAttribute("cateItems", cateItems);
+		req.setAttribute("dbConn", dbConn);
 	}
 
 	public void afterAction() {

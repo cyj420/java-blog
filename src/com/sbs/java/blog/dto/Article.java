@@ -32,6 +32,7 @@ public class Article extends Dto{
 		this.body = (String) row.get("body");
 		this.hit = (int) row.get("hit");
 		this.displayStatus=(int)row.get("displayStatus");
+		this.writerId = (int)row.get("writerId");
 	}
 	
 	@Override

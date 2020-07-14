@@ -1,5 +1,6 @@
 <%@page import="com.sbs.java.blog.service.MemberService"%>
 <%@ page import="java.util.List"%>
+<%@ page import="java.sql.Connection"%>
 <%@ page import="com.sbs.java.blog.dto.Category"%>
 <%@ page import="com.sbs.java.blog.dto.Member"%>
 <%@ page import="com.sbs.java.blog.util.Util"%>
@@ -7,6 +8,8 @@
 	pageEncoding="UTF-8"%>
 <%
 	List<Category> cateItems = (List<Category>) request.getAttribute("cateItems");
+	Connection dbConn = (Connection) request.getAttribute("dbConn");
+	MemberService ms = new MemberService(dbConn);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +45,7 @@
 			if (session.getAttribute("loginedMemberId") != null) {
 				%>
 				<div style="align-self: center; color: tomato;">
-				<%=MemberService.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
+				<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
 				</div>
 				<div>
 					<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>

@@ -4,7 +4,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 <%
-	/* Article a = (Article) request.getAttribute("a"); */
+	int articleId = Util.getInt(request, "articleId");
+	int articleCateId = Util.getInt(request, "articleCateId");
 	int articleReplyId = Util.getInt(request, "articleReplyId");
 	String articleReplyBody = request.getParameter("articleReplyBody");
 %>
@@ -54,6 +55,8 @@
 	<form action="doArticleReplyDoModify" method="POST" class="write-form form1">
 		<div class="form-row">
 			<div class="label">내용</div>
+			<input type="hidden" name="articleId" value="<%=articleId%>"/>
+			<input type="hidden" name="articleCateId" value="<%=articleCateId%>"/>
 			<input type="hidden" name="arId" value="<%=articleReplyId%>"/>
 			<input type="text" name="arBody" value="<%=articleReplyBody%>"/>
 		</div>

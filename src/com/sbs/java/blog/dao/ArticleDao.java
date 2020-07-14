@@ -126,13 +126,13 @@ public class ArticleDao extends Dao {
 		return articles;
 	}
 
-	public int write(int cateItemId, String title, String body) {
+	public int write(int cateItemId, String title, String body, int writerId) {
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO article ");
 		sql.append("SET regDate = NOW() ");
 		sql.append(", updateDate = NOW() ");
-		sql.append(", writerId = ? ", );
+		sql.append(", writerId = ? ", writerId);
 		sql.append(", title = ? ", title);
 		sql.append(", body = ? ", body);
 		sql.append(", displayStatus = 1 ");

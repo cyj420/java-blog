@@ -8,7 +8,7 @@ import com.sbs.java.blog.dto.Member;
 
 public class MemberService extends Service{
 
-	private static MemberDao memberDao;
+	private MemberDao memberDao;
 
 	public MemberService(Connection dbConn) {
 		memberDao = new MemberDao(dbConn);
@@ -25,7 +25,7 @@ public class MemberService extends Service{
 	public List<Member> getMembers(){
 		return memberDao.getMembers();
 	}
-	public static Member getMemberById(int id){
+	public Member getMemberById(int id){
 		return memberDao.getMemberById(id);
 	}
 }

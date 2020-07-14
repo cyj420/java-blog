@@ -41,8 +41,8 @@ public class ArticleService extends Service {
 		return articleDao.getArticlesByCateItemId(cateItemId);
 	}
 
-	public int write(int cateItemId, String title, String body) {
-		return articleDao.write(cateItemId, title, body);
+	public int write(int cateItemId, String title, String body, int writerId) {
+		return articleDao.write(cateItemId, title, body, writerId);
 	}
 
 	public void increaseHit(int id) {

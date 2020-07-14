@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.java.blog.dto.Article;
-import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.dto.ArticleReply;
+import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.util.Util;
 
 public class ArticleController extends Controller {
@@ -48,17 +48,24 @@ public class ArticleController extends Controller {
 	}
 
 	private String doActionDoArticleReplyDoModify(HttpServletRequest req, HttpServletResponse resp) {
+		int articleId = Util.getInt(req, "articleId");
+		int articleCateId = Util.getInt(req, "articleCateId");
 		int arId = Util.getInt(req, "arId");
 		String arBody = req.getParameter("arBody");
 		articleService.modifyArticleReply(arId, arBody);
 		
-		return "html:<script> alert('댓글을 수정하였습니다.'); location.replace('list'); </script>";
+		// 수정필요
+		return String.format("html:<script> alert('댓글을 수정하였습니다.'); location.replace('detail?cateItemId=%d&id=%d'); </script>", articleCateId, articleId);
 	}
 
 	private String doActionDoArticleReplyModify(HttpServletRequest req, HttpServletResponse resp) {
+		int articleId = Util.getInt(req, "articleId");
+		int articleCateId = Util.getInt(req, "articleCateId");
 		int articleReplyId = Util.getInt(req, "articleReplyId");
 		String articleReplyBody = req.getParameter("articleReplyBody");
 		
+		req.setAttribute("articleId", articleId);
+		req.setAttribute("articleCateId", articleCateId);
 		req.setAttribute("articleReplyId", articleReplyId);
 		req.setAttribute("articleReplyBody", articleReplyBody);
 		
@@ -66,19 +73,22 @@ public class ArticleController extends Controller {
 	}
 
 	private String doActionDoArticleReplyDelete(HttpServletRequest req, HttpServletResponse resp) {
+		int articleId = Util.getInt(req, "articleId");
+		int articleCateId = Util.getInt(req, "articleCateId");
 		int articleReplyId = Util.getInt(req, "articleReplyId");
 		articleService.deleteArticleReply(articleReplyId);
 		
-		return "html:<script> alert('댓글을 삭제하였습니다.'); location.replace('list'); </script>";
+		return String.format("html:<script> alert('댓글을 삭제하였습니다.'); location.replace('detail?cateItemId=%d&id=%d'); </script>", articleCateId, articleId);
 	}
 
 	private String doActionDoArticleReply(HttpServletRequest req, HttpServletResponse resp) {
 		int writerId = Util.getInt(req, "writerId");
 		int articleId = Util.getInt(req, "articleId");
+		int articleCateId = Util.getInt(req, "articleCateId");
 		String body = req.getParameter("body");
 		
 		articleService.addArticleReply(writerId, articleId, body);
-		return "html:<script> alert('댓글을 작성하였습니다.'); location.replace('list'); </script>";
+		return String.format("html:<script> alert('댓글을 작성하였습니다.'); location.replace('detail?cateItemId=%d&id=%d'); </script>", articleCateId, articleId);
 	}
 
 	private String doActionDoModify(HttpServletRequest req, HttpServletResponse resp) {
@@ -117,8 +127,9 @@ public class ArticleController extends Controller {
 		String title = req.getParameter("title");
 		String body = req.getParameter("body");
 		int cateItemId = Util.getInt(req, "cateItemId");
+		int writerId = (int)session.getAttribute("loginedMemberId");
 		
-		int id = articleService.write(cateItemId, title, body);
+		int id = articleService.write(cateItemId, title, body, writerId);
 		
 		return "html:<script> alert('" + id + "번 게시물이 생성되었습니다.'); location.replace('list'); </script>";
 	}

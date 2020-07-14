@@ -68,9 +68,7 @@ public class App {
 		String[] actionStrBits = actionStr.split("/");
 
 		String controllerName = actionStrBits[0];
-		// 기존 : home, article
 		String actionMethodName = actionStrBits[1];
-		// 기존 : aboutMe, main, list, doWrite, detail
 
 		Controller controller = null;
 
