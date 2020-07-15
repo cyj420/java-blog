@@ -92,6 +92,4 @@ public class Article extends Dto{
 	public void setWriterId(int writerId) {
 		this.writerId = writerId;
 	}
-	
-	
 }

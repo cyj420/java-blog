@@ -75,9 +75,16 @@
 					%> --%>
 					<%
 						for (Category c : cateItems) {
-					%>
-					<option value="<%=c.getId()%>"><%=c.getName()%></option>
-					<%
+							if(c.getId()==a.getCateItemId()){
+								%>
+								<option value="<%=c.getId()%>" selected="selected"><%=c.getName()%></option>
+								<%
+							}
+							else{
+							%>
+							<option value="<%=c.getId()%>"><%=c.getName()%></option>
+							<%
+							}
 						}
 					%>
 				</select>

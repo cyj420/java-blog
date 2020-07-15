@@ -72,4 +72,8 @@ public class ArticleService extends Service {
 	public void modifyArticleReply(int arId, String arBody) {
 		articleDao.modifyArticleReply(arId, arBody);
 	}
+	
+	public Category getCategoryByCateItemId(int cateItemId) {
+		return articleDao.getCategoryByCateItemId(cateItemId);
+	}
 }

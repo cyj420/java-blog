@@ -18,12 +18,10 @@
 	href="${pageContext.request.contextPath}/resource/css/article/list.css">
 <body>
 	<!-- 카테고리 리스트 시작 -->
-	<!-- <h1 class="con">카테고리 리스트</h1> -->
 	<div class="article-list-box-1 con table-box category-list">
 		<%
 			for (Category c : categories) {
 		%>
-		<%-- <div><%=c.getId()%></div> --%>
 		<div class="category-name">
 			<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
 		</div>
@@ -51,15 +49,6 @@
 	<%
 		}
 	%>
-	
-	<!-- 
-	<div class="con">
-		<form action="./list" method="GET">
-	      <input type="text" name="searchKeyword" />
-	      <input type="submit" value="검색" />
-	    </form>
-	</div>
- 	-->
 
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
@@ -68,12 +57,14 @@
 				<col width="200" />
 				<col width="250" />
 				<col width="100" />
+				<col width="100" />
 			</colgroup>
 			<thead>
 				<tr>
 					<th>No.</th>
 					<th>제목</th>
 					<th>등록날짜</th>
+					<th>작성자</th>
 					<th>조회수</th>
 				</tr>
 			</thead>
@@ -86,6 +77,7 @@
 					<td class="text-align-left"><a
 						href="./detail?cateItemId=<%=article.getCateItemId()%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
 					<td><%=article.getRegDate()%></td>
+					<td><%=ms.getMemberById(article.getWriterId()).getNickname()%></td>
 					<td><%=article.getHit()%></td>
 				</tr>
 				<%
@@ -94,32 +86,46 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div class="con paging">
+	<%
+	if(nowPage>1){
+	%>
+		<a
+			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage - 1%>">◀</a>
 		<%
+	}
 			for (int i = 1; i <= fullPage; i++) {
 				if (i == nowPage) {
-		%>
-		<span><a href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>"
-			style="font-weight: bold; color: red">[<%=i%>]
-		</a></span>
-		<%
+				%>
+				<span><a
+					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>"
+					style="font-weight: bold; color: red">[<%=i%>]
+				</a></span>
+				<%
 				} else {
-		%>
-		<span><a class="not-selected-page"
-			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>">[<%=i%>]
-		</a></span>
-		<%
+				%>
+				<span><a class="not-selected-page"
+					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>">[<%=i%>]
+				</a></span>
+				<%
+				}
 			}
-			}
+			if(nowPage<fullPage){
 		%>
+		<a
+			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage + 1%>">▶</a>
+			<%
+			}
+			%>
+		<%-- 
 		<div>
 			<%
 				if (nowPage > 1) {
 			%>
 			<div class="previous-article paging-only-one">
-				<a href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage - 1%>">이전
-					페이지</a>
+				<a
+					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage - 1%>"><</a>
 			</div>
 			<%
 				}
@@ -131,13 +137,14 @@
 				if (nowPage < fullPage) {
 			%>
 			<div class="next-article paging-only-one">
-				<a href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage + 1%>">다음
-					페이지</a>
+				<a
+					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage + 1%>">></a>
 			</div>
 			<%
 				}
 			%>
 		</div>
+		 --%>
 	</div>
 	<!-- 게시물 리스트 끝 -->
 	<!-- 검색 시작 -->

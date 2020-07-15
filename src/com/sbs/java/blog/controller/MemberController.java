@@ -73,13 +73,13 @@ public class MemberController extends Controller {
 		if (loginPwConfirm.equals(loginPw)) {
 			id = memberService.join(loginId, name, nickname, loginPw, email);
 		} else {
-			return "html:<script> alert('비밀번호 확인이 틀렸습니다.'); location.replace('join');</script>";
+			return "html:<script> alert('비밀번호 확인이 틀렸습니다.'); history.back(); </script>";
 		}
 
 		if (id > 0) {
 			return "html:<script> alert('" + id + "번째 회원 가입을 환영합니다.'); location.replace('../home/main'); </script>";
 		} else {
-			return "html:<script> alert('이미 존재하는 ID입니다.'); location.replace('join');</script>";
+			return "html:<script> alert('이미 존재하는 ID입니다.'); history.back(); </script>";
 		}
 	}
 

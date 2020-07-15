@@ -189,6 +189,7 @@ public class ArticleDao extends Dao {
 
 		sql.append("SELECT * FROM articleReply ");
 		sql.append("WHERE articleId = ? ", id);
+		sql.append("ORDER BY id DESC ");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<ArticleReply> comments = new ArrayList<>();
@@ -225,9 +226,21 @@ public class ArticleDao extends Dao {
 		SecSql sql = new SecSql();
 
 		sql.append("UPDATE articleReply SET ");
-		sql.append("body = ? ", arBody);
+		sql.append("body = ?, ", arBody);
+		sql.append("updateDate = NOW() ");
 		sql.append("WHERE id = ? ", arId);
 
 		DBUtil.update(dbConn, sql);
+	}
+
+	public Category getCategoryByCateItemId(int cateItemId) {
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM cateItem ");
+		sql.append("WHERE id = ? ", cateItemId);
+
+		Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
+		Category category = new Category(row);
+		return category;
 	}
 }

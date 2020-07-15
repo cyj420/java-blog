@@ -8,8 +8,7 @@
 	pageEncoding="UTF-8"%>
 <%
 	List<Category> cateItems = (List<Category>) request.getAttribute("cateItems");
-	Connection dbConn = (Connection) request.getAttribute("dbConn");
-	MemberService ms = new MemberService(dbConn);
+	MemberService ms = (MemberService) request.getAttribute("memberService");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,30 +39,30 @@
 
 </head>
 <body>
-	<div class="member-form">
-		<%
-			if (session.getAttribute("loginedMemberId") != null) {
-				%>
-				<div style="align-self: center; color: tomato;">
-				<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
-				</div>
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
-				</div>
-				<%
-			} else {
-				%>
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
-				</div>
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
-				</div>
-				<%
-			}
-		%>
-	</div>
 	<div class="con top-bar visible-on-md-up">
+		<div class="member-form">
+			<%
+				if (session.getAttribute("loginedMemberId") != null) {
+					%>
+					<div style="align-self: center; color: tomato;">
+					<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
+					</div>
+					<div>
+						<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+					</div>
+					<%
+				} else {
+					%>
+					<div>
+						<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+					</div>
+					<div>
+						<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+					</div>
+					<%
+				}
+			%>
+		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main"
 				class="logo flex flex-ai-c"> <i class="fas fa-dog"></i>
@@ -115,6 +114,29 @@
 		</div>
 	</div>
 	<div class="mobile-top-bar font-size visible-on-sm-down">
+		<div class="member-form">
+			<%
+				if (session.getAttribute("loginedMemberId") != null) {
+					%>
+					<div style="align-self: center; color: tomato;">
+					<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
+					</div>
+					<div>
+						<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+					</div>
+					<%
+				} else {
+					%>
+					<div>
+						<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+					</div>
+					<div>
+						<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+					</div>
+					<%
+				}
+			%>
+		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<div class="btn-toggle-mobile-side-bar flex absolute-middle">
 				<div></div>

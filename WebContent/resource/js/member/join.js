@@ -24,6 +24,13 @@ function submitJoinForm(form) {
 		form.nickname.focus();
 		return;
 	}
+	
+	form.email.value = form.email.value.trim();
+	if (form.email.value.length == 0) {
+		alert('email을 입력해주세요.');
+		form.email.focus();
+		return;
+	}
 
 	form.loginPw.value = form.loginPw.value.trim();
 	if (form.loginPw.value.length == 0) {

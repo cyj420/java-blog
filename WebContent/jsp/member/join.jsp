@@ -82,14 +82,6 @@
 				<input type="submit" value="회원가입" />
 			</div>
 		</div>
-		<!-- 
-		<div class="form-row">
-			<div class="label">전송</div>
-			<div class="input">
-				<input type="submit" value="전송" /> <a href="list">취소</a>
-			</div>
-		</div> 
-		-->
 	</form>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>

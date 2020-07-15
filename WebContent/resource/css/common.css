@@ -410,10 +410,11 @@ ul>li:hover>ul {
 }
 
 .member-form {
-	position: absolute;
 	right: 0;
-	border: 1px solid red;
 	z-index: 999;
+}
+.top-bar>.member-form{
+	position: absolute;
 }
 .member-form > div{
 	display: inline-block;
@@ -433,9 +434,12 @@ ul>li:hover>ul {
 	height: 50px;
 	background-color: #4affd5;
 	color: white;
-	font-size: 1.4rem;
+	font-size: 1rem;
 }
 
+.mobile-top-bar>.member-form{
+	position:fixed;
+}
 .mobile-top-bar>.con {
 	position: relative;
 }
@@ -514,11 +518,14 @@ ul>li:hover>ul {
 .mobile-side-bar .menu-box-1>ul {
 	display: none;
 }
+.mobile-side-bar.active .menu-box-1{
+	height: 100%;
+}
 
 .mobile-side-bar.active .menu-box-1>ul {
 	display: block;
+	height: 100%;
 }
-
 .mobile-side-bar .menu-box-1 ul>li:hover {
 	background-color: rgb(184, 241, 167);
 	color: white;
@@ -532,7 +539,7 @@ ul>li:hover>ul {
 
 .mobile-side-bar .menu-box-1>ul>li>a {
 	justify-content: center;
-	padding: 30px;
+	padding: 20px;
 }
 
 .mobile-side-bar .menu-box-1>ul>li>a.has-list::after {
@@ -553,7 +560,7 @@ ul>li:hover>ul {
 
 .mobile-side-bar .menu-box-1 ul ul>li>a {
 	display: flex;
-	padding: 30px;
+	padding: 20px;
 	justify-content: center;
 }
 

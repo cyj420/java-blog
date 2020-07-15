@@ -99,7 +99,8 @@ public class ArticleController extends Controller {
 		
 		articleService.modify(id, cateItemId, title, body);
 		
-		return "html:<script> alert('" + id + "번 게시물이 수정되었습니다.'); location.replace('list'); </script>";
+		return String.format("html:<script> alert('%d번 게시물을 수정하였습니다.'); "
+				+ "location.replace('detail?cateItemId=%d&id=%d'); </script>", id, cateItemId, id);
 	}
 
 	private String doActionModify(HttpServletRequest req, HttpServletResponse resp) {
@@ -168,6 +169,8 @@ public class ArticleController extends Controller {
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);
 		req.setAttribute("articleReplies", articleReplies);
+		req.setAttribute("articleService", articleService);
+		req.setAttribute("memberService", memberService);
 		
 		return "article/detail.jsp";
 	}

@@ -1,4 +1,4 @@
-<%@ page import="java.util.List"%>
+<%@page import="com.sbs.java.blog.service.ArticleService"%>
 <%@ page import="com.sbs.java.blog.dto.Article"%>
 <%@ page import="com.sbs.java.blog.dto.ArticleReply"%>
 <%@ page import="com.sbs.java.blog.util.Util"%>
@@ -9,6 +9,7 @@
 	Article a = (Article) request.getAttribute("a");
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 	List<ArticleReply> articleReplies = (List<ArticleReply>) request.getAttribute("articleReplies");
+	ArticleService articleService = (ArticleService) request.getAttribute("articleService");
 %>
 
 <!-- ============================ -->
@@ -70,18 +71,36 @@
 .articleReplyDetail > form:first-child{
 	padding-left: 10px;
 }
+.detail-article>.back-to-category:hover{
+	font-weight: bold;
+	color: red;
+}
 </style>
 <div class="con">
 	<div class="con detail-article">
+		<a class="back-to-category" href="./list?cateItemId=<%=a.getCateItemId() %>&page=1">
+			<%=articleService.getCategoryByCateItemId(a.getCateItemId()).getName() %>
+		</a>
 		<h1><%=a.getId()%>
 			|
 			<%=a.getTitle()%></h1>
 		<div>
+			작성자 : <%=ms.getMemberById(a.getWriterId()).getNickname() %>
+		</div>
+		<div class="etc">
 			등록날짜 :
-			<%=a.getRegDate()%></div>
-		<div class="hits">
+			<%=a.getRegDate()%>
+			<%
+			if(!a.getRegDate().equals(a.getUpdateDate())){
+				%>
+				/ 수정날짜 : 
+				<%=a.getUpdateDate()%>
+				<%
+			}
+			%>
+			<br>
 			조회수 :
-			<%=a.getHit()%>&nbsp&nbsp&nbsp&nbsp
+			<%=a.getHit()%>
 		</div>
 		<%
 		if(session.getAttribute("loginedMemberId")!=null){
@@ -99,11 +118,13 @@
 		%>
 		<div class="article-body">
 
-			<script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script>
+			<%-- <script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script> --%>
+			<script type="text/x-template" id="origin1" style="display: none;"><%=a.getBodyForXTemplate()%></script>
 			<div id="viewer1"></div>
 
 			<script type="text/javascript">
-				var editor1__initialValue = $('#origin1').html();
+				/* var editor1__initialValue = $('#origin1').html(); */
+				var editor1__initialValue = getBodyFromXTemplate('#origin1');
 				var editor1 = new toastui.Editor({
 					el : document.querySelector('#viewer1'),
 					initialValue : editor1__initialValue,
@@ -141,32 +162,35 @@
 				if (!articleReplies.isEmpty()) {
 					for (ArticleReply ar : articleReplies) {
 			%>
-			<div class="articleReplyDetail">
-				<%=ms.getMemberById(ar.getWriterId()).getNickname()%>
-				:
-				<%=ar.getBody()%>
-				<%
-				if(session.getAttribute("loginedMemberId")!=null){
-					if((int)session.getAttribute("loginedMemberId") == ar.getWriterId()){
-					%>
-					<form action="doArticleReplyModify" method="POST" class="comment-form">
-						<input name="articleId" type="hidden" value=<%=a.getId()%> />
-						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
-						<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
-						<input name="articleReplyBody" type="hidden" value=<%=ar.getBody()%> />
-						<input type="submit" value="수정" />
-					</form>
-					<form action="doArticleReplyDelete" method="POST" class="comment-form">
-						<input name="articleId" type="hidden" value=<%=a.getId()%> />
-						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
-						<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
-						<input type="submit" value="삭제" />
-					</form>
-				<%
-					}
-				}
-				%>
-			</div>
+					<div class="articleReplyDetail">
+						<%=ms.getMemberById(ar.getWriterId()).getNickname()%>
+						:
+						<%=ar.getBody()%>
+						[
+						<%=ar.getUpdateDate() %>
+						]
+						<%
+						if(session.getAttribute("loginedMemberId")!=null){
+							if((int)session.getAttribute("loginedMemberId") == ar.getWriterId()){
+							%>
+							<form action="doArticleReplyModify" method="POST" class="comment-form">
+								<input name="articleId" type="hidden" value=<%=a.getId()%> />
+								<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
+								<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
+								<input name="articleReplyBody" type="hidden" value=<%=ar.getBody()%> />
+								<input type="submit" value="수정" />
+							</form>
+							<form action="doArticleReplyDelete" method="POST" class="comment-form">
+								<input name="articleId" type="hidden" value=<%=a.getId()%> />
+								<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
+								<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
+								<input type="submit" value="삭제" />
+							</form>
+						<%
+							}
+						}
+						%>
+					</div>
 
 			<%
 				}
