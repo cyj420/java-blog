@@ -60,7 +60,7 @@
 
 <style>
 .articleReply {
-	border: 1px solid red;
+	border: 1px solid #a0a0a0;
 	margin: 10px 0;
 	padding: 10px;
 }
@@ -93,8 +93,9 @@
 			<%
 			if(!a.getRegDate().equals(a.getUpdateDate())){
 				%>
-				/ 수정날짜 : 
+				(update : 
 				<%=a.getUpdateDate()%>
+				)
 				<%
 			}
 			%>
@@ -136,6 +137,7 @@
 
 		</div>
 		<div class="articleReply">
+				<div class="label">댓글(<%=articleReplies.size() %>)</div>
 			<%
 				// 댓글 작성은 로그인 상태여야만 가능
 				if (session.getAttribute("loginedMemberId") != null) {
@@ -156,7 +158,6 @@
 					</div>
 				</div>
 			</form>
-				<div class="label">댓글(<%=articleReplies.size() %>)</div>
 			<%
 				}
 				if (!articleReplies.isEmpty()) {

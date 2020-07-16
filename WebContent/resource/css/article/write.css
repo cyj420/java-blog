@@ -9,9 +9,10 @@
 	display: flex;
 }
 
-.form1 .form-row:not(:first-child){
+.form1 .form-row:not (:first-child ){
 	margin-top: 10px;
 }
+
 .form1 .form-row>.label {
 	width: 100px;
 }
@@ -34,13 +35,21 @@
 .form1 .form-row>.input>textarea {
 	height: 500px;
 }
+.form1 .form-row{
+	margin-top: 10px;
+}
 
-@media ( max-width : 700px) {
+/* @media ( max-width : 700px) {
 	.form1 .form-row {
 		display: block;
 	}
-}
+} */
 /* custom */
 .write-form-box {
 	margin-top: 30px;
+}
+
+.go-to-list-button {
+	display: block;
+	margin-bottom: 30px;
 }

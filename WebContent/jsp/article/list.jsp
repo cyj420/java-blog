@@ -1,3 +1,4 @@
+<%@page import="com.sbs.java.blog.service.ArticleService"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.sbs.java.blog.dto.Category"%>
 <%@ page import="java.util.List"%>
@@ -8,6 +9,7 @@
 <%
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 	List<Category> categories = (List<Category>) request.getAttribute("categories");
+	ArticleService articleService = (ArticleService)request.getAttribute("articleService");
 	int fullPage = (int) request.getAttribute("fullPage");
 	int cateItemId = (int) request.getAttribute("cateItemId");
 	int nowPage = (int) request.getAttribute("page");
@@ -42,7 +44,9 @@
 	%>
 	<h1 class="con">
 		📋
-		<%=categoryName = categories.get(cateItemId - 1).getName()%></h1>
+		<%=categoryName = categories.get(cateItemId - 1).getName()%>
+		(<%=articleService.getArticlesByCateItemId(cateItemId).size() %>)
+	</h1>
 	<div class="con back-to-list">
 		<a href="./list">전체 게시판으로 돌아가기&#8594;</a>
 	</div>
@@ -53,17 +57,17 @@
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
 			<colgroup>
-				<col width="50" />
+				<col width="50"  class="can-delete"/>
 				<col width="200" />
-				<col width="250" />
+				<col width="250" class="can-delete"/>
 				<col width="100" />
 				<col width="100" />
 			</colgroup>
 			<thead>
 				<tr>
-					<th>No.</th>
+					<th  class="can-delete">No.</th>
 					<th>제목</th>
-					<th>등록날짜</th>
+					<th class="can-delete">등록날짜</th>
 					<th>작성자</th>
 					<th>조회수</th>
 				</tr>
@@ -73,10 +77,10 @@
 					for (Article article : articles) {
 				%>
 				<tr>
-					<td><%=article.getId()%></td>
+					<td  class="can-delete"><%=article.getId()%></td>
 					<td class="text-align-left"><a
 						href="./detail?cateItemId=<%=article.getCateItemId()%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
-					<td><%=article.getRegDate()%></td>
+					<td class="can-delete"><%=article.getRegDate()%></td>
 					<td><%=ms.getMemberById(article.getWriterId()).getNickname()%></td>
 					<td><%=article.getHit()%></td>
 				</tr>
@@ -118,33 +122,6 @@
 			<%
 			}
 			%>
-		<%-- 
-		<div>
-			<%
-				if (nowPage > 1) {
-			%>
-			<div class="previous-article paging-only-one">
-				<a
-					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage - 1%>"><</a>
-			</div>
-			<%
-				}
-				if (nowPage > 1 && nowPage < fullPage) {
-			%>
-			&nbsp;&nbsp;&nbsp;
-			<%
-				}
-				if (nowPage < fullPage) {
-			%>
-			<div class="next-article paging-only-one">
-				<a
-					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage + 1%>">></a>
-			</div>
-			<%
-				}
-			%>
-		</div>
-		 --%>
 	</div>
 	<!-- 게시물 리스트 끝 -->
 	<!-- 검색 시작 -->

@@ -27,14 +27,17 @@ span>.not-selected-page:hover {
 }
 
 .category-name {
+	color: #a0a0a0;
 	display: inline-block;
-	font-size: 1.4rem;
 }
 
+.category-name:hover {
+	color: black;
+}
 .category-name>a::after {
 	content: "📁";
 	opacity: 0;
-	transition: opacity .3s;
+	transition: .3s;
 }
 
 .category-name>a:hover::after {

@@ -109,9 +109,8 @@
   			<div id="editor1" style="width:100%"></div>
 		</div>
 		<div class="form-row">
-			<div class="label">제출</div>
 			<div class="input">
-				<input type="submit" value="제출" /> <a href="list">취소</a>
+				<input type="submit" value="수정" />
 			</div>
 		</div>
 		<script>
@@ -126,5 +125,8 @@
 			});
 		</script>
 	</form>
+	<button onclick="history.back()" style="width: 50px; height: 40px; display: inline-block; width:100%; margin: 20px 0;">
+	취소
+	</button>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>

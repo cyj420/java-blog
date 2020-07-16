@@ -65,7 +65,7 @@
 		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main"
-				class="logo flex flex-ai-c"> <i class="fas fa-dog"></i>
+				class="logo flex flex-ai-c"> <i class="fas fa-desktop"></i>
 			</a>
 
 			<nav class="menu-box-1">
@@ -144,8 +144,8 @@
 				<div></div>
 			</div>
 			<a href="${pageContext.request.contextPath}/s/home/main"
-				class="logo flex absolute-center absolute-middle"> <i
-				class="fas fa-dog"></i>
+				class="logo flex absolute-center absolute-middle"> 
+				<i class="fas fa-desktop"></i>
 			</a>
 		</div>
 	</div>
@@ -153,31 +153,29 @@
 		<nav class="menu-box-1">
 			<ul class="flex height-100p">
 				<li><a href="${pageContext.request.contextPath}/s/home/main"
-					class="height-100p flex flex-ai-c">Home</a> <i class="fa fa-paw"></i></li>
+					class="height-100p flex flex-ai-c">Home</a> <i class="fas fa-mouse"></i>
 				<%
 					if (session.getAttribute("loginedMemberId") != null) {
 				%>
 				<li><a
 					href="${pageContext.request.contextPath}/s/article/write"
-					class="height-100p flex flex-ai-c">Write</a> <i class="fa fa-paw"></i></li>
+					class="height-100p flex flex-ai-c">Write</a> <i class="fas fa-mouse"></i>
 				<%
 					}
 				%>
 				<li><a href="${pageContext.request.contextPath}/s/article/list"
-					class="height-100p flex flex-ai-c">Articles</a> <i
-					class="fa fa-paw"></i></li>
+					class="height-100p flex flex-ai-c">Articles</a> <i class="fas fa-mouse"></i>
 				<li><a href="${pageContext.request.contextPath}/s/home/aboutMe"
-					class="height-100p flex flex-ai-c">About Me</a> <i
-					class="fa fa-paw"></i></li>
+					class="height-100p flex flex-ai-c">About Me</a> <i class="fas fa-mouse"></i>
 				<li><a href="#" class="height-100p flex flex-ai-c has-list">SNS</a>
 					<ul class="snsList">
 						<li><a href="https://github.com/cyj420" target="blank">GITHUB</a>
-							<i class="fa fa-paw"></i></li>
+							<i class="fas fa-mouse"></i>
 						<li><a href="https://cyj42.tistory.com/" target="blank">TISTORY</a>
-							<i class="fa fa-paw"></i></li>
+							<i class="fas fa-mouse"></i>
 						<li><a
 							href="https://www.youtube.com/channel/UC8GgQcJXvBlPM1OGFv47Rxg/featured"
-							target="blank">YOUTUBE</a> <i class="fa fa-paw"></i></li>
+							target="blank">YOUTUBE</a> <i class="fas fa-mouse"></i>
 					</ul></li>
 			</ul>
 		</nav>

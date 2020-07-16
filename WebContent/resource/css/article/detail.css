@@ -15,12 +15,10 @@ img {
 	padding: 5px;
 	margin: 20px;
 	text-align: center;
-	border: 2px solid #bff038;
 }
 
 .another-post:hover {
-	background: #bff038;
-	transition: .5s;
+	color:red;
 }
 
 .left {
@@ -76,12 +74,9 @@ img {
 }
 
 .detail-article>.articleModifyAndDelete {
-	border: 1px solid black;
 	display: inline-block;
 }
 
 .detail-article>.articleModifyAndDelete:hover {
 	color: red;
-	background: #666666;
-	transition: background .5s;
 }

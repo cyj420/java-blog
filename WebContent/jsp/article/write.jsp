@@ -69,12 +69,10 @@
 			<div class="label">내용</div>
 			<input type="hidden" name="body" />
   			<div id="editor1" style="width:100%"></div>
-				<!-- <textarea name="body" placeholder="내용을 입력해주세요."></textarea> -->
 		</div>
 		<div class="form-row">
-			<div class="label">전송</div>
 			<div class="input">
-				<input type="submit" value="전송" /> <a href="list">취소</a>
+				<input type="submit" value="전송" />
 			</div>
 		</div>
 		<script>
@@ -89,5 +87,8 @@
 			});
 		</script>
 	</form>
+	<button onclick="history.back()" style="width: 50px; height: 40px; display: inline-block; width:100%; margin: 20px 0;">
+	취소
+	</button>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>

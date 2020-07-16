@@ -52,8 +52,9 @@
 <script
 	src="${pageContext.request.contextPath}/resource/js/article/write.js"></script>
 <div class="write-form-box con">
+<h1>댓글 수정</h1>
 	<form action="doArticleReplyDoModify" method="POST" class="write-form form1">
-		<div class="form-row">
+		<div class="form-row flex-jc-c">
 			<div class="label">내용</div>
 			<input type="hidden" name="articleId" value="<%=articleId%>"/>
 			<input type="hidden" name="articleCateId" value="<%=articleCateId%>"/>
@@ -62,10 +63,13 @@
 		</div>
 		<div class="form-row">
 			<div class="input">
-				<input type="submit" value="제출" style="width: 50px; height: 50px;  display: inline-block;"/>
+				<input type="submit" value="제출" 
+				style="width: 50px; height: 50px; display: inline-block; bottom:0; margin-left:50%;"/>
 			</div>
 		</div>
 	</form>
-	<button onclick="history.back()" style="width: 50px; height: 50px; display: inline-block;">취소</button>
+	<button onclick="history.back()" style="width: 50px; height: 50px; display: inline-block; position: absolute; bottom:0; left: 60px;margin-left: 50%;">
+	취소
+	</button>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>
