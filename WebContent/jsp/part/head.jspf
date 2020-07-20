@@ -43,23 +43,26 @@
 		<div class="member-form">
 			<%
 				if (session.getAttribute("loginedMemberId") != null) {
-					%>
-					<div style="align-self: center; color: tomato;">
-					<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
-					</div>
-					<div>
-						<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
-					</div>
-					<%
+			%>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/myPage"
+					style="display: inline-block; align-self: center; color: tomato;">
+					<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()%>님
+				</a>
+			</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+			</div>
+			<%
 				} else {
-					%>
-					<div>
-						<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
-					</div>
-					<div>
-						<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
-					</div>
-					<%
+			%>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+			</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+			</div>
+			<%
 				}
 			%>
 		</div>
@@ -74,11 +77,11 @@
 						class="height-100p flex flex-ai-c">Home</a></li>
 					<%
 						if (session.getAttribute("loginedMemberId") != null) {
-							%>
-							<li>
-							<a href="${pageContext.request.contextPath}/s/article/write" class="height-100p flex flex-ai-c">Write</a>
-							</li>
-							<%
+					%>
+					<li><a
+						href="${pageContext.request.contextPath}/s/article/write"
+						class="height-100p flex flex-ai-c">Write</a></li>
+					<%
 						}
 					%>
 					<li class="has-list"><a
@@ -117,23 +120,26 @@
 		<div class="member-form">
 			<%
 				if (session.getAttribute("loginedMemberId") != null) {
-					%>
-					<div style="align-self: center; color: tomato;">
-					<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()%>님
-					</div>
-					<div>
-						<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
-					</div>
-					<%
+			%>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/myPage"
+					style="display: inline-block; align-self: center; color: tomato;">
+					<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()%>님
+				</a>
+			</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+			</div>
+			<%
 				} else {
-					%>
-					<div>
-						<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
-					</div>
-					<div>
-						<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
-					</div>
-					<%
+			%>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+			</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+			</div>
+			<%
 				}
 			%>
 		</div>
@@ -144,8 +150,8 @@
 				<div></div>
 			</div>
 			<a href="${pageContext.request.contextPath}/s/home/main"
-				class="logo flex absolute-center absolute-middle"> 
-				<i class="fas fa-desktop"></i>
+				class="logo flex absolute-center absolute-middle"> <i
+				class="fas fa-mobile-alt"></i>
 			</a>
 		</div>
 	</div>
@@ -154,19 +160,21 @@
 			<ul class="flex height-100p">
 				<li><a href="${pageContext.request.contextPath}/s/home/main"
 					class="height-100p flex flex-ai-c">Home</a> <i class="fas fa-mouse"></i>
-				<%
-					if (session.getAttribute("loginedMemberId") != null) {
-				%>
+					<%
+						if (session.getAttribute("loginedMemberId") != null) {
+					%>
 				<li><a
 					href="${pageContext.request.contextPath}/s/article/write"
-					class="height-100p flex flex-ai-c">Write</a> <i class="fas fa-mouse"></i>
-				<%
-					}
-				%>
+					class="height-100p flex flex-ai-c">Write</a> <i
+					class="fas fa-mouse"></i> <%
+ 	}
+ %>
 				<li><a href="${pageContext.request.contextPath}/s/article/list"
-					class="height-100p flex flex-ai-c">Articles</a> <i class="fas fa-mouse"></i>
+					class="height-100p flex flex-ai-c">Articles</a> <i
+					class="fas fa-mouse"></i>
 				<li><a href="${pageContext.request.contextPath}/s/home/aboutMe"
-					class="height-100p flex flex-ai-c">About Me</a> <i class="fas fa-mouse"></i>
+					class="height-100p flex flex-ai-c">About Me</a> <i
+					class="fas fa-mouse"></i>
 				<li><a href="#" class="height-100p flex flex-ai-c has-list">SNS</a>
 					<ul class="snsList">
 						<li><a href="https://github.com/cyj420" target="blank">GITHUB</a>

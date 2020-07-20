@@ -34,6 +34,7 @@ span>.not-selected-page:hover {
 .category-name:hover {
 	color: black;
 }
+
 .category-name>a::after {
 	content: "📁";
 	opacity: 0;
@@ -41,5 +42,13 @@ span>.not-selected-page:hover {
 }
 
 .category-name>a:hover::after {
+	opacity: 1;
+}
+
+.selected-category {
+	color: black;
+}
+
+.selected-category>a::after {
 	opacity: 1;
 }

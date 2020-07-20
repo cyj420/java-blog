@@ -149,7 +149,7 @@
 						<input name="writerId" type="hidden" value=<%=session.getAttribute("loginedMemberId")%> /> 
 						<input name="articleId" type="hidden" value=<%=a.getId()%> />
 						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
-						<input name="body" type="text" placeholder="댓글을 입력해주세요." style="width: 95%;"/>
+						<input name="body" type="text" placeholder="댓글을 입력해주세요." autocomplete="off" style="width: 95%;"/>
 					</div>
 				</div>
 				<div class="form-row" style="display: inline-block;">

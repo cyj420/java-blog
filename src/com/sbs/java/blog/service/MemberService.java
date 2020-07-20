@@ -28,4 +28,8 @@ public class MemberService extends Service{
 	public Member getMemberById(int id){
 		return memberDao.getMemberById(id);
 	}
+
+	public void myPage(int id , String nickname, String loginPw, String email) {
+		memberDao.myPage(id, nickname, loginPw, email);
+	}
 }

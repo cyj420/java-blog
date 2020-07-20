@@ -9,7 +9,7 @@
 <%
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 	List<Category> categories = (List<Category>) request.getAttribute("categories");
-	ArticleService articleService = (ArticleService)request.getAttribute("articleService");
+	ArticleService articleService = (ArticleService) request.getAttribute("articleService");
 	int fullPage = (int) request.getAttribute("fullPage");
 	int cateItemId = (int) request.getAttribute("cateItemId");
 	int nowPage = (int) request.getAttribute("page");
@@ -23,11 +23,20 @@
 	<div class="article-list-box-1 con table-box category-list">
 		<%
 			for (Category c : categories) {
-		%>
-		<div class="category-name">
-			<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
-		</div>
-		<%
+				if (c.getId() == cateItemId) {
+			%>
+			<div class="category-name selected-category">
+				<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
+			</div>
+			<%
+				}
+			else{
+			%>
+			<div class="category-name">
+				<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
+			</div>
+			<%
+				}
 			}
 		%>
 	</div>
@@ -45,10 +54,10 @@
 	<h1 class="con">
 		📋
 		<%=categoryName = categories.get(cateItemId - 1).getName()%>
-		(<%=articleService.getArticlesByCateItemId(cateItemId).size() %>)
+		(<%=articleService.getArticlesByCateItemId(cateItemId).size()%>)
 	</h1>
 	<div class="con back-to-list">
-		<a href="./list">전체 게시판으로 돌아가기&#8594;</a>
+		<a href="./list" style="margin-left: 30px;">전체 게시판으로 돌아가기&#8594;</a>
 	</div>
 	<%
 		}
@@ -57,15 +66,15 @@
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
 			<colgroup>
-				<col width="50"  class="can-delete"/>
+				<col width="50" class="can-delete" />
 				<col width="200" />
-				<col width="250" class="can-delete"/>
+				<col width="250" class="can-delete" />
 				<col width="100" />
 				<col width="100" />
 			</colgroup>
 			<thead>
 				<tr>
-					<th  class="can-delete">No.</th>
+					<th class="can-delete">No.</th>
 					<th>제목</th>
 					<th class="can-delete">등록날짜</th>
 					<th>작성자</th>
@@ -77,7 +86,7 @@
 					for (Article article : articles) {
 				%>
 				<tr>
-					<td  class="can-delete"><%=article.getId()%></td>
+					<td class="can-delete"><%=article.getId()%></td>
 					<td class="text-align-left"><a
 						href="./detail?cateItemId=<%=article.getCateItemId()%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
 					<td class="can-delete"><%=article.getRegDate()%></td>
@@ -92,46 +101,46 @@
 	</div>
 
 	<div class="con paging">
-	<%
-	if(nowPage>1){
-	%>
+		<%
+			if (nowPage > 1) {
+		%>
 		<a
 			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage - 1%>">◀</a>
 		<%
-	}
+			}
 			for (int i = 1; i <= fullPage; i++) {
 				if (i == nowPage) {
-				%>
-				<span><a
-					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>"
-					style="font-weight: bold; color: red">[<%=i%>]
-				</a></span>
-				<%
-				} else {
-				%>
-				<span><a class="not-selected-page"
-					href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>">[<%=i%>]
-				</a></span>
-				<%
-				}
+		%>
+		<span><a
+			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>"
+			style="font-weight: bold; color: red">[<%=i%>]
+		</a></span>
+		<%
+			} else {
+		%>
+		<span><a class="not-selected-page"
+			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>">[<%=i%>]
+		</a></span>
+		<%
 			}
-			if(nowPage<fullPage){
+			}
+			if (nowPage < fullPage) {
 		%>
 		<a
 			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=nowPage + 1%>">▶</a>
-			<%
+		<%
 			}
-			%>
+		%>
 	</div>
 	<!-- 게시물 리스트 끝 -->
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">
 
 		<form action="${pageContext.request.contextPath}/s/article/list">
-			<input type="hidden" name="page" value="1" /> <input type="hidden"
-				name="cateItemId" value="${param.cateItemId}" /> <input
-				type="hidden" name="searchKeywordType" value="title" /> <input
-				type="text" name="searchKeyword" value="${param.searchKeyword}" />
+			<input type="hidden" name="page" value="1" /> 
+			<input type="hidden" name="cateItemId" value="${param.cateItemId}" /> 
+			<input type="hidden" name="searchKeywordType" value="title" /> 
+			<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
 			<button type="submit">검색</button>
 		</form>
 

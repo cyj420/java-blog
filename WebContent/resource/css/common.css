@@ -422,7 +422,7 @@ label[for] {
 	transition: color 0.3s;
 }
 
-.top-bar .logo:hover {
+.logo:hover {
 	color: #ea0000;
 }
 
@@ -527,7 +527,7 @@ ul>li:hover>ul {
 }
 
 .mobile-top-bar .fas{
-	font-size: 1.5rem;
+	font-size: 2rem;
 }
 
 .btn-toggle-mobile-side-bar>div {

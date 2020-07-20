@@ -96,4 +96,23 @@ public class MemberDao extends Dao {
 
 		return null;
 	}
+
+	public void myPage(int id, String nickname, String loginPw, String email) {
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE member SET ");
+		if(nickname.trim().length()!=0) {
+			sql.append("nickname = ?, ", nickname);
+		}
+		if(loginPw.trim().length()!=0) {
+			sql.append("loginPw = ?, ", loginPw);
+		}
+		if(email.trim().length()!=0) {
+			sql.append("email = ?, ", email);
+		}
+		sql.append("updateDate = NOW() ");
+		sql.append("WHERE id = ? ", id);
+
+		DBUtil.update(dbConn, sql);
+	}
 }

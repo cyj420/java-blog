@@ -163,9 +163,6 @@ public class ArticleController extends Controller {
 		List<Article> articles = articleService.getArticlesByCateItemId(cateItemId);
 		List<ArticleReply> articleReplies = articleService.getArticleRepliesByArticleId(id);
 		
-		// 콘솔 확인용
-		System.out.println("articleReplies size : "+articleReplies.size());
-		
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);
 		req.setAttribute("articleReplies", articleReplies);

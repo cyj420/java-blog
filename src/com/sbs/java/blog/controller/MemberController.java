@@ -30,8 +30,29 @@ public class MemberController extends Controller {
 			return doActionDoLogin(req, resp);
 		case "logout":
 			return doActionLogout(req, resp);
+		case "myPage":
+			return doActionMyPage(req, resp);
+		case "doMyPage":
+			return doActionDoMyPage(req, resp);
 		}
 		return "";
+	}
+
+	private String doActionDoMyPage(HttpServletRequest req, HttpServletResponse resp) {
+		int id = memberService.getMemberById((int)session.getAttribute("loginedMemberId")).getId();
+		String nickname = req.getParameter("nickname");
+		String loginPw = req.getParameter("loginPw");
+		String email = req.getParameter("email");
+		
+		if(nickname.trim().length()==0 && loginPw.trim().length()==0 && email.trim().length()==0) {
+			return "html:<script> alert('수정된 정보가 없습니다.'); history.back(); </script>";
+		}
+		memberService.myPage(id, nickname, loginPw, email);
+		return "html:<script> alert('회원 정보가 수정되었습니다.'); location.replace('../home/main'); </script>";
+	}
+
+	private String doActionMyPage(HttpServletRequest req, HttpServletResponse resp) {
+		return "member/mypage.jsp";
 	}
 
 	private String doActionLogout(HttpServletRequest req, HttpServletResponse resp) {
