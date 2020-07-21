@@ -1,5 +1,6 @@
 package com.sbs.java.blog.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.util.List;
 
@@ -35,5 +36,9 @@ public class MemberService extends Service{
 
 	public int findPw(String loginId, String name, String email) {
 		return memberDao.findPw(loginId, name, email);
+	}
+
+	public String resetPw(int id) throws NoSuchAlgorithmException {
+		return memberDao.resetPw(id);
 	}
 }

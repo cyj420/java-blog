@@ -1,12 +1,12 @@
 package com.sbs.java.blog.dao;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.sbs.java.blog.dto.Article;
-import com.sbs.java.blog.dto.ArticleReply;
 import com.sbs.java.blog.dto.Member;
 import com.sbs.java.blog.util.DBUtil;
 import com.sbs.java.blog.util.SecSql;
@@ -129,5 +129,34 @@ public class MemberDao extends Dao {
 			return m.getId();
 		}
 		return 0;
+	}
+
+	public String resetPw(int id) throws NoSuchAlgorithmException {
+		String pw = ""+System.currentTimeMillis();
+		String newPw = transformPw(pw);
+		
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE member SET ");
+		sql.append("loginPw = ?, ", newPw);
+		sql.append("updateDate = NOW() ");
+		sql.append("WHERE id = ? ", id);
+
+		DBUtil.update(dbConn, sql);
+		return pw;
+	}
+
+	private String transformPw(String msg) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(msg.getBytes());
+		return bytesToHex(md.digest());
+	}
+
+	private String bytesToHex(byte[] digest) {
+		StringBuilder sb = new StringBuilder();
+		for(byte b : digest) {
+			sb.append(String.format("%02x", b));
+		}
+		return sb.toString();
 	}
 }
