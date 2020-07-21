@@ -32,4 +32,8 @@ public class MemberService extends Service{
 	public void myPage(int id , String nickname, String loginPw, String email) {
 		memberDao.myPage(id, nickname, loginPw, email);
 	}
+
+	public int findPw(String loginId, String name, String email) {
+		return memberDao.findPw(loginId, name, email);
+	}
 }

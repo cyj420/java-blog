@@ -93,7 +93,6 @@ public class MemberDao extends Dao {
 			Member m = new Member(row);
 			return m;
 		}
-
 		return null;
 	}
 
@@ -114,5 +113,21 @@ public class MemberDao extends Dao {
 		sql.append("WHERE id = ? ", id);
 
 		DBUtil.update(dbConn, sql);
+	}
+
+	public int findPw(String loginId, String name, String email) {
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM member ");
+		sql.append("WHERE loginId = ? ", loginId);
+		sql.append("AND name = ? ", name);
+		sql.append("AND email = ? ", email);
+		
+		if(!DBUtil.selectRow(dbConn, sql).isEmpty()) {
+			Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
+			Member m = new Member(row);
+			return m.getId();
+		}
+		return 0;
 	}
 }

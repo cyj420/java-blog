@@ -4,11 +4,8 @@ import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.sbs.java.blog.dto.Member;
-import com.sbs.java.blog.service.MemberService;
-import com.sbs.java.blog.util.Util;
 
 public class MemberController extends Controller {
 
@@ -34,8 +31,29 @@ public class MemberController extends Controller {
 			return doActionMyPage(req, resp);
 		case "doMyPage":
 			return doActionDoMyPage(req, resp);
+		case "findPw":
+			return doActionFindPw(req, resp);
+		case "doFindPw":
+			return doActionDoFindPw(req, resp);
 		}
 		return "";
+	}
+
+	private String doActionDoFindPw(HttpServletRequest req, HttpServletResponse resp) {
+		String loginId = req.getParameter("loginId");
+		String name = req.getParameter("name");
+		String email = req.getParameter("email");
+		
+		if(memberService.findPw(loginId, name, email)==0) {
+			return "html:<script> alert('정보가 일치하는 계정이 존재하지 않습니다.'); history.back(); </script>";
+		}
+		else {
+			return "html:<script> alert('임시 비밀번호가 이메일로 발송되었습니다.'); location.replace('../home/main'); </script>";
+		}
+	}
+
+	private String doActionFindPw(HttpServletRequest req, HttpServletResponse resp) {
+		return "member/findPw.jsp";
 	}
 
 	private String doActionDoMyPage(HttpServletRequest req, HttpServletResponse resp) {
@@ -107,5 +125,4 @@ public class MemberController extends Controller {
 	private String doActionJoin(HttpServletRequest req, HttpServletResponse resp) {
 		return "member/join.jsp";
 	}
-
 }

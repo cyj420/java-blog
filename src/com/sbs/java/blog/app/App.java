@@ -123,6 +123,5 @@ public class App {
 			resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
 			return;
 		}
-	}
-
+	}	
 }

@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sbs.java.blog.dto.Member;
-
 public class Util {
 	public static boolean empty(HttpServletRequest req, String paramName) {
 		String paramValue = req.getParameter(paramName);

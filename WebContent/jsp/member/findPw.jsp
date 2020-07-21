@@ -2,27 +2,27 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 <style>
-.login-form-box {
+.join-form-box {
 	width: 300px;
 	font-size: 1.2rem;
 	margin-top: 30px;
 }
 
-.login-form-box .form-row {
+.join-form-box .form-row {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.login-form-box .form-row:not(:first-child) {
+.join-form-box .form-row:not(:first-child) {
 	margin-top: 10px;
 }
 
-.login-form-box .form-row:last-child {
+.join-form-box .form-row:last-child {
 	justify-content: center;
 }
 
-.login-form-box .form-row>.input>input {
+.join-form-box .form-row>.input>input {
 	display: block;
 	width: 100%;
 	box-sizing: border-box;
@@ -32,12 +32,13 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/resource/js/member/login.js"></script>
+	src="${pageContext.request.contextPath}/resource/js/member/findPw.js"></script>
+
 <h1>
-	<div class="flex flex-jc-c">로그인</div>
+	<div class="flex flex-jc-c">비밀번호 찾기</div>
 </h1>
-<div class="login-form-box con">
-	<form action="doLogin" method="POST" class="login-form"
+<div class="join-form-box con">
+	<form action="doFindPw" method="POST" class="join-form"
 		onsubmit="submitJoinForm(this); return false;">
 		<div class="form-row">
 			<div class="label">ID</div>
@@ -46,21 +47,20 @@
 			</div>
 		</div>
 		<div class="form-row">
-			<div class="label">PW</div>
+			<div class="label">이름</div>
 			<div class="input">
-				<input name="loginPw" type="password" placeholder="비밀번호" />
+				<input name="name" type="text" placeholder="이름" />
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="label">이메일</div>
+			<div class="input">
+				<input name="email" type="email" placeholder="email" />
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="input">
-				<input type="submit" value="로그인" />
-			</div>
-		</div>
-	</form>
-	<form action="findPw" method="POST" class="login-form">
-		<div class="form-row">
-			<div class="input">
-				<input type="submit" value="비밀번호 찾기" style="width: 110px; display: inline-block; position: absolute; bottom:0; left: 40px;margin-left: 50%;"/>
+				<input type="submit" value="비밀번호 찾기" />
 			</div>
 		</div>
 	</form>
