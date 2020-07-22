@@ -47,14 +47,32 @@
 		String categoryName = "";
 		if (cateItemId == 0) {
 	%>
-	<h1 class="con">📂 전체 게시물 리스트</h1>
+	<h1 class="con">📂 전체 게시물 리스트
+	<%
+	if(searchKeyword.trim().length()==0){
+	int n = 0;
+	for(int i=1; i<=categories.size(); i++){
+		n+=articleService.getArticlesByCateItemId(i).size();
+	}
+	%>
+	(<%=n %>)
+	<%
+	}
+	%>
+	</h1>
 	<%
 		} else {
 	%>
 	<h1 class="con">
 		📋
 		<%=categoryName = categories.get(cateItemId - 1).getName()%>
+		<%
+		if(searchKeyword.trim().length()==0){
+		%>
 		(<%=articleService.getArticlesByCateItemId(cateItemId).size()%>)
+		<%
+		}
+		%>
 	</h1>
 	<div class="con back-to-list">
 		<a href="./list" style="margin-left: 30px;">전체 게시판으로 돌아가기&#8594;</a>
