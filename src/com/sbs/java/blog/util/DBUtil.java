@@ -138,8 +138,6 @@ public class DBUtil {
 		try {
 			stmt = sql.getPreparedStatement(dbConn);
 			affectedRows = stmt.executeUpdate();
-			//확인용 출력
-			System.out.println(affectedRows);
 		} catch (SQLException e) {
 			throw new SQLErrorException("SQL 예외, SQL : " + sql, e);
 		} finally {

@@ -41,4 +41,8 @@ public class MemberService extends Service{
 	public String resetPw(int id) throws NoSuchAlgorithmException {
 		return memberDao.resetPw(id);
 	}
+
+	public String findLoginId(String name, String email) {
+		return memberDao.findLoginId(name, email);
+	}
 }

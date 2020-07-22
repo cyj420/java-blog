@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Action;
 
 import com.sbs.java.blog.dto.Member;
+import com.sbs.java.blog.util.Util;
 
 public class MemberController extends Controller {
 
@@ -29,47 +30,73 @@ public class MemberController extends Controller {
 	@Override
 	public String doAction() {
 		switch (actionMethodName) {
+		// 회원가입
 		case "join":
 			return doActionJoin(req, resp);
 		case "doJoin":
 			return doActionDoJoin(req, resp);
+		// 로그인
 		case "login":
 			return doActionLogin(req, resp);
 		case "doLogin":
 			return doActionDoLogin(req, resp);
+		// 로그아웃
 		case "logout":
 			return doActionLogout(req, resp);
+		// 사용자 페이지
 		case "myPage":
 			return doActionMyPage(req, resp);
 		case "doMyPage":
 			return doActionDoMyPage(req, resp);
+		// 비번 찾기
 		case "findPw":
 			return doActionFindPw(req, resp);
 		case "doFindPw":
 			return doActionDoFindPw(req, resp);
+		// 아이디 찾기
+		case "findId":
+			return doActionFindId(req, resp);
+		case "doFindId":
+			return doActionDoFindId(req, resp);
 		}
 		return "";
+	}
+
+	private String doActionDoFindId(HttpServletRequest req, HttpServletResponse resp) {
+		String name = req.getParameter("name");
+		String email = req.getParameter("email");
+
+		String loginId = memberService.findLoginId(name, email);
+
+		if (loginId == null) {
+			return "html:<script> alert('정보가 일치하는 계정이 존재하지 않습니다.'); history.back(); </script>";
+		} else {
+			return "html:<script> alert('" + name + "님의 ID는 [" + loginId
+					+ "] 입니다.'); location.replace('../home/main'); </script>";
+		}
+	}
+
+	private String doActionFindId(HttpServletRequest req, HttpServletResponse resp) {
+		return "member/findId.jsp";
 	}
 
 	private String doActionDoFindPw(HttpServletRequest req, HttpServletResponse resp) {
 		String loginId = req.getParameter("loginId");
 		String name = req.getParameter("name");
 		String email = req.getParameter("email");
-		
+
 		int id = memberService.findPw(loginId, name, email);
-		
-		if(id==0) {
+
+		if (id == 0) {
 			return "html:<script> alert('정보가 일치하는 계정이 존재하지 않습니다.'); history.back(); </script>";
-		}
-		else {
+		} else {
 			// 비번 재설정 필요
-			String newPw=null;
+			String newPw = null;
 			try {
 				newPw = memberService.resetPw(id);
 			} catch (NoSuchAlgorithmException e) {
-				System.out.println("gjf");
 			}
-			sendingEmail("cho04 blog - 비밀번호 변경", "새로운 비밀번호는 ["+newPw+"] 입니다.", email);
+			sendingEmail("cho04 blog - 비밀번호 변경", "새로운 비밀번호는 [" + newPw + "] 입니다.", email);
 			return "html:<script> alert('임시 비밀번호가 이메일로 발송되었습니다.'); location.replace('../home/main'); </script>";
 		}
 	}
@@ -79,12 +106,12 @@ public class MemberController extends Controller {
 	}
 
 	private String doActionDoMyPage(HttpServletRequest req, HttpServletResponse resp) {
-		int id = memberService.getMemberById((int)session.getAttribute("loginedMemberId")).getId();
+		int id = memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId();
 		String nickname = req.getParameter("nickname");
 		String loginPw = req.getParameter("loginPw");
 		String email = req.getParameter("email");
-		
-		if(nickname.trim().length()==0 && loginPw.trim().length()==0 && email.trim().length()==0) {
+
+		if (nickname.trim().length() == 0 && loginPw.trim().length() == 0 && email.trim().length() == 0) {
 			return "html:<script> alert('수정된 정보가 없습니다.'); history.back(); </script>";
 		}
 		memberService.myPage(id, nickname, loginPw, email);
@@ -96,7 +123,7 @@ public class MemberController extends Controller {
 	}
 
 	private String doActionLogout(HttpServletRequest req, HttpServletResponse resp) {
-		String nickname = memberService.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname();
+		String nickname = memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname();
 		session.removeAttribute("loginedMemberId");
 
 		return "html:<script> alert('" + nickname + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
@@ -108,12 +135,12 @@ public class MemberController extends Controller {
 
 		Member m = null;
 		m = memberService.login(loginId, loginPw);
-		if(m!=null) {
+		if (m != null) {
 			session.setAttribute("loginedMemberId", m.getId());
-				return "html:<script> alert('" + memberService.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname()
-						+ "님, 안녕하세요.'); location.replace('../home/main'); </script>";
-		}
-		else {
+			return "html:<script> alert('"
+					+ memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()
+					+ "님, 안녕하세요.'); location.replace('../home/main'); </script>";
+		} else {
 			return "html:<script> alert('ID 혹은 PW가 틀렸습니다.'); location.replace('login');</script>";
 		}
 	}
@@ -138,10 +165,9 @@ public class MemberController extends Controller {
 		}
 
 		if (id > 0) {
-			if(sendingEmail(name+"님의 회원가입을 축하합니다.", "축하축은 거꾸로도 축하축", email)==1) {
+			if (sendingEmail(name + "님의 회원가입을 축하합니다.", "축하축은 거꾸로도 축하축", email) == 1) {
 				return "html:<script> alert('" + id + "번째 회원 가입을 환영합니다.'); location.replace('../home/main'); </script>";
-			}
-			else {
+			} else {
 				return "html:<script> alert('이메일 발송 실패'); location.replace('../home/main'); </script>";
 			}
 		} else {
@@ -152,76 +178,75 @@ public class MemberController extends Controller {
 	private String doActionJoin(HttpServletRequest req, HttpServletResponse resp) {
 		return "member/join.jsp";
 	}
-	
+
 	@Action
 	public int sendingEmail(String title, String body, String address) {
 		Properties p = System.getProperties();
-        p.put("mail.smtp.starttls.enable", "true");		// gmail은 무조건 true 고정
-        p.put("mail.smtp.host", "smtp.gmail.com");		// smtp 서버 주소
-        p.put("mail.smtp.auth","true");					// gmail은 무조건 true 고정
-        p.put("mail.smtp.port", "587");					// gmail 포트
-           
-        Authenticator auth = new MyAuthentication();
-         
-        //session 생성 및  MimeMessage생성
-        Session sess = Session.getDefaultInstance(p, auth);
-        MimeMessage msg = new MimeMessage(sess);
-         
-        try{
-            //편지보낸시간
-            msg.setSentDate(new Date());
-             
-            InternetAddress from = new InternetAddress() ;
-             
-             
-            from = new InternetAddress("cho04<@gmail.com>");
-             
-            // 이메일 발신자
-            msg.setFrom(from);
-             
-             
-            // 이메일 수신자
-            InternetAddress to = new InternetAddress(address);
-            msg.setRecipient(Message.RecipientType.TO, to);
-             
-            // 이메일 제목
-            msg.setSubject(title, "UTF-8");
-             
-            // 이메일 내용
-            msg.setText(body, "UTF-8");
-             
-            // 이메일 헤더
-            msg.setHeader("content-Type", "text/html");
-             
-            //메일보내기
-            javax.mail.Transport.send(msg);
-             
-        }catch (AddressException addr_e) {
-            addr_e.printStackTrace();
-            return 0;
-        }catch (MessagingException msg_e) {
-            msg_e.printStackTrace();
-            return 0;
-        }
-        return 1;
+		p.put("mail.smtp.starttls.enable", "true"); // gmail은 무조건 true 고정
+		p.put("mail.smtp.host", "smtp.gmail.com"); // smtp 서버 주소
+		p.put("mail.smtp.auth", "true"); // gmail은 무조건 true 고정
+		p.put("mail.smtp.port", "587"); // gmail 포트
+
+		Authenticator auth = new MyAuthentication();
+
+		// session 생성 및 MimeMessage생성
+		Session sess = Session.getDefaultInstance(p, auth);
+		MimeMessage msg = new MimeMessage(sess);
+
+		try {
+			// 편지보낸시간
+			msg.setSentDate(new Date());
+
+			InternetAddress from = new InternetAddress();
+
+			from = new InternetAddress("cho04<jnnna77@gmail.com>");
+
+			// 이메일 발신자
+			msg.setFrom(from);
+
+			// 이메일 수신자
+			InternetAddress to = new InternetAddress(address);
+			msg.setRecipient(Message.RecipientType.TO, to);
+
+			// 이메일 제목
+			msg.setSubject(title, "UTF-8");
+
+			// 이메일 내용
+			msg.setText(body, "UTF-8");
+
+			// 이메일 헤더
+			msg.setHeader("content-Type", "text/html");
+
+			// 메일보내기
+			javax.mail.Transport.send(msg);
+
+		} catch (AddressException addr_e) {
+			addr_e.printStackTrace();
+			return 0;
+		} catch (MessagingException msg_e) {
+			msg_e.printStackTrace();
+			return 0;
+		}
+		return 1;
 	}
 }
+
 class MyAuthentication extends Authenticator {
-    
-    PasswordAuthentication pa;
-    
-    public MyAuthentication(){
-    	// 개인정보
-        String id = "";	// 구글 ID
-        String pw = "";		// 구글 비밀번호(에러로 인해 2차 비번 입력)
- 
-        // ID와 비밀번호를 입력한다.
-        pa = new PasswordAuthentication(id, pw);
-      
-    }
- 
-    // 시스템에서 사용하는 인증정보
-    public PasswordAuthentication getPasswordAuthentication() {
-        return pa;
-    }
+
+	PasswordAuthentication pa;
+
+	public MyAuthentication() {
+		// 개인정보
+		String id = Util.gmailId;
+		String pw = Util.gmailPw;
+
+		// ID와 비밀번호를 입력한다.
+		pa = new PasswordAuthentication(id, pw);
+
+	}
+
+	// 시스템에서 사용하는 인증정보
+	public PasswordAuthentication getPasswordAuthentication() {
+		return pa;
+	}
 }

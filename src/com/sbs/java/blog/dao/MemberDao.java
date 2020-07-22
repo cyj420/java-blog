@@ -159,4 +159,19 @@ public class MemberDao extends Dao {
 		}
 		return sb.toString();
 	}
+
+	public String findLoginId(String name, String email) {
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM member ");
+		sql.append("WHERE name = ? ", name);
+		sql.append("AND email = ? ", email);
+		
+		if(!DBUtil.selectRow(dbConn, sql).isEmpty()) {
+			Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
+			Member m = new Member(row);
+			return m.getLoginId();
+		}
+		return null;
+	}
 }

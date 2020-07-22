@@ -57,10 +57,17 @@
 			</div>
 		</div>
 	</form>
+	<form action="findId" method="POST" class="login-form">
+		<div class="form-row">
+			<div class="input">
+				<input type="submit" value="ID 찾기" style="margin-top: 30px;"/>
+			</div>
+		</div>
+	</form>
 	<form action="findPw" method="POST" class="login-form">
 		<div class="form-row">
 			<div class="input">
-				<input type="submit" value="비밀번호 찾기" style="width: 110px; display: inline-block; position: absolute; bottom:0; left: 40px;margin-left: 50%;"/>
+				<input type="submit" value="PW 찾기" style="width: 110px; display: inline-block; position: absolute; bottom:0; left: 40px;margin-left: 50%;"/>
 			</div>
 		</div>
 	</form>
