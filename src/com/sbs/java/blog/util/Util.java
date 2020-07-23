@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Util {
 	public static String gmailId;
 	public static String gmailPw;
+	public static String extra_code;
 	
 	public static boolean empty(HttpServletRequest req, String paramName) {
 		String paramValue = req.getParameter(paramName);

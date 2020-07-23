@@ -8,6 +8,7 @@ public class Member extends Dto{
 	private String nickname;
 	private String loginPw;
 	private String email;
+	private int mailAuthStatus;
 	
 	public Member() {
 		
@@ -20,6 +21,7 @@ public class Member extends Dto{
 		this.nickname=(String)row.get("nickname");
 		this.loginPw=(String)row.get("loginPw");
 		this.email = (String)row.get("email");
+		this.mailAuthStatus = (int)row.get("mailAuthStatus");
 	}
 
 	public String getLoginId() {
@@ -62,5 +64,11 @@ public class Member extends Dto{
 		this.email = email;
 	}
 	
-	
+	public int getMailAuthStatus() {
+		return mailAuthStatus;
+	}
+
+	public void setMailAuthStatus(int mailAuthStatus) {
+		this.mailAuthStatus = mailAuthStatus;
+	}
 }

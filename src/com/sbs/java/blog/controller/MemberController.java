@@ -21,7 +21,6 @@ import com.sbs.java.blog.dto.Member;
 import com.sbs.java.blog.util.Util;
 
 public class MemberController extends Controller {
-
 	public MemberController(Connection dbConn, String actionMethodName, HttpServletRequest req,
 			HttpServletResponse resp) {
 		super(dbConn, actionMethodName, req, resp);
@@ -46,9 +45,15 @@ public class MemberController extends Controller {
 		// 사용자 페이지
 		case "myPage":
 			return doActionMyPage(req, resp);
+		case "myPageModify":
+			return doActionMyPageModify(req,resp);
 		case "doMyPage":
 			return doActionDoMyPage(req, resp);
-		// 비번 찾기
+		case "authMail":
+			return doActionAuthMail(req, resp);
+		case "doAuthMail":
+			return doActionDoAuthMail(req, resp);
+		// 비번 변경하기
 		case "findPw":
 			return doActionFindPw(req, resp);
 		case "doFindPw":
@@ -104,20 +109,65 @@ public class MemberController extends Controller {
 	private String doActionFindPw(HttpServletRequest req, HttpServletResponse resp) {
 		return "member/findPw.jsp";
 	}
-
-	private String doActionDoMyPage(HttpServletRequest req, HttpServletResponse resp) {
-		int id = memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId();
-		String nickname = req.getParameter("nickname");
-		String loginPw = req.getParameter("loginPw");
-		String email = req.getParameter("email");
-
-		if (nickname.trim().length() == 0 && loginPw.trim().length() == 0 && email.trim().length() == 0) {
-			return "html:<script> alert('수정된 정보가 없습니다.'); history.back(); </script>";
+	
+	private String doActionDoAuthMail(HttpServletRequest req, HttpServletResponse resp) {
+		System.out.println("MemberController-doActionDoAuthMail");
+		System.out.println("인증받기 - extra_code : "+Util.extra_code);
+		if(Util.extra_code.trim().length()!=0) {
+			System.out.println("===1===");
+			String str = memberService.transformString(""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId());
+			System.out.println("===2===");
+			if(str.equals(Util.extra_code)) {
+				System.out.println("===3===");
+				memberService.doAuthMail((int)session.getAttribute("loginedMemberId"));
+				return "html:<script> alert('인증이 되었습니다.'); location.replace('../home/main'); </script>";
+			}
+			System.out.println("===4===");
 		}
-		memberService.myPage(id, nickname, loginPw, email);
-		return "html:<script> alert('회원 정보가 수정되었습니다.'); location.replace('../home/main'); </script>";
+		return "html:<script> alert('인증 실패'); location.replace('../home/main'); </script>";
+	}
+	
+	private String doActionAuthMail(HttpServletRequest req, HttpServletResponse resp) {
+		System.out.println("MemberController-doActionAuthMail");
+		String email = req.getParameter("email");
+		String id = ""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId();
+		//난수 코드 생성
+		Util.extra_code = memberService.transformString(id);
+		System.out.println("메일발송 - extra_code : "+Util.extra_code);
+		if(Util.extra_code.trim().length()!=0) {
+			sendingEmail("[cho04-blog]인증 메일입니다.", "이메일 인증하기 링크 : "
+					+ "[<a href='http://localhost:8081/blog/s/member/doAuthMail?code="+Util.extra_code+"'>인증하기</a>]", email);
+			return "html:<script> alert('메일을 발송했습니다.'); history.back(); </script>";
+		}
+		else {
+			return "html:<script> alert('메일 발송 실패'); history.back(); </script>";
+		}
 	}
 
+	private String doActionDoMyPage(HttpServletRequest req, HttpServletResponse resp) {
+		String loginPw = req.getParameter("loginPw");
+		int id = memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId();
+		String nickname = req.getParameter("nickname");
+		String email = req.getParameter("email");
+		String newPw = req.getParameter("newPw");
+
+		if(loginPw.equals(memberService.getMemberById(id).getLoginPw())) {
+			if (nickname.trim().length() == 0 && newPw.trim().length() == 0 && email.trim().length() == 0) {
+				return "html:<script> alert('수정된 정보가 없습니다.'); history.back(); </script>";
+			}
+			if (newPw.equals(loginPw)) {
+				return "html:<script> alert('새로운 비밀번호가 기존 비밀번호와 일치합니다.'); history.back(); </script>";
+			}
+			memberService.myPage(id, nickname, newPw, email);
+			return "html:<script> alert('회원 정보가 수정되었습니다.'); location.replace('../home/main'); </script>";
+		}
+		return "html:<script> alert('비밀번호가 일치하지 않습니다.'); history.back(); </script>";
+	}
+
+	private String doActionMyPageModify(HttpServletRequest req, HttpServletResponse resp) {
+		return "member/mypageModify.jsp";
+	}
+	
 	private String doActionMyPage(HttpServletRequest req, HttpServletResponse resp) {
 		return "member/mypage.jsp";
 	}
@@ -180,7 +230,7 @@ public class MemberController extends Controller {
 	}
 
 	@Action
-	public int sendingEmail(String title, String body, String address) {
+	public int sendingEmail(String title, String body, String emailAddress) {
 		Properties p = System.getProperties();
 		p.put("mail.smtp.starttls.enable", "true"); // gmail은 무조건 true 고정
 		p.put("mail.smtp.host", "smtp.gmail.com"); // smtp 서버 주소
@@ -205,7 +255,7 @@ public class MemberController extends Controller {
 			msg.setFrom(from);
 
 			// 이메일 수신자
-			InternetAddress to = new InternetAddress(address);
+			InternetAddress to = new InternetAddress(emailAddress);
 			msg.setRecipient(Message.RecipientType.TO, to);
 
 			// 이메일 제목

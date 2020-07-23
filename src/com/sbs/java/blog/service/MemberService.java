@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.sbs.java.blog.dao.MemberDao;
+import com.sbs.java.blog.dto.Dto;
 import com.sbs.java.blog.dto.Member;
 
 public class MemberService extends Service{
@@ -30,8 +31,8 @@ public class MemberService extends Service{
 		return memberDao.getMemberById(id);
 	}
 
-	public void myPage(int id , String nickname, String loginPw, String email) {
-		memberDao.myPage(id, nickname, loginPw, email);
+	public void myPage(int id , String nickname, String newPw, String email) {
+		memberDao.myPage(id, nickname, newPw, email);
 	}
 
 	public int findPw(String loginId, String name, String email) {
@@ -44,5 +45,19 @@ public class MemberService extends Service{
 
 	public String findLoginId(String name, String email) {
 		return memberDao.findLoginId(name, email);
+	}
+
+	public String transformString(String str) {
+		try {
+			return memberDao.transformString(str);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public void doAuthMail(int id) {
+		memberDao.doAuthMail(id);
 	}
 }

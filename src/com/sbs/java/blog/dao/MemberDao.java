@@ -29,6 +29,7 @@ public class MemberDao extends Dao {
 			sql.append("INSERT INTO member ");
 			sql.append("SET regDate = NOW() ");
 			sql.append(", updateDate = NOW() ");
+			sql.append(", mailAuthStatus = 0 ");
 			sql.append(", loginId = ? ", loginId);
 			sql.append(", name = ? ", name);
 			sql.append(", nickname = ? ", nickname);
@@ -96,15 +97,15 @@ public class MemberDao extends Dao {
 		return null;
 	}
 
-	public void myPage(int id, String nickname, String loginPw, String email) {
+	public void myPage(int id, String nickname, String newPw, String email) {
 		SecSql sql = new SecSql();
 
 		sql.append("UPDATE member SET ");
 		if(nickname.trim().length()!=0) {
 			sql.append("nickname = ?, ", nickname);
 		}
-		if(loginPw.trim().length()!=0) {
-			sql.append("loginPw = ?, ", loginPw);
+		if(newPw.trim().length()!=0) {
+			sql.append("loginPw = ?, ", newPw);
 		}
 		if(email.trim().length()!=0) {
 			sql.append("email = ?, ", email);
@@ -133,7 +134,7 @@ public class MemberDao extends Dao {
 
 	public String resetPw(int id) throws NoSuchAlgorithmException {
 		String pw = ""+System.currentTimeMillis();
-		String newPw = transformPw(pw);
+		String newPw = transformString(pw);
 		
 		SecSql sql = new SecSql();
 
@@ -146,7 +147,7 @@ public class MemberDao extends Dao {
 		return pw;
 	}
 
-	private String transformPw(String msg) throws NoSuchAlgorithmException {
+	public String transformString(String msg) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(msg.getBytes());
 		return bytesToHex(md.digest());
@@ -173,5 +174,16 @@ public class MemberDao extends Dao {
 			return m.getLoginId();
 		}
 		return null;
+	}
+
+	public void doAuthMail(int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("UPDATE member SET ");
+		sql.append("mailAuthStatus = 1, ");
+		sql.append("updateDate = NOW() ");
+		sql.append("WHERE id = ? ", id);
+
+		DBUtil.update(dbConn, sql);
 	}
 }
