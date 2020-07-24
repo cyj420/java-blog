@@ -10,10 +10,6 @@ public class Member extends Dto{
 	private String email;
 	private int mailAuthStatus;
 	
-	public Member() {
-		
-	}
-	
 	public Member(Map<String, Object> row) {
 		super(row);
 		this.loginId=(String)row.get("loginId");

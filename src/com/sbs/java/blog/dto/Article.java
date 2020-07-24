@@ -19,10 +19,6 @@ public class Article extends Dto{
 		this.hit = hit;
 	}
 	
-	public Article() {
-		
-	}
-	
 	public Article(Map<String, Object> row) {
 		super(row);
 

@@ -9,10 +9,6 @@ public class ArticleReply extends Dto{
 	private String body;
 	private int writerId;
 	
-	public ArticleReply() {
-		
-	}
-	
 	public ArticleReply(Map<String, Object> row) {
 		super(row);
 		this.name=(String)row.get("name");

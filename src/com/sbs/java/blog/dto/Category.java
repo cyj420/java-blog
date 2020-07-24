@@ -5,10 +5,6 @@ import java.util.Map;
 public class Category extends Dto{
 	private String name;
 
-	public Category() {
-		
-	}
-	
 	public Category(Map<String, Object> row) {
 		super(row);
 		this.name=(String)row.get("name");

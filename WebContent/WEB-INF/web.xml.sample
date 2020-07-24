@@ -11,12 +11,12 @@
 
 		<init-param>
 			<param-name>gmailId</param-name>
-			<param-value>지메일 아이디</param-value>
+			<param-value>아이디</param-value>
 		</init-param>
 		
 		<init-param>
 			<param-name>gmailPw</param-name>
-			<param-value>지메일 비번</param-value>
+			<param-value>비번</param-value>
 		</init-param>
 	</servlet>
 

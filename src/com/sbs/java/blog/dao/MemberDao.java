@@ -97,7 +97,7 @@ public class MemberDao extends Dao {
 		return null;
 	}
 
-	public void myPage(int id, String nickname, String newPw, String email) {
+	public void myPage(int id, String nickname, String newPw, String email, boolean mailAuthStatusReset) {
 		SecSql sql = new SecSql();
 
 		sql.append("UPDATE member SET ");
@@ -109,6 +109,9 @@ public class MemberDao extends Dao {
 		}
 		if(email.trim().length()!=0) {
 			sql.append("email = ?, ", email);
+		}
+		if(mailAuthStatusReset) {
+			sql.append("mailAuthStatus = 0, ");
 		}
 		sql.append("updateDate = NOW() ");
 		sql.append("WHERE id = ? ", id);

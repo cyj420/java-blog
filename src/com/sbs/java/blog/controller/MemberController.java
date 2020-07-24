@@ -77,7 +77,7 @@ public class MemberController extends Controller {
 			return "html:<script> alert('정보가 일치하는 계정이 존재하지 않습니다.'); history.back(); </script>";
 		} else {
 			return "html:<script> alert('" + name + "님의 ID는 [" + loginId
-					+ "] 입니다.'); location.replace('../home/main'); </script>";
+					+ "] 입니다.'); location.replace('../member/login'); </script>";
 		}
 	}
 
@@ -101,8 +101,12 @@ public class MemberController extends Controller {
 				newPw = memberService.resetPw(id);
 			} catch (NoSuchAlgorithmException e) {
 			}
-			sendingEmail("cho04 blog - 비밀번호 변경", "새로운 비밀번호는 [" + newPw + "] 입니다.", email);
-			return "html:<script> alert('임시 비밀번호가 이메일로 발송되었습니다.'); location.replace('../home/main'); </script>";
+			if(sendingEmail("비밀번호 변경", "새로운 비밀번호는 [" + newPw + "] 입니다.", email)==1) {
+				return "html:<script> alert('임시 비밀번호가 이메일로 발송되었습니다.'); location.replace('../home/main'); </script>";
+			}
+			else {
+				return "html:<script> alert('메일 발송 실패'); location.replace('../home/main'); </script>";
+			}
 		}
 	}
 
@@ -111,33 +115,42 @@ public class MemberController extends Controller {
 	}
 	
 	private String doActionDoAuthMail(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println("MemberController-doActionDoAuthMail");
-		System.out.println("인증받기 - extra_code : "+Util.extra_code);
-		if(Util.extra_code.trim().length()!=0) {
-			System.out.println("===1===");
-			String str = memberService.transformString(""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId());
-			System.out.println("===2===");
-			if(str.equals(Util.extra_code)) {
-				System.out.println("===3===");
-				memberService.doAuthMail((int)session.getAttribute("loginedMemberId"));
-				return "html:<script> alert('인증이 되었습니다.'); location.replace('../home/main'); </script>";
+		if(session.getAttribute("loginedMemberId")!=null) {
+			if(memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getMailAuthStatus()==0) {
+				if(Util.extra_code.trim().length()!=0) {
+					String str = memberService.transformString(""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId());
+					if(req.getParameter("code").equals(str)) {
+						memberService.doAuthMail((int)session.getAttribute("loginedMemberId"));
+						return "html:<script> alert('인증이 되었습니다.'); location.replace('../home/main'); </script>";
+					}
+				}
+				return "html:<script> alert('인증 실패 - 인증 신청 계정과 현재 로그인 중인 계정이 다릅니다.'); location.replace('../home/main'); </script>";
 			}
-			System.out.println("===4===");
+			else {
+				return "html:<script> alert('현재 로그인 중인 계정은 이미 인증된 계정입니다.'); location.replace('../home/main'); </script>";
+			}
 		}
-		return "html:<script> alert('인증 실패'); location.replace('../home/main'); </script>";
+		return "html:<script> alert('인증 실패 - 비로그인 상태'); location.replace('../home/main'); </script>";
 	}
 	
 	private String doActionAuthMail(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println("MemberController-doActionAuthMail");
 		String email = req.getParameter("email");
 		String id = ""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId();
 		//난수 코드 생성
 		Util.extra_code = memberService.transformString(id);
-		System.out.println("메일발송 - extra_code : "+Util.extra_code);
 		if(Util.extra_code.trim().length()!=0) {
-			sendingEmail("[cho04-blog]인증 메일입니다.", "이메일 인증하기 링크 : "
-					+ "[<a href='http://localhost:8081/blog/s/member/doAuthMail?code="+Util.extra_code+"'>인증하기</a>]", email);
-			return "html:<script> alert('메일을 발송했습니다.'); history.back(); </script>";
+			if(sendingEmail("인증 메일"
+					, memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()
+					+ "님의 이메일 인증 링크"
+					+ "<br>1. [<a href='https://cho04.my.iu.gy/blog/s/member/doAuthMail?code="+Util.extra_code+"'>cho04-인증하기</a>]"
+					+ "<br>2. [<a href='http://localhost:8081/blog/s/member/doAuthMail?code="+Util.extra_code+"'>localhost-인증하기</a>]"
+					+"<br><span style='color:red;'>인증하기를 누르는 시점에서, 해당 계정으로 로그인 한 상태여야 합니다.</span>"
+					, email)==1) {
+				return "html:<script> alert('메일을 발송했습니다.'); history.back(); </script>";
+			}
+			else {
+				return "html:<script> alert('메일 발송 실패'); history.back(); </script>";
+			}
 		}
 		else {
 			return "html:<script> alert('메일 발송 실패'); history.back(); </script>";
@@ -152,13 +165,17 @@ public class MemberController extends Controller {
 		String newPw = req.getParameter("newPw");
 
 		if(loginPw.equals(memberService.getMemberById(id).getLoginPw())) {
+			boolean mailAuthStatusReset=false;
 			if (nickname.trim().length() == 0 && newPw.trim().length() == 0 && email.trim().length() == 0) {
 				return "html:<script> alert('수정된 정보가 없습니다.'); history.back(); </script>";
 			}
 			if (newPw.equals(loginPw)) {
 				return "html:<script> alert('새로운 비밀번호가 기존 비밀번호와 일치합니다.'); history.back(); </script>";
 			}
-			memberService.myPage(id, nickname, newPw, email);
+			if(email.trim().length()!=0) {
+				mailAuthStatusReset=true;
+			}
+			memberService.myPage(id, nickname, newPw, email, mailAuthStatusReset);
 			return "html:<script> alert('회원 정보가 수정되었습니다.'); location.replace('../home/main'); </script>";
 		}
 		return "html:<script> alert('비밀번호가 일치하지 않습니다.'); history.back(); </script>";
@@ -215,10 +232,15 @@ public class MemberController extends Controller {
 		}
 
 		if (id > 0) {
-			if (sendingEmail(name + "님의 회원가입을 축하합니다.", "축하축은 거꾸로도 축하축", email) == 1) {
+			if (sendingEmail(name + "님의 회원가입을 축하합니다.",
+					"블로그"
+					+ "<br>1. [<a href='https://cho04.my.iu.gy'>cho04-블로그 바로가기</a>]"
+					+ "<br>2. [<a href='http://localhost:8081/blog/s/home/main'>localhost-블로그 바로가기</a>]"
+					+ "<br><br>로그인 시 글쓰기/댓글쓰기가 가능합니다."
+					, email) == 1) {
 				return "html:<script> alert('" + id + "번째 회원 가입을 환영합니다.'); location.replace('../home/main'); </script>";
 			} else {
-				return "html:<script> alert('이메일 발송 실패'); location.replace('../home/main'); </script>";
+				return "html:<script> alert('메일 발송 실패'); location.replace('../home/main'); </script>";
 			}
 		} else {
 			return "html:<script> alert('이미 존재하는 ID입니다.'); history.back(); </script>";
@@ -259,7 +281,7 @@ public class MemberController extends Controller {
 			msg.setRecipient(Message.RecipientType.TO, to);
 
 			// 이메일 제목
-			msg.setSubject(title, "UTF-8");
+			msg.setSubject("[cho04-blog] "+title, "UTF-8");
 
 			// 이메일 내용
 			msg.setText(body, "UTF-8");
