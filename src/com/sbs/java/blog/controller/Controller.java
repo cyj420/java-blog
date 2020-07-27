@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.service.ArticleService;
 import com.sbs.java.blog.service.MemberService;
+import com.sbs.java.blog.util.Util;
 
 public abstract class Controller {
 
@@ -19,7 +20,7 @@ public abstract class Controller {
 	protected HttpServletResponse resp;
 
 	HttpSession session;
-	
+
 	protected ArticleService articleService;
 	protected MemberService memberService;
 
@@ -34,12 +35,21 @@ public abstract class Controller {
 	}
 
 	public void beforeAction() {
+		String currentUrl = req.getRequestURI();
+
+		if (req.getQueryString() != null) {
+			currentUrl += "?" + req.getQueryString();
+		}
+		String encodedCurrentUrl = Util.getUrlEncoded(currentUrl);
 		// 액션 전 실행
 		// 이 메서드는 모든 컨트롤러의 모든 액션이 실행되기 전에 실행된다.
 		List<Category> cateItems = articleService.getCategories();
 		req.setAttribute("cateItems", cateItems);
 		req.setAttribute("articleService", articleService);
 		req.setAttribute("memberService", memberService);
+
+		// 로그아웃 후 가야하는 곳, 기본적으로 현재 URL
+		req.setAttribute("encodedAfterLogoutRedirectUri", encodedCurrentUrl);
 	}
 
 	public void afterAction() {

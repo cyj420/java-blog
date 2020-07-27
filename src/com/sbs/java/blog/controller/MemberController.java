@@ -49,6 +49,7 @@ public class MemberController extends Controller {
 			return doActionMyPageModify(req,resp);
 		case "doMyPage":
 			return doActionDoMyPage(req, resp);
+		// 메일 인증
 		case "authMail":
 			return doActionAuthMail(req, resp);
 		case "doAuthMail":
@@ -193,7 +194,9 @@ public class MemberController extends Controller {
 		String nickname = memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname();
 		session.removeAttribute("loginedMemberId");
 
-		return "html:<script> alert('" + nickname + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
+		String redirectUrl = Util.getString(req, "redirectUrl", "../home/main");
+		return String.format("html:<script> alert('로그아웃 되었습니다.'); location.replace('" + redirectUrl + "'); </script>");
+//		return "html:<script> alert('" + nickname + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
 	}
 
 	private String doActionDoLogin(HttpServletRequest req, HttpServletResponse resp) {

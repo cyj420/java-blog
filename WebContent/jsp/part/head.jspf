@@ -51,7 +51,9 @@
 				</a>
 			</div>
 			<div>
-				<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+				<a href="${pageContext.request.contextPath}/s/member/logout?redirectUrl=${encodedAfterLogoutRedirectUri}"
+						class="block">Logout</a>
+				<%-- <a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a> --%>
 			</div>
 			<%
 				} else {

@@ -141,6 +141,7 @@ public class ArticleController extends Controller {
 
 	// detail
 	private String doActionDetail(HttpServletRequest req, HttpServletResponse resp) {
+		long startTime = System.nanoTime();
 		if(Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -169,11 +170,18 @@ public class ArticleController extends Controller {
 		req.setAttribute("articleService", articleService);
 		req.setAttribute("memberService", memberService);
 		
+		long endTime = System.nanoTime();
+		long estimatedTime = endTime-startTime;
+		double seconds = estimatedTime/1000000000.0;
+		System.out.println("seconds : "+seconds);
+		
 		return "article/detail.jsp";
 	}
 	
 	// list
 	private String doActionList(HttpServletRequest req, HttpServletResponse resp) {
+		long startTime = System.nanoTime();
+		
 		int cateItemId = 0;
 		try {
 			cateItemId = Integer.parseInt(req.getParameter("cateItemId"));
@@ -214,6 +222,11 @@ public class ArticleController extends Controller {
 		req.setAttribute("cateItemId", cateItemId);
 		req.setAttribute("searchKeyword", searchKeyword);
 
+		long endTime = System.nanoTime();
+		long estimatedTime = endTime-startTime;
+		double seconds = estimatedTime/1000000000.0;
+		System.out.println("seconds : "+seconds);
+		
 		return "article/list.jsp";
 	}
 
