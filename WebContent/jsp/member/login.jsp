@@ -39,6 +39,9 @@
 <div class="login-form-box con">
 	<form action="doLogin" method="POST" class="login-form"
 		onsubmit="submitJoinForm(this); return false;">
+		<input type="hidden" name="redirectUri"
+			value="${param.afterLoginRedirectUri}" /> <input type="hidden"
+			name="loginPwReal" />
 		<div class="form-row">
 			<div class="label">ID</div>
 			<div class="input">

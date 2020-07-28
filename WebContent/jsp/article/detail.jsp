@@ -81,37 +81,43 @@
 		<a class="back-to-category" href="./list?cateItemId=<%=a.getCateItemId() %>&page=1">
 			<%=articleService.getCategoryByCateItemId(a.getCateItemId()).getName() %>
 		</a>
-		<h1><%=a.getId()%>
+		<h1>${a.id}
 			|
-			<%=a.getTitle()%></h1>
+			${a.title}</h1>
 		<div>
 			작성자 : <%=ms.getMemberById(a.getWriterId()).getNickname() %>
 		</div>
 		<div class="etc">
 			등록날짜 :
-			<%=a.getRegDate()%>
-			<%
-			if(!a.getRegDate().equals(a.getUpdateDate())){
-				%>
+			${a.regDate}
+			
+			
+			<!-- 수정필요 시작 -->
+			
+			
+			<c:if test="${a.regDate} ne ${a.updateDate}">
 				(update : 
-				<%=a.getUpdateDate()%>
+				${a.updateDate}
 				)
-				<%
-			}
-			%>
+			</c:if>
+			
+			
+			<!-- 수정필요 끝 -->
+			
+			
 			<br>
 			조회수 :
-			<%=a.getHit()%>
+			${a.hit }
 		</div>
 		<%
 		if(session.getAttribute("loginedMemberId")!=null){
 			if((int)session.getAttribute("loginedMemberId") == a.getWriterId()){
 			%>
 			<div class="articleModifyAndDelete">
-				<a href="./modify?id=<%=a.getId()%>">수정</a>
+				<a href="./modify?id=${a.id}">수정</a>
 			</div>
 			<div class="articleModifyAndDelete">
-				<a href="./delete?id=<%=a.getId()%>">삭제</a>
+				<a href="./delete?id=${a.id}">삭제</a>
 			</div>
 		<%
 			}
@@ -120,7 +126,8 @@
 		<div class="article-body">
 
 			<%-- <script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script> --%>
-			<script type="text/x-template" id="origin1" style="display: none;"><%=a.getBodyForXTemplate()%></script>
+			<script type="text/x-template" id="origin1" style="display: none;">${a.getBodyForXTemplate()}
+			</script>
 			<div id="viewer1"></div>
 
 			<script type="text/javascript">
@@ -137,7 +144,7 @@
 
 		</div>
 		<div class="articleReply">
-				<div class="label">댓글(<%=articleReplies.size() %>)</div>
+				<div class="label">댓글(${articleReplies.size()})</div>
 			<%
 				// 댓글 작성은 로그인 상태여야만 가능
 				if (session.getAttribute("loginedMemberId") != null) {
@@ -146,9 +153,9 @@
 				onsubmit="submitArticleReplyForm(this); return false;">
 				<div class="form-row"  style="display: inline-block; width:40%;">
 					<div class="input">
-						<input name="writerId" type="hidden" value=<%=session.getAttribute("loginedMemberId")%> /> 
-						<input name="articleId" type="hidden" value=<%=a.getId()%> />
-						<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
+						<input name="writerId" type="hidden" value=${session.getAttribute("loginedMemberId")} /> 
+						<input name="articleId" type="hidden" value=${a.id} />
+						<input name="articleCateId" type="hidden" value=${a.cateItemId} />
 						<input name="body" type="text" placeholder="댓글을 입력해주세요." autocomplete="off" style="width: 95%;"/>
 					</div>
 				</div>
@@ -166,6 +173,9 @@
 					<div class="articleReplyDetail">
 						<%=ms.getMemberById(ar.getWriterId()).getNickname()%>
 						:
+						<%-- ${ar.body}
+						[
+						${ar.updateDate} --%>
 						<%=ar.getBody()%>
 						[
 						<%=ar.getUpdateDate() %>

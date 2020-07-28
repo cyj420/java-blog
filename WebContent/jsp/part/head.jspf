@@ -51,7 +51,7 @@
 				</a>
 			</div>
 			<div>
-				<a href="${pageContext.request.contextPath}/s/member/logout?redirectUrl=${encodedAfterLogoutRedirectUri}"
+				<a href="${pageContext.request.contextPath}/s/member/logout?redirectUri=${encodedAfterLogoutRedirectUri}"
 						class="block">Logout</a>
 				<%-- <a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a> --%>
 			</div>
@@ -62,7 +62,9 @@
 				<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
 			</div>
 			<div>
-				<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+				<a href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUri=${encodedAfterLoginRedirectUri}"
+						class="block">LOGIN</a>
+				<%-- <a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a> --%>
 			</div>
 			<%
 				}

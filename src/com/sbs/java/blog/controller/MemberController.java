@@ -194,22 +194,29 @@ public class MemberController extends Controller {
 		String nickname = memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname();
 		session.removeAttribute("loginedMemberId");
 
-		String redirectUrl = Util.getString(req, "redirectUrl", "../home/main");
-		return String.format("html:<script> alert('로그아웃 되었습니다.'); location.replace('" + redirectUrl + "'); </script>");
+		String redirectUri = Util.getString(req, "redirectUri", "../home/main");
+		return String.format("html:<script> alert('로그아웃 되었습니다.'); location.replace('" + redirectUri + "'); </script>");
 //		return "html:<script> alert('" + nickname + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
 	}
 
 	private String doActionDoLogin(HttpServletRequest req, HttpServletResponse resp) {
 		String loginId = req.getParameter("loginId");
-		String loginPw = req.getParameter("loginPw");
+		String loginPw = req.getParameter("loginPwReal");
 
 		Member m = null;
 		m = memberService.login(loginId, loginPw);
 		if (m != null) {
 			session.setAttribute("loginedMemberId", m.getId());
-			return "html:<script> alert('"
-					+ memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()
-					+ "님, 안녕하세요.'); location.replace('../home/main'); </script>";
+			
+			String redirectUri = Util.getString(req, "redirectUri", "../home/main");
+			
+			System.out.println("redirectUri : "+redirectUri);
+
+			return String.format("html:<script> alert('로그인 되었습니다.'); location.replace('" + redirectUri + "'); </script>");
+			
+//			return "html:<script> alert('"
+//					+ memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()
+//					+ "님, 안녕하세요.'); location.replace('../home/main'); </script>";
 		} else {
 			return "html:<script> alert('ID 혹은 PW가 틀렸습니다.'); location.replace('login');</script>";
 		}

@@ -35,12 +35,11 @@ public abstract class Controller {
 	}
 
 	public void beforeAction() {
-		String currentUrl = req.getRequestURI();
+		String currentUri = req.getRequestURI();
 
 		if (req.getQueryString() != null) {
-			currentUrl += "?" + req.getQueryString();
+			currentUri += "?" + req.getQueryString();
 		}
-		String encodedCurrentUrl = Util.getUrlEncoded(currentUrl);
 		// 액션 전 실행
 		// 이 메서드는 모든 컨트롤러의 모든 액션이 실행되기 전에 실행된다.
 		List<Category> cateItems = articleService.getCategories();
@@ -48,8 +47,15 @@ public abstract class Controller {
 		req.setAttribute("articleService", articleService);
 		req.setAttribute("memberService", memberService);
 
-		// 로그아웃 후 가야하는 곳, 기본적으로 현재 URL
-		req.setAttribute("encodedAfterLogoutRedirectUri", encodedCurrentUrl);
+		String encodedCurrentUri = Util.getUriEncoded(currentUri);
+
+		// 현재 접속된 페이지와 관련된 유용한 정보 담기
+		req.setAttribute("currentUri", currentUri);
+		req.setAttribute("encodedCurrentUri", encodedCurrentUri);
+		req.setAttribute("encodedAfterLoginRedirectUri", encodedCurrentUri);
+		req.setAttribute("encodedAfterLogoutRedirectUri", encodedCurrentUri);
+		req.setAttribute("noBaseCurrentUri", req.getRequestURI().replace(req.getContextPath(), ""));
+
 	}
 
 	public void afterAction() {

@@ -46,7 +46,7 @@ public class Util {
 		return false;
 	}
 	
-	public static String getUrlEncoded(String str) {
+	public static String getUriEncoded(String str) {
 		try {
 			return URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
