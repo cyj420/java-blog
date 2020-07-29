@@ -47,7 +47,7 @@
 			<div>
 				<a href="${pageContext.request.contextPath}/s/member/myPage"
 					style="display: inline-block; align-self: center; color: tomato;">
-					<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()%>님
+					${loginedMember.nickname}님
 				</a>
 			</div>
 			<div>
@@ -128,7 +128,7 @@
 			<div>
 				<a href="${pageContext.request.contextPath}/s/member/myPage"
 					style="display: inline-block; align-self: center; color: tomato;">
-					<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()%>님
+					${loginedMember.nickname}님
 				</a>
 			</div>
 			<div>

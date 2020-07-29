@@ -82,6 +82,8 @@ public class ArticleController extends Controller {
 	}
 
 	private String doActionDoArticleReply(HttpServletRequest req, HttpServletResponse resp) {
+		// writerId에서 문제 발생 > 해결
+		// 발생 이유 : detail.jsp에서 <%=session.getAttribute("loginedMemberId") %>을 ${session.getAttribute("loginedMemberId")}으로 바꿔서...
 		int writerId = Util.getInt(req, "writerId");
 		int articleId = Util.getInt(req, "articleId");
 		int articleCateId = Util.getInt(req, "articleCateId");
@@ -141,7 +143,7 @@ public class ArticleController extends Controller {
 
 	// detail
 	private String doActionDetail(HttpServletRequest req, HttpServletResponse resp) {
-		long startTime = System.nanoTime();
+//		long startTime = System.nanoTime();
 		if(Util.empty(req, "id")) {
 			return "html:id를 입력해주세요.";
 		}
@@ -170,17 +172,16 @@ public class ArticleController extends Controller {
 		req.setAttribute("articleService", articleService);
 		req.setAttribute("memberService", memberService);
 		
-		long endTime = System.nanoTime();
-		long estimatedTime = endTime-startTime;
-		double seconds = estimatedTime/1000000000.0;
-		System.out.println("seconds : "+seconds);
+//		long endTime = System.nanoTime();
+//		long estimatedTime = endTime-startTime;
+//		double seconds = estimatedTime/1000000000.0;
 		
 		return "article/detail.jsp";
 	}
 	
 	// list
 	private String doActionList(HttpServletRequest req, HttpServletResponse resp) {
-		long startTime = System.nanoTime();
+//		long startTime = System.nanoTime();
 		
 		int cateItemId = 0;
 		try {
@@ -205,27 +206,24 @@ public class ArticleController extends Controller {
 			searchKeyword = req.getParameter("searchKeyword");
 		}
 
-		List<Category> categories = null;
 		List<Article> articles = null;
 
 		// 페이지당 존재하는 게시물 수
 		int itemsInAPage = 5;
 
 		articles = articleService.getForPrintListArticles(page, cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
-		categories = articleService.getCategories();
 		int fullPage = articleService.getFullPage(cateItemId, itemsInAPage, searchKeywordType, searchKeyword);
 
 		req.setAttribute("fullPage", fullPage);
-		req.setAttribute("categories", categories);
 		req.setAttribute("articles", articles);
 		req.setAttribute("page", page);
 		req.setAttribute("cateItemId", cateItemId);
+		req.setAttribute("cateItemId", cateItemId);
 		req.setAttribute("searchKeyword", searchKeyword);
 
-		long endTime = System.nanoTime();
-		long estimatedTime = endTime-startTime;
-		double seconds = estimatedTime/1000000000.0;
-		System.out.println("seconds : "+seconds);
+//		long endTime = System.nanoTime();
+//		long estimatedTime = endTime-startTime;
+//		double seconds = estimatedTime/1000000000.0;
 		
 		return "article/list.jsp";
 	}

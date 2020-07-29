@@ -56,7 +56,7 @@
 			<div class="label">ID</div>
 			<div class="input">
 				<input name="loginId" type="text"
-					value="<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getLoginId()%>"
+					value="${loginedMember.id}"
 					readonly />
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 			<div class="label">이름</div>
 			<div class="input">
 				<input name="name" type="text"
-					value="<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getName()%>"
+					value="${loginedMember.name}"
 					readonly />
 			</div>
 		</div>
@@ -72,38 +72,30 @@
 			<div class="label">닉네임</div>
 			<div class="input">
 				<input name="nickname" type="text"
-					value="<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getNickname()%>"
+					value="${loginedMember.nickname}"
 					readonly />
 			</div>
 		</div>
 		<div class="form-row">
-			<%
-				if (ms.getMemberById((int) session.getAttribute("loginedMemberId")).getMailAuthStatus() == 0) {
-			%>
-			<div class="label">
-				이메일
-			</div>
-			<%
-				} else {
-			%>
-			<div class="label color-red">
-				이메일<br>(인증완료)
-			</div>
-			<%
-				}
-			%>
-			<div class="input">
-				<input name="email" type="email"
-					value="<%=ms.getMemberById((int) session.getAttribute("loginedMemberId")).getEmail()%>"
-					readonly />
-			</div>
-			<%
-			if (ms.getMemberById((int) session.getAttribute("loginedMemberId")).getMailAuthStatus() == 0) {
-			%>
-			<button type="submit" style="position: absolute; left: 160px;margin-left: 50%;">인증 메일 보내기</button>
-			<%
-			}
-			%>
+			<c:if test="${loginedMember.mailAuthStatus == 0}">
+		    	<div class="label">
+					이메일
+				</div>
+			</c:if>
+	 
+			<c:if test="${loginedMember.mailAuthStatus != 0}">
+				<div class="label color-red">
+					이메일<br>(인증완료)
+				</div>
+				<div class="input">
+					<input name="email" type="email"
+						value="${loginedMember.email}"
+						readonly />
+				</div>
+			</c:if>
+			<c:if test="${loginedMember.mailAuthStatus == 0}">
+		    	<button type="submit" style="position: absolute; left: 160px;margin-left: 50%;">인증 메일 보내기</button>
+			</c:if>
 		</div>
 	</form>
 </div>

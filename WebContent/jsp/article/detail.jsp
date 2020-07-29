@@ -153,7 +153,7 @@
 				onsubmit="submitArticleReplyForm(this); return false;">
 				<div class="form-row"  style="display: inline-block; width:40%;">
 					<div class="input">
-						<input name="writerId" type="hidden" value=${session.getAttribute("loginedMemberId")} /> 
+						<input name="writerId" type="hidden" value=${loginedMemberId} /> 
 						<input name="articleId" type="hidden" value=${a.id} />
 						<input name="articleCateId" type="hidden" value=${a.cateItemId} />
 						<input name="body" type="text" placeholder="댓글을 입력해주세요." autocomplete="off" style="width: 95%;"/>

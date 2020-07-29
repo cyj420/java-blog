@@ -5,13 +5,12 @@
 <%@ page import="com.sbs.java.blog.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%-- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> --%>
 <%@ include file="/jsp/part/head.jspf"%>
 <%
-	List<Article> articles = (List<Article>) request.getAttribute("articles");
-	List<Category> categories = (List<Category>) request.getAttribute("categories");
 	ArticleService articleService = (ArticleService) request.getAttribute("articleService");
 	int fullPage = (int) request.getAttribute("fullPage");
-	int cateItemId = (int) request.getAttribute("cateItemId");
 	int nowPage = (int) request.getAttribute("page");
 	String searchKeyword = (String) request.getAttribute("searchKeyword");
 %>
@@ -19,67 +18,58 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resource/css/article/list.css">
 <body>
+	${cateItems}
 	<!-- 카테고리 리스트 시작 -->
 	<div class="article-list-box-1 con table-box category-list">
-		<%
-			for (Category c : categories) {
-				if (c.getId() == cateItemId) {
-			%>
+		<c:forEach items="${cateItems}" var="c">
 			<div class="category-name selected-category">
-				<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
+				<a href="./list?cateItemId=${c.id}&page=1">${c.name}!</a>
 			</div>
-			<%
-				}
-			else{
-			%>
-			<div class="category-name">
-				<a href="./list?cateItemId=<%=c.getId()%>&page=1"><%=c.getName()%></a>
-			</div>
-			<%
-				}
-			}
-		%>
+
+		</c:forEach>
 	</div>
 	<!-- 카테고리 리스트 끝 -->
 
 	<!-- 게시물 리스트 시작 -->
 	<%
 		String categoryName = "";
-		if (cateItemId == 0) {
 	%>
-	<h1 class="con">📂 전체 게시물 리스트
-	<%
-	if(searchKeyword.trim().length()==0){
-	int n = 0;
-	for(int i=1; i<=categories.size(); i++){
-		n+=articleService.getArticlesByCateItemId(i).size();
-	}
-	%>
-	(<%=n %>)
-	<%
-	}
-	%>
-	</h1>
-	<%
-		} else {
-	%>
-	<h1 class="con">
-		📋
-		<%=categoryName = categories.get(cateItemId - 1).getName()%>
+	<c:if test="${cateItemId} == 0">
+		<h1 class="con">
+			📂 전체 게시물 리스트
+			<%-- ${fn:length(searchKeyword.trim())} --%>
+
+			<!-- 	int n = 0;
+			n+=articleService.getArticlesByCateItemId(i).size(); -->
+			<c:forEach var="i" begin="1" end="5" step="1">
+			</c:forEach>
+
+			<%-- 
 		<%
 		if(searchKeyword.trim().length()==0){
-		%>
-		(<%=articleService.getArticlesByCateItemId(cateItemId).size()%>)
+		int n = 0;
+		for(int i=1; i<=cateItems.size(); i++){
+			n+=articleService.getArticlesByCateItemId(i).size();
+		}
+		%> 
+		(<%=n %>)
 		<%
 		}
 		%>
-	</h1>
-	<div class="con back-to-list">
-		<a href="./list" style="margin-left: 30px;">전체 게시판으로 돌아가기&#8594;</a>
-	</div>
-	<%
-		}
-	%>
+		--%>
+		</h1>
+	</c:if>
+	<c:if test="${cateItemId} != 0">
+		<h1 class="con">
+			📋 ${cateItems[cateItemId - 1].name}
+			<c:if test="${searchKeyword.trim().length()} == 0">
+				(${articleService.getArticlesByCateItemId(cateItemId).length()}?????)
+			</c:if>
+		</h1>
+		<div class="con back-to-list">
+			<a href="./list" style="margin-left: 30px;">전체 게시판으로 돌아가기&#8594;</a>
+		</div>
+	</c:if>
 
 	<div class="article-list-box-1 con table-box">
 		<table class="table article-table">
@@ -100,20 +90,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%
-					for (Article article : articles) {
-				%>
-				<tr>
-					<td class="can-delete"><%=article.getId()%></td>
-					<td class="text-align-left"><a
-						href="./detail?cateItemId=<%=article.getCateItemId()%>&id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
-					<td class="can-delete"><%=article.getRegDate()%></td>
-					<td><%=ms.getMemberById(article.getWriterId()).getNickname()%></td>
-					<td><%=article.getHit()%></td>
-				</tr>
-				<%
-					}
-				%>
+				<c:forEach items="${articles}" var="article">
+					<tr>
+						<td class="can-delete">${article.id}</td>
+						<td class="text-align-left"><a
+							href="./detail?cateItemId=${article.cateItemId}&id=${article.id}">${article.title}</a></td>
+						<td class="can-delete">${article.regDate}</td>
+						<td>${article.nickname}작성자닉네임</td>
+						<%-- <td><%=ms.getMemberById(article.getWriterId()).getNickname()%></td> --%>
+						<td>${article.hit}</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
@@ -155,10 +142,10 @@
 	<div class="con search-box flex flex-jc-c">
 
 		<form action="${pageContext.request.contextPath}/s/article/list">
-			<input type="hidden" name="page" value="1" /> 
-			<input type="hidden" name="cateItemId" value="${param.cateItemId}" /> 
-			<input type="hidden" name="searchKeywordType" value="title" /> 
-			<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
+			<input type="hidden" name="page" value="1" /> <input type="hidden"
+				name="cateItemId" value="${param.cateItemId}" /> <input
+				type="hidden" name="searchKeywordType" value="title" /> <input
+				type="text" name="searchKeyword" value="${param.searchKeyword}" />
 			<button type="submit">검색</button>
 		</form>
 
