@@ -1,16 +1,6 @@
-<%@page import="com.sbs.java.blog.service.ArticleService"%>
-<%@ page import="com.sbs.java.blog.dto.Article"%>
-<%@ page import="com.sbs.java.blog.dto.ArticleReply"%>
-<%@ page import="com.sbs.java.blog.util.Util"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
-<%
-	Article a = (Article) request.getAttribute("a");
-	List<Article> articles = (List<Article>) request.getAttribute("articles");
-	List<ArticleReply> articleReplies = (List<ArticleReply>) request.getAttribute("articleReplies");
-	ArticleService articleService = (ArticleService) request.getAttribute("articleService");
-%>
 
 <!-- ============================ -->
 <!-- 제이쿼리 로딩 -->
@@ -78,54 +68,43 @@
 </style>
 <div class="con">
 	<div class="con detail-article">
-		<a class="back-to-category" href="./list?cateItemId=<%=a.getCateItemId() %>&page=1">
-			<%=articleService.getCategoryByCateItemId(a.getCateItemId()).getName() %>
+		<a class="back-to-category" href="./list?cateItemId=${a.cateItemId}&page=1">
+			${param.cateItemId}
 		</a>
 		<h1>${a.id}
 			|
 			${a.title}</h1>
 		<div>
-			작성자 : <%=ms.getMemberById(a.getWriterId()).getNickname() %>
+			작성자 : ${a.extra.writer }
 		</div>
 		<div class="etc">
 			등록날짜 :
 			${a.regDate}
 			
-			
-			<!-- 수정필요 시작 -->
-			
-			
-			<c:if test="${a.regDate} ne ${a.updateDate}">
+			<c:if test="${a.regDate != a.updateDate}">
 				(update : 
 				${a.updateDate}
 				)
 			</c:if>
 			
-			
-			<!-- 수정필요 끝 -->
-			
-			
 			<br>
 			조회수 :
 			${a.hit }
 		</div>
-		<%
-		if(session.getAttribute("loginedMemberId")!=null){
-			if((int)session.getAttribute("loginedMemberId") == a.getWriterId()){
-			%>
-			<div class="articleModifyAndDelete">
-				<a href="./modify?id=${a.id}">수정</a>
-			</div>
-			<div class="articleModifyAndDelete">
-				<a href="./delete?id=${a.id}">삭제</a>
-			</div>
-		<%
-			}
-		}
-		%>
+		
+		<c:if test="${loginedMemberId != -1 }">
+			<c:if test="${loginedMemberId == a.writerId }">
+				<div class="articleModifyAndDelete">
+					<a href="./modify?id=${a.id}">수정</a>
+				</div>
+				<div class="articleModifyAndDelete">
+					<a href="./delete?id=${a.id}">삭제</a>
+				</div>
+			</c:if>
+		</c:if>
+		
 		<div class="article-body">
 
-			<%-- <script type="text/x-template" id="origin1" style="display: none;"><%="\n" + a.getBody() + "\n"%></script> --%>
 			<script type="text/x-template" id="origin1" style="display: none;">${a.getBodyForXTemplate()}
 			</script>
 			<div id="viewer1"></div>
@@ -145,74 +124,53 @@
 		</div>
 		<div class="articleReply">
 				<div class="label">댓글(${articleReplies.size()})</div>
-			<%
-				// 댓글 작성은 로그인 상태여야만 가능
-				if (session.getAttribute("loginedMemberId") != null) {
-			%>
-			<form action="doArticleReply" method="POST" class="comment-form"
-				onsubmit="submitArticleReplyForm(this); return false;">
-				<div class="form-row"  style="display: inline-block; width:40%;">
-					<div class="input">
-						<input name="writerId" type="hidden" value=${loginedMemberId} /> 
-						<input name="articleId" type="hidden" value=${a.id} />
-						<input name="articleCateId" type="hidden" value=${a.cateItemId} />
-						<input name="body" type="text" placeholder="댓글을 입력해주세요." autocomplete="off" style="width: 95%;"/>
-					</div>
-				</div>
-				<div class="form-row" style="display: inline-block;">
-					<div class="input">
-						<input type="submit" value="댓글 작성"/>
-					</div>
-				</div>
-			</form>
-			<%
-				}
-				if (!articleReplies.isEmpty()) {
-					for (ArticleReply ar : articleReplies) {
-			%>
+				<c:if test="${loginedMemberId != -1 }">
+					<form action="doArticleReply" method="POST" class="comment-form"
+						onsubmit="submitArticleReplyForm(this); return false;">
+						<div class="form-row"  style="display: inline-block; width:40%;">
+							<div class="input">
+								<input name="writerId" type="hidden" value=${loginedMemberId} /> 
+								<input name="articleId" type="hidden" value=${a.id} />
+								<input name="articleCateId" type="hidden" value=${a.cateItemId} />
+								<input name="body" type="text" placeholder="댓글을 입력해주세요." autocomplete="off" style="width: 95%;"/>
+							</div>
+						</div>
+						<div class="form-row" style="display: inline-block;">
+							<div class="input">
+								<input type="submit" value="댓글 작성"/>
+							</div>
+						</div>
+					</form>
+				</c:if>
+			<c:if test="${articleReplies != null }">
+				<c:forEach items="${articleReplies}" var="ar">
 					<div class="articleReplyDetail">
-						<%=ms.getMemberById(ar.getWriterId()).getNickname()%>
-						:
-						<%-- ${ar.body}
-						[
-						${ar.updateDate} --%>
-						<%=ar.getBody()%>
-						[
-						<%=ar.getUpdateDate() %>
-						]
-						<%
-						if(session.getAttribute("loginedMemberId")!=null){
-							if((int)session.getAttribute("loginedMemberId") == ar.getWriterId()){
-							%>
-							<form action="doArticleReplyModify" method="POST" class="comment-form">
-								<input name="articleId" type="hidden" value=<%=a.getId()%> />
-								<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
-								<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
-								<input name="articleReplyBody" type="hidden" value=<%=ar.getBody()%> />
-								<input type="submit" value="수정" />
-							</form>
-							<form action="doArticleReplyDelete" method="POST" class="comment-form">
-								<input name="articleId" type="hidden" value=<%=a.getId()%> />
-								<input name="articleCateId" type="hidden" value=<%=a.getCateItemId()%> />
-								<input name="articleReplyId" type="hidden" value=<%=ar.getId()%> />
-								<input type="submit" value="삭제" />
-							</form>
-						<%
-							}
-						}
-						%>
-					</div>
-
-			<%
-				}
-				} else {
-			%>
-			<div>첫번째 댓글을 남겨주세요!</div>
-			<%
-				}
-			%>
+						${ar.extra.writer } : ${ar.body } [${ar.updateDate }]
+						<c:if test="${loginedMemberId != -1}">
+							<c:if test="${loginedMemberId == ar.writerId}">
+								<form action="doArticleReplyModify" method="POST" class="comment-form">
+									<input name="articleId" type="hidden" value="${a.id}"/>
+									<input name="articleCateId" type="hidden" value="${a.cateItemId }"/>
+									<input name="articleReplyId" type="hidden" value="${ar.id}"/>
+									<input name="articleReplyBody" type="hidden" value="${ar.body}"/>
+									<input type="submit" value="수정" />
+								</form>
+								<form action="doArticleReplyDelete" method="POST" class="comment-form">
+									<input name="articleId" type="hidden" value="${a.id}"/>
+									<input name="articleCateId" type="hidden" value="${a.cateItemId}"/>
+									<input name="articleReplyId" type="hidden" value="${ar.id}"/>
+									<input type="submit" value="삭제" />
+								</form>
+							</c:if>
+						</c:if>
+				</c:forEach>
+			</c:if>
+			<c:if test="${articleReplies.size() == 0 }">
+				<div>첫번째 댓글을 남겨주세요!</div>
+			</c:if>
 		</div>
 	</div>
+	<%-- 
 	<div class="con another-post-con">
 		<%
 			for (int i = 0; i < articles.size(); i++) {
@@ -228,6 +186,9 @@
 			}
 		%>
 
+
+		<c:forEach var="i" begin="0" end="${a.size() }" step="1">
+		</c:forEach>
 		<%
 			for (int i = 0; i < articles.size(); i++) {
 				if (a.getId() == articles.get(i).getId()) {
@@ -242,5 +203,6 @@
 			}
 		%>
 	</div>
+	 --%>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>

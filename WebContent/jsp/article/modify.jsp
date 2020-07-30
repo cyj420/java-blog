@@ -1,12 +1,6 @@
-<%@ page import="java.util.List"%>
-<%@ page import="com.sbs.java.blog.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
-<%
-	Article a = (Article) request.getAttribute("a");
-	String body = a.getBody();
-%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -60,7 +54,7 @@
 					<c:if test="${c.id == a.cateItemId }">
 						<option value="${c.id }" selected="selected">${c.name }</option>
 					</c:if>
-					<c:if test="${c.id == a.cateItemId }">
+					<c:if test="${c.id != a.cateItemId }">
 						<option value="${c.id }">${c.name }</option>
 					</c:if>
 				</c:forEach>

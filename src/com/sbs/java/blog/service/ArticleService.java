@@ -57,8 +57,8 @@ public class ArticleService extends Service {
 		articleDao.modify(id, cateItemId, title, body);
 	}
 
-	public List<ArticleReply> getArticleRepliesByArticleId(int id) {
-		return articleDao.getArticleRepliesByArticleId(id);
+	public List<ArticleReply> getForPrintArticleReplies(int articleId, int actorId) {
+		return articleDao.getForPrintArticleReplies(articleId, actorId);
 	}
 
 	public void addArticleReply(int writerId, int articleId, String body) {

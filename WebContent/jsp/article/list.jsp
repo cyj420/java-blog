@@ -71,8 +71,7 @@
 						<td class="text-align-left"><a
 							href="./detail?cateItemId=${article.cateItemId}&id=${article.id}">${article.title}</a></td>
 						<td class="can-delete">${article.regDate}</td>
-						<td>작성자닉네임</td>
-						<%-- <td><%=ms.getMemberById(article.getWriterId()).getNickname()%></td> --%>
+						<td>${article.extra.writer }</td>
 						<td>${article.hit}</td>
 					</tr>
 				</c:forEach>

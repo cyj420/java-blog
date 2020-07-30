@@ -150,7 +150,7 @@ public class ArticleController extends Controller {
 		if(Util.isNum(req, "id")) {
 			return "html:id를 정수로 입력해주세요.";
 		}
-		int id = Util.getInt(req, "id");
+		int articleId = Util.getInt(req, "id");
 		
 		if(Util.empty(req, "cateItemId")) {
 			return "html:cateItemId를 입력해주세요.";
@@ -160,11 +160,12 @@ public class ArticleController extends Controller {
 		}
 		int cateItemId = Integer.parseInt(req.getParameter("cateItemId"));
 
-		articleService.increaseHit(id);
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		articleService.increaseHit(articleId);
 		
-		Article a = articleService.getArticle(id, cateItemId);
+		Article a = articleService.getArticle(articleId, cateItemId);
 		List<Article> articles = articleService.getArticlesByCateItemId(cateItemId);
-		List<ArticleReply> articleReplies = articleService.getArticleRepliesByArticleId(id);
+		List<ArticleReply> articleReplies = articleService.getForPrintArticleReplies(articleId, loginedMemberId);
 		
 		req.setAttribute("a", a);
 		req.setAttribute("articles", articles);

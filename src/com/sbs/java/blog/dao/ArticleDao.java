@@ -22,19 +22,21 @@ public class ArticleDao extends Dao {
 	public List<Article> getForPrintListArticles(int page, int cateItemId, int itemsInAPage, String searchKeywordType,
 			String searchKeyword) {
 		SecSql sql = new SecSql();
-
 		int limitFrom = (page - 1) * itemsInAPage;
 
-		sql.append("SELECT * FROM article ");
-		sql.append("WHERE displayStatus = 1 ");
+		sql.append("SELECT A.*, M.nickname AS extra__writer");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN member AS M");
+		sql.append("ON A.writerId = M.id");
+		sql.append("WHERE A.displayStatus = 1");
 		if (cateItemId != 0) {
-			sql.append("AND cateItemId = ? ", cateItemId);
+			sql.append("AND A.cateItemId = ?", cateItemId);
 		}
 		if (searchKeywordType.equals("title") && searchKeyword.length() > 0) {
-			sql.append("AND title LIKE CONCAT('%%', ?, '%%') ", searchKeyword);
+			sql.append("AND A.title LIKE CONCAT('%', ?, '%')", searchKeyword);
 		}
-		sql.append("ORDER BY id DESC ");
-		sql.append("LIMIT ?, ?", limitFrom, itemsInAPage);
+		sql.append("ORDER BY A.id DESC ");
+		sql.append("LIMIT ?, ? ", limitFrom, itemsInAPage);
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
 		List<Article> articles = new ArrayList<>();
@@ -42,6 +44,7 @@ public class ArticleDao extends Dao {
 		for (Map<String, Object> row : rows) {
 			articles.add(new Article(row));
 		}
+
 		return articles;
 	}
 
@@ -85,10 +88,14 @@ public class ArticleDao extends Dao {
 	public Article getArticle(int id, int cateItemId) {
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM article ");
-		sql.append("WHERE displayStatus = 1 ");
-		sql.append("AND cateItemId = ? ", cateItemId);
-		sql.append("AND id=" + id);
+		
+		sql.append("SELECT A.*, M.nickname AS extra__writer");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN member AS M");
+		sql.append("ON A.writerId = M.id");
+		sql.append("WHERE A.displayStatus = 1");
+		sql.append("AND A.cateItemId = ? ", cateItemId);
+		sql.append("AND A.id=" + id);
 
 		Map<String, Object> row = DBUtil.selectRow(dbConn, sql);
 		Article article = new Article(row);
@@ -184,20 +191,24 @@ public class ArticleDao extends Dao {
 		return article;
 	}
 
-	public List<ArticleReply> getArticleRepliesByArticleId(int id) {
+	public List<ArticleReply> getForPrintArticleReplies(int articleId, int actorId) {
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * FROM articleReply ");
-		sql.append("WHERE articleId = ? ", id);
-		sql.append("ORDER BY id DESC ");
+		sql.append("SELECT AR.*, M.nickname AS extra__writer");
+		sql.append("FROM articleReply AS AR");
+		sql.append("INNER JOIN member AS M");
+		sql.append("ON AR.writerId = M.id");
+		sql.append("WHERE AR.articleId = ?", articleId);
+		sql.append("ORDER BY AR.id DESC ");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
-		List<ArticleReply> comments = new ArrayList<>();
+		List<ArticleReply> articleReplies = new ArrayList<>();
 
 		for (Map<String, Object> row : rows) {
-			comments.add(new ArticleReply(row));
+			articleReplies.add(new ArticleReply(row));
 		}
-		return comments;
+
+		return articleReplies;
 	}
 
 	public void addArticleReply(int writerId, int articleId, String body) {
