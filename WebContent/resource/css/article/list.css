@@ -11,7 +11,10 @@ td>a:hover {
 	font-weight: bold;
 	transition: .3s;
 }
-
+span>.selected-page {
+	color: red;
+	font-weight: bold;
+}
 span>.not-selected-page:hover {
 	color: blue;
 }

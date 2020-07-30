@@ -19,8 +19,7 @@ public abstract class Controller {
 	protected String actionMethodName;
 	protected HttpServletRequest req;
 	protected HttpServletResponse resp;
-
-	HttpSession session;
+	protected HttpSession session;
 
 	protected ArticleService articleService;
 	protected MemberService memberService;
@@ -30,6 +29,7 @@ public abstract class Controller {
 		this.actionMethodName = actionMethodName;
 		this.req = req;
 		this.resp = resp;
+		this.session = req.getSession();
 		articleService = new ArticleService(dbConn);
 		memberService = new MemberService(dbConn);
 		this.session = req.getSession();

@@ -125,19 +125,17 @@
 								href="${pageContext.request.contextPath}/s/article/write"
 								class="height-100p flex flex-ai-c">Write</a></li>
 						</c:if>
-						<c:if test="${loginedMemberId != -1 }">
-							<li class="has-list"><a
-								href="${pageContext.request.contextPath}/s/article/list"
-								class="height-100p flex flex-ai-c">Articles</a>
-								<ul>
-									<c:forEach items="${cateItems}" var="c">
-										<li><a
-											href="${pageContext.request.contextPath}/s/article/list?cateItemId=${c.id }&page=1"
-											class="block"> ${c.name}</a></li>
-									</c:forEach>
-								</ul>
-							</li>
-						</c:if>
+						<li class="has-list"><a
+							href="${pageContext.request.contextPath}/s/article/list"
+							class="height-100p flex flex-ai-c">Articles</a>
+							<ul>
+								<c:forEach items="${cateItems}" var="c">
+									<li><a
+										href="${pageContext.request.contextPath}/s/article/list?cateItemId=${c.id }&page=1"
+										class="block"> ${c.name}</a></li>
+								</c:forEach>
+							</ul>
+						</li>
 					<li><a
 						href="${pageContext.request.contextPath}/s/home/aboutMe"
 						class="height-100p flex flex-ai-c">About Me</a></li>

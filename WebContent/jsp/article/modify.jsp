@@ -56,56 +56,33 @@
 			<div class="label">카테고리 선택</div>
 			<div class="input">
 				<select name="cateItemId">
-					<%-- <%
-					/* 이 부분 수정 필요 */
-						for (Category c : cateItems) {
-							if(a!=null){
-								if(c.getId()==a.getCateItemId()){
-									%>
-									<option value="<%=c.getId()%>"><%=c.getName()%></option>
-									<%
-								}
-							}
-							else{
-								%>
-								<option value="<%=c.getId()%>"><%=c.getName()%></option>
-								<%
-							}
-						}
-					%> --%>
-					<%
-						for (Category c : cateItems) {
-							if(c.getId()==a.getCateItemId()){
-								%>
-								<option value="<%=c.getId()%>" selected="selected"><%=c.getName()%></option>
-								<%
-							}
-							else{
-							%>
-							<option value="<%=c.getId()%>"><%=c.getName()%></option>
-							<%
-							}
-						}
-					%>
+				<c:forEach items="${cateItems}" var="c">
+					<c:if test="${c.id == a.cateItemId }">
+						<option value="${c.id }" selected="selected">${c.name }</option>
+					</c:if>
+					<c:if test="${c.id == a.cateItemId }">
+						<option value="${c.id }">${c.name }</option>
+					</c:if>
+				</c:forEach>
 				</select>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="label">게시물 번호</div>
 			<div class="input">
-				<input name="id" type="text" value="<%=a.getId()%>" readonly/>
+				<input name="id" type="text" value="${a.id }" readonly/>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="label">제목</div>
 			<div class="input">
-				<input name="title" type="text" placeholder="" value="<%=a.getTitle()%>"/>
+				<input name="title" type="text" placeholder="" value="${a.title }"/>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="label">내용</div>
 			<input type="hidden" name="body" />
-			<script type="text/x-template" id="origin1" style="display:none;"><%=a.getBodyForXTemplate()%></script>
+			<script type="text/x-template" id="origin1" style="display:none;">${a.bodyForXTemplate}</script>
   			<div id="editor1" style="width:100%"></div>
 		</div>
 		<div class="form-row">

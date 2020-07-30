@@ -48,25 +48,25 @@
 		<div class="form-row">
 			<div class="label">ID</div>
 			<div class="input">
-				<input name="loginId" type="text" placeholder="<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getLoginId() %>" disabled="disabled"/>
+				<input name="loginId" type="text" placeholder="${loginedMember.loginId}" disabled="disabled"/>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="label">이름</div>
 			<div class="input">
-				<input name="name" type="text" placeholder="<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getName() %>" disabled="disabled"/>
+				<input name="name" type="text" placeholder="${loginedMember.name}" disabled="disabled"/>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="label">닉네임</div>
 			<div class="input">
-				<input name="nickname" type="text" placeholder="<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getNickname() %>"/>
+				<input name="nickname" type="text" placeholder="${loginedMember.nickname}"/>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="label">이메일</div>
 			<div class="input">
-				<input name="email" type="email" placeholder="<%=ms.getMemberById((int)session.getAttribute("loginedMemberId")).getEmail() %>" />
+				<input name="email" type="email" placeholder="${loginedMember.email}" />
 			</div>
 		</div>
 		<div class="form-row">

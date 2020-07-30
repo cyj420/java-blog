@@ -49,13 +49,9 @@
 			<div class="label">카테고리 선택</div>
 			<div class="input">
 				<select name="cateItemId">
-					<%
-						for (Category c : cateItems) {
-					%>
-					<option value="<%=c.getId()%>"><%=c.getName()%></option>
-					<%
-						}
-					%>
+					<c:forEach items="${cateItems}" var="c">
+						<option value="${c.id }">${c.name }</option>
+					</c:forEach>
 				</select>
 			</div>
 		</div>
