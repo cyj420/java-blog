@@ -1,4 +1,4 @@
-<%@page import="com.sbs.java.blog.service.MemberService"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.sql.Connection"%>
 <%@ page import="com.sbs.java.blog.dto.Category"%>
@@ -6,10 +6,6 @@
 <%@ page import="com.sbs.java.blog.util.Util"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	List<Category> cateItems = (List<Category>) request.getAttribute("cateItems");
-	MemberService ms = (MemberService) request.getAttribute("memberService");
-%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,13 +33,63 @@
 
 <script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
 
+
+<script>
+	var loginedMemberId = parseInt("${loginedMemberId}");
+	var isLogined = "${isLogined}" == "true";
+	var loginedMember = null;
+</script>
+
+
+<script>
+	var param = {};
+</script>
+<c:forEach var="pageParameter" items="${param}">
+	<script>
+		param["${pageParameter.key}"] = "${pageParameter.value}";
+	</script>
+</c:forEach>
+
+<script>
+	if (!param.jsAction) {
+		param.jsAction = '';
+	}
+
+	var jsActions = param.jsAction.split(',');
+
+	for ( var key in jsActions) {
+		var jsActionFuncName = jsActions[key];
+
+		$(function() {
+			setTimeout(function() {
+				if (window[jsActionFuncName]) {
+					window[jsActionFuncName]();
+				} else {
+					console.error("jsAction으로 요청받은, " + jsActionFuncName
+							+ " 함수는 존재하지 않아서 실행하지 못했습니다.");
+				}
+			}, 100);
+		});
+	}
+</script>
+
+<c:if test="${isLogined}">
+	<script>
+		loginedMember = {};
+		loginedMember["id"] = parseInt("${loginedMember.id}");
+		loginedMember["regDate"] = "${loginedMember.regDate}";
+		loginedMember["loginId"] = "${loginedMember.loginId}";
+		loginedMember["name"] = "${loginedMember.name}";
+		loginedMember["nickname"] = "${loginedMember.nickname}";
+		loginedMember["email"] = "${loginedMember.email}";
+	</script>
+</c:if>
+
 </head>
 <body>
 	<div class="con top-bar visible-on-md-up">
 		<div class="member-form">
-			<%
-				if (session.getAttribute("loginedMemberId") != null) {
-			%>
+		<c:if test="${isLogined}">
 			<div>
 				<a href="${pageContext.request.contextPath}/s/member/myPage"
 					style="display: inline-block; align-self: center; color: tomato;">
@@ -53,22 +99,17 @@
 			<div>
 				<a href="${pageContext.request.contextPath}/s/member/logout?redirectUri=${encodedAfterLogoutRedirectUri}"
 						class="block">Logout</a>
-				<%-- <a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a> --%>
 			</div>
-			<%
-				} else {
-			%>
+		</c:if>
+		<c:if test="${isLogined == false}">
 			<div>
 				<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUri=${encodedAfterLoginRedirectUri}"
 						class="block">LOGIN</a>
-				<%-- <a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a> --%>
 			</div>
-			<%
-				}
-			%>
+		</c:if>
 		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main"
@@ -79,29 +120,24 @@
 				<ul class="flex height-100p">
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="height-100p flex flex-ai-c">Home</a></li>
-					<%
-						if (session.getAttribute("loginedMemberId") != null) {
-					%>
-					<li><a
-						href="${pageContext.request.contextPath}/s/article/write"
-						class="height-100p flex flex-ai-c">Write</a></li>
-					<%
-						}
-					%>
-					<li class="has-list"><a
-						href="${pageContext.request.contextPath}/s/article/list"
-						class="height-100p flex flex-ai-c">Articles</a>
-						<ul>
-							<%
-								for (Category c : cateItems) {
-							%>
+						<c:if test="${loginedMemberId != -1 }">
 							<li><a
-								href="${pageContext.request.contextPath}/s/article/list?cateItemId=<%=c.getId()%>&page=1"
-								class="block"> <%=c.getName()%></a></li>
-							<%
-								}
-							%>
-						</ul></li>
+								href="${pageContext.request.contextPath}/s/article/write"
+								class="height-100p flex flex-ai-c">Write</a></li>
+						</c:if>
+						<c:if test="${loginedMemberId != -1 }">
+							<li class="has-list"><a
+								href="${pageContext.request.contextPath}/s/article/list"
+								class="height-100p flex flex-ai-c">Articles</a>
+								<ul>
+									<c:forEach items="${cateItems}" var="c">
+										<li><a
+											href="${pageContext.request.contextPath}/s/article/list?cateItemId=${c.id }&page=1"
+											class="block"> ${c.name}</a></li>
+									</c:forEach>
+								</ul>
+							</li>
+						</c:if>
 					<li><a
 						href="${pageContext.request.contextPath}/s/home/aboutMe"
 						class="height-100p flex flex-ai-c">About Me</a></li>
@@ -122,30 +158,25 @@
 	</div>
 	<div class="mobile-top-bar font-size visible-on-sm-down">
 		<div class="member-form">
-			<%
-				if (session.getAttribute("loginedMemberId") != null) {
-			%>
-			<div>
-				<a href="${pageContext.request.contextPath}/s/member/myPage"
-					style="display: inline-block; align-self: center; color: tomato;">
-					${loginedMember.nickname}님
-				</a>
-			</div>
-			<div>
-				<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
-			</div>
-			<%
-				} else {
-			%>
-			<div>
-				<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
-			</div>
-			<div>
-				<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
-			</div>
-			<%
-				}
-			%>
+			<c:if test="${loginedMemberId != -1 }">
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/myPage"
+						style="display: inline-block; align-self: center; color: tomato;">
+						${loginedMember.nickname}님
+					</a>
+				</div>
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
+				</div>
+			</c:if>
+			<c:if test="${loginedMemberId == -1 }">
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+				</div>
+				<div>
+					<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
+				</div>
+			</c:if>
 		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<div class="btn-toggle-mobile-side-bar flex absolute-middle">
@@ -164,15 +195,13 @@
 			<ul class="flex height-100p">
 				<li><a href="${pageContext.request.contextPath}/s/home/main"
 					class="height-100p flex flex-ai-c">Home</a> <i class="fas fa-mouse"></i>
-					<%
-						if (session.getAttribute("loginedMemberId") != null) {
-					%>
-				<li><a
-					href="${pageContext.request.contextPath}/s/article/write"
-					class="height-100p flex flex-ai-c">Write</a> <i
-					class="fas fa-mouse"></i> <%
- 	}
- %>
+					<c:if test="${loginedMemberId != -1 }">
+						<li>
+							<a href="${pageContext.request.contextPath}/s/article/write"
+							class="height-100p flex flex-ai-c">Write</a> 
+							<i class="fas fa-mouse"></i>
+						</li>
+					</c:if> 
 				<li><a href="${pageContext.request.contextPath}/s/article/list"
 					class="height-100p flex flex-ai-c">Articles</a> <i
 					class="fas fa-mouse"></i>
