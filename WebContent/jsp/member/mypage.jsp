@@ -87,12 +87,12 @@
 				<div class="label color-red">
 					이메일<br>(인증완료)
 				</div>
-				<div class="input">
-					<input name="email" type="email"
-						value="${loginedMember.email}"
-						readonly />
-				</div>
 			</c:if>
+			<div class="input">
+				<input name="email" type="email"
+					value="${loginedMember.email}"
+					readonly />
+			</div>
 			<c:if test="${loginedMember.mailAuthStatus == 0}">
 		    	<button type="submit" style="position: absolute; left: 160px;margin-left: 50%;">인증 메일 보내기</button>
 			</c:if>

@@ -170,16 +170,25 @@
 			</c:if>
 		</div>
 	</div>
+
+	
+	<!-- 다른 게시물로 이동 -->
 	<%-- 
 	<div class="con another-post-con">
+		<c:forEach var="i" begin="0" end="${articles.size() }" step="1">
+			<c:if test="${a.id == articles.id[i] }">
+				<c:if test="${i != 0 }">
+					<div class="another-post left">
+						<a href="./detail?cateItemId=${a.cateItemId}&id=${articles.id[i]}">이전글</a>
+					</div>
+				</c:if>
+			</c:if>
+		</c:forEach>
 		<%
 			for (int i = 0; i < articles.size(); i++) {
 				if (a.getId() == articles.get(i).getId()) {
 					if (i != 0) {
 		%>
-		<div class="another-post left">
-			<a href="./detail?cateItemId=<%=a.getCateItemId()%>&id=<%=articles.get(i - 1).getId()%>">이전글</a>
-		</div>
 		<%
 			}
 				}

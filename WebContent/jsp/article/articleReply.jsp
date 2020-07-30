@@ -1,14 +1,6 @@
-<%@ page import="java.util.List"%>
-<%@ page import="com.sbs.java.blog.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
-<%
-	int articleId = Util.getInt(request, "articleId");
-	int articleCateId = Util.getInt(request, "articleCateId");
-	int articleReplyId = Util.getInt(request, "articleReplyId");
-	String articleReplyBody = request.getParameter("articleReplyBody");
-%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -56,10 +48,10 @@
 	<form action="doArticleReplyDoModify" method="POST" class="write-form form1">
 		<div class="form-row flex-jc-c">
 			<div class="label">내용</div>
-			<input type="hidden" name="articleId" value="<%=articleId%>"/>
-			<input type="hidden" name="articleCateId" value="<%=articleCateId%>"/>
-			<input type="hidden" name="arId" value="<%=articleReplyId%>"/>
-			<input type="text" name="arBody" value="<%=articleReplyBody%>"/>
+			<input type="hidden" name="articleId" value="${articleId}"/>
+			<input type="hidden" name="articleCateId" value="${articleCateId}"/>
+			<input type="hidden" name="arId" value="${articleReplyId}"/>
+			<input type="text" name="arBody" value="${articleReplyBody}"/>
 		</div>
 		<div class="form-row">
 			<div class="input">
