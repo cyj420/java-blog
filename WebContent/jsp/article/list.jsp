@@ -3,6 +3,7 @@
 
 <%-- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> --%>
 <%@ include file="/jsp/part/head.jspf"%>
+
 </head>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resource/css/article/list.css">
@@ -10,10 +11,17 @@
 	<!-- 카테고리 리스트 시작 -->
 	<div class="article-list-box-1 con table-box category-list">
 		<c:forEach items="${cateItems}" var="c">
-			<div class="category-name selected-category">
-				<a href="./list?cateItemId=${c.id}&page=1">${c.name}!</a>
-			</div>
-
+			<!-- 선택된 카테고리 IF문 구절이 실행되지 않고 있음 -->
+			<c:if test="${c == param.cateItemId}">
+				<div class="category-name selected-category">
+					<a href="./list?cateItemId=${c.id}&page=1">${c.name}</a>
+				</div>
+			</c:if>
+			<c:if test="${c != param.cateItemId}">
+				<div class="category-name">
+					<a href="./list?cateItemId=${c.id}&page=1">${c.name}</a>
+				</div>
+			</c:if>
 		</c:forEach>
 	</div>
 	<!-- 카테고리 리스트 끝 -->
@@ -42,7 +50,7 @@
 		<table class="table article-table">
 			<colgroup>
 				<col width="50" class="can-delete" />
-				<col width="200" />
+				<col width="300" />
 				<col width="250" class="can-delete" />
 				<col width="100" />
 				<col width="100" />
