@@ -108,7 +108,7 @@
 		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<a href="${pageContext.request.contextPath}/s/home/main" class="logo flex flex-ai-c"> 
-				<img alt="" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fl16XM%2FbtqF8ZASqMz%2FYgKnbkCLYWxvDSp2YQaK01%2Fimg.png" style="width: 100px;">
+				<img alt="" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbdgHoH%2FbtqF7uIqtNR%2Fzn9qp6kjXgWQ6UeZR1ptak%2Fimg.png" style="width: 150px;">
 			</a>
 
 			<nav class="menu-box-1">
@@ -180,8 +180,8 @@
 				<div></div>
 			</div>
 			<a href="${pageContext.request.contextPath}/s/home/main"
-				class="logo flex absolute-center absolute-middle"> <i
-				class="fas fa-mobile-alt"></i>
+				class="logo flex absolute-center absolute-middle">
+				<img alt="" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbdgHoH%2FbtqF7uIqtNR%2Fzn9qp6kjXgWQ6UeZR1ptak%2Fimg.png" style="width:100px;">
 			</a>
 		</div>
 	</div>
