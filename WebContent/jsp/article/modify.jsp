@@ -44,6 +44,9 @@
 <script
 	src="${pageContext.request.contextPath}/resource/js/article/write.js"></script>
 <div class="write-form-box con">
+<c:if test="${a.writerId != loginedMemberId }">
+	<script>alert('글 수정에 대한 권한이 없습니다.'); location.href = '../home/main';</script>
+</c:if>
 	<form action="doModify" method="POST" class="write-form form1"
 		onsubmit="submitJoinForm(this); return false;">
 		<div class="form-row">

@@ -129,6 +129,16 @@ public class DBUtil {
 
 		return -1;
 	}
+	
+	public static String selectRowStringValue(Connection dbConn, SecSql sql) {
+		Map<String, Object> row = selectRow(dbConn, sql);
+
+		for (String key : row.keySet()) {
+			return (String) row.get(key);
+		}
+
+		return "";
+	}
 
 	public static int update(Connection dbConn, SecSql sql) {
 		int affectedRows = 0;
@@ -151,5 +161,9 @@ public class DBUtil {
 		}
 
 		return affectedRows;
+	}
+	
+	public static int delete(Connection dbConn, SecSql sql) {
+		return update(dbConn, sql);
 	}
 }

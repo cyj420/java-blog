@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import com.sbs.java.blog.dto.Category;
 import com.sbs.java.blog.dto.Member;
 import com.sbs.java.blog.service.ArticleService;
+import com.sbs.java.blog.service.AttrService;
 import com.sbs.java.blog.service.MemberService;
 import com.sbs.java.blog.util.Util;
 
@@ -23,6 +24,7 @@ public abstract class Controller {
 
 	protected ArticleService articleService;
 	protected MemberService memberService;
+	protected AttrService attrService;
 
 	public Controller(Connection dbConn, String actionMethodName, HttpServletRequest req, HttpServletResponse resp) {
 		this.dbConn = dbConn;
@@ -32,6 +34,7 @@ public abstract class Controller {
 		this.session = req.getSession();
 		articleService = new ArticleService(dbConn);
 		memberService = new MemberService(dbConn);
+		attrService = new AttrService(dbConn);
 		this.session = req.getSession();
 	}
 
@@ -95,9 +98,81 @@ public abstract class Controller {
 
 	public String executeAction() {
 		beforeAction();
+		
+		String doGuardRs = doGuard();
+
+		if (doGuardRs != null) {
+			return doGuardRs;
+		}
+		
 		String rs = doAction();
 		afterAction();
 
 		return rs;
+	}
+	
+	public abstract String getControllerName();
+	
+	// 가드
+	private String doGuard() {
+		boolean isLogined = (boolean) req.getAttribute("isLogined");
+
+		// 로그인에 관련된 가드 시작
+		boolean needToLogin = false;
+
+		String controllerName = getControllerName();
+
+		switch (controllerName) {
+		case "member":
+			switch (actionMethodName) {
+			case "logout":
+			case "myPage":
+			case "myPageModify":
+				needToLogin = true;
+				break;
+			}
+			break;
+		case "article":
+			switch (actionMethodName) {
+			case "write":
+			case "doWrite":
+			case "modify":					// 이거랑
+			case "doModify":
+			case "doDelete":
+				needToLogin = true;
+				break;
+			}
+			break;
+		}
+		
+		String encodedAfterLoginRedirectUri = (String)req.getAttribute("encodedAfterLoginRedirectUri");
+
+		if (needToLogin && isLogined == false) {
+			return "html:<script> alert('로그인 후 이용해주세요.'); location.href = '../member/login?afterLoginRedirectUri=" + encodedAfterLoginRedirectUri + "'; </script>";
+		}
+		// 로그인에 관련된 가드 끝
+
+		// 로그아웃에 관련된 가드 시작
+		boolean needToLogout = false;
+
+		switch (controllerName) {
+		case "member":
+			switch (actionMethodName) {
+			case "login":
+			case "join":
+			case "findId":
+			case "findPw":
+				needToLogout = true;
+				break;
+			}
+			break;
+		}
+
+		if (needToLogout && isLogined) {
+			return "html:<script> alert('로그아웃 후 이용해주세요.'); location.href='../home/main'; </script>";
+		}
+		// 로그아웃에 관련된 가드 끝
+
+		return null;
 	}
 }

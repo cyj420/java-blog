@@ -107,8 +107,8 @@
 		</c:if>
 		</div>
 		<div class="con height-100p flex flex-jc-sb">
-			<a href="${pageContext.request.contextPath}/s/home/main"
-				class="logo flex flex-ai-c"> <i class="fas fa-desktop"></i>
+			<a href="${pageContext.request.contextPath}/s/home/main" class="logo flex flex-ai-c"> 
+				<img alt="" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fl16XM%2FbtqF8ZASqMz%2FYgKnbkCLYWxvDSp2YQaK01%2Fimg.png" style="width: 100px;">
 			</a>
 
 			<nav class="menu-box-1">
@@ -151,25 +151,27 @@
 	</div>
 	<div class="mobile-top-bar font-size visible-on-sm-down">
 		<div class="member-form">
-			<c:if test="${loginedMemberId != -1 }">
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/myPage"
-						style="display: inline-block; align-self: center; color: tomato;">
-						${loginedMember.nickname}님
-					</a>
-				</div>
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/logout">LOGOUT</a>
-				</div>
-			</c:if>
-			<c:if test="${loginedMemberId == -1 }">
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
-				</div>
-				<div>
-					<a href="${pageContext.request.contextPath}/s/member/login">LOGIN</a>
-				</div>
-			</c:if>
+		<c:if test="${isLogined}">
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/myPage"
+					style="display: inline-block; align-self: center; color: tomato;">
+					${loginedMember.nickname}님
+				</a>
+			</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/logout?redirectUri=${encodedAfterLogoutRedirectUri}"
+						class="block">Logout</a>
+			</div>
+		</c:if>
+		<c:if test="${isLogined == false}">
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/join">JOIN</a>
+			</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/s/member/login?afterLoginRedirectUri=${encodedAfterLoginRedirectUri}"
+						class="block">LOGIN</a>
+			</div>
+		</c:if>
 		</div>
 		<div class="con height-100p flex flex-jc-sb">
 			<div class="btn-toggle-mobile-side-bar flex absolute-middle">

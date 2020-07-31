@@ -59,6 +59,9 @@ public class ArticleController extends Controller {
 	}
 
 	private String doActionDoArticleReplyModify(HttpServletRequest req, HttpServletResponse resp) {
+		if((int)req.getAttribute("loginedMemberId") == -1) {
+			return "html:<script> alert('메인 화면으로 돌아갑니다.'); location.replace('../home/main'); </script>";
+		}
 		int articleId = Util.getInt(req, "articleId");
 		int articleCateId = Util.getInt(req, "articleCateId");
 		int articleReplyId = Util.getInt(req, "articleReplyId");
@@ -122,6 +125,12 @@ public class ArticleController extends Controller {
 			return "html:삭제할 게시물의 id를 입력해주세요.";
 		}
 		int id = Util.getInt(req, "id");
+
+		// 게시물 작성자 아이디와 로그인 아이디의 일치 여부를 물어봐야 함.
+		if((int)req.getAttribute("loginedMemberId") != articleService.getArticleById(id).getWriterId()) {
+			return "html:<script> alert('글 삭제는 작성자 본인만 가능합니다.'); history.back(); </script>";
+		}
+		
 		articleService.delete(id);
 		return "html:<script> alert('" + id + "번 게시물이 삭제되었습니다.'); location.replace('list'); </script>";
 	}
@@ -227,6 +236,11 @@ public class ArticleController extends Controller {
 //		double seconds = estimatedTime/1000000000.0;
 		
 		return "article/list.jsp";
+	}
+	
+	@Override
+	public String getControllerName() {
+		return "article";
 	}
 
 }

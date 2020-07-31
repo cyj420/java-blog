@@ -15,6 +15,10 @@ public class ArticleService extends Service {
 	public ArticleService(Connection dbConn) {
 		articleDao = new ArticleDao(dbConn);
 	}
+	
+	public List<Article> getArticles() {
+		return articleDao.getArticles();
+	}
 
 	public List<Article> getForPrintListArticles(int page, int itemsInAPage, int cateItemId, String searchKeywordType,
 			String searchKeyword) {
@@ -75,5 +79,13 @@ public class ArticleService extends Service {
 	
 	public Category getCategoryByCateItemId(int cateItemId) {
 		return articleDao.getCategoryByCateItemId(cateItemId);
+	}
+
+	public List<Article> getHotArticles() {
+		return articleDao.getHotArticles();
+	}
+
+	public List<Article> getNewArticles() {
+		return articleDao.getNewArticles();
 	}
 }

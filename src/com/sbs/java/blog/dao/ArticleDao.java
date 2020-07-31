@@ -254,4 +254,38 @@ public class ArticleDao extends Dao {
 		Category category = new Category(row);
 		return category;
 	}
+
+	public List<Article> getHotArticles() {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * from article ");
+		sql.append("WHERE displayStatus = 1 ");
+		sql.append("ORDER BY hit DESC ");
+		sql.append("LIMIT 5 ");
+
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
+		List<Article> articles = new ArrayList<>();
+
+		for (Map<String, Object> row : rows) {
+			articles.add(new Article(row));
+		}
+		return articles;
+	}
+
+	public List<Article> getNewArticles() {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * from article ");
+		sql.append("WHERE displayStatus = 1 ");
+		sql.append("ORDER BY id DESC ");
+		sql.append("LIMIT 5 ");
+
+		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
+		List<Article> articles = new ArrayList<>();
+
+		for (Map<String, Object> row : rows) {
+			articles.add(new Article(row));
+		}
+		return articles;
+	}
 }

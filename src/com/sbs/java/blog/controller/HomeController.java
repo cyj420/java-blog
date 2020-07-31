@@ -1,9 +1,12 @@
 package com.sbs.java.blog.controller;
 
 import java.sql.Connection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.sbs.java.blog.dto.Article;
 
 public class HomeController extends Controller {
 
@@ -29,7 +32,16 @@ public class HomeController extends Controller {
 	}
 
 	private String doActionHome(HttpServletRequest req, HttpServletResponse resp) {
+		List<Article> hotArticles = articleService.getHotArticles();
+		List<Article> newArticles = articleService.getNewArticles();
+		req.setAttribute("hotArticles", hotArticles);
+		req.setAttribute("newArticles", newArticles);
 		return "home/main.jsp";
+	}
+	
+	@Override
+	public String getControllerName() {
+		return "home";
 	}
 
 }

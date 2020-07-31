@@ -49,9 +49,7 @@ public class SecSql {
 			if (data instanceof Integer) {
 				stmt.setInt(parameterIndex, (int) data);
 			} else if (data instanceof String) {
-				//여긴 실행되고,
 				stmt.setString(parameterIndex, (String) data);
-				//여긴 안되는 듯 함
 			}
 		}
 

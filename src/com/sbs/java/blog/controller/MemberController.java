@@ -195,7 +195,7 @@ public class MemberController extends Controller {
 		session.removeAttribute("loginedMemberId");
 
 		String redirectUri = Util.getString(req, "redirectUri", "../home/main");
-		return String.format("html:<script> alert('로그아웃 되었습니다.'); location.replace('" + redirectUri + "'); </script>");
+		return String.format("html:<script> alert('" + nickname + "님, 로그아웃 되었습니다.'); location.replace('" + redirectUri + "'); </script>");
 //		return "html:<script> alert('" + nickname + "님, 안녕히 가세요.'); location.replace('../home/main'); </script>";
 	}
 
@@ -310,6 +310,11 @@ public class MemberController extends Controller {
 			return 0;
 		}
 		return 1;
+	}
+
+	@Override
+	public String getControllerName() {
+		return "member";
 	}
 }
 
