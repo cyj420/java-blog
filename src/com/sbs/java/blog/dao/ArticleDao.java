@@ -258,9 +258,12 @@ public class ArticleDao extends Dao {
 	public List<Article> getHotArticles() {
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * from article ");
-		sql.append("WHERE displayStatus = 1 ");
-		sql.append("ORDER BY hit DESC ");
+		sql.append("SELECT A.*, M.nickname AS extra__writer");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN member AS M");
+		sql.append("ON A.writerId = M.id");
+		sql.append("WHERE A.displayStatus = 1");
+		sql.append("ORDER BY A.hit DESC ");
 		sql.append("LIMIT 5 ");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);
@@ -275,9 +278,12 @@ public class ArticleDao extends Dao {
 	public List<Article> getNewArticles() {
 		SecSql sql = new SecSql();
 
-		sql.append("SELECT * from article ");
-		sql.append("WHERE displayStatus = 1 ");
-		sql.append("ORDER BY id DESC ");
+		sql.append("SELECT A.*, M.nickname AS extra__writer");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN member AS M");
+		sql.append("ON A.writerId = M.id");
+		sql.append("WHERE A.displayStatus = 1");
+		sql.append("ORDER BY A.id DESC ");
 		sql.append("LIMIT 5 ");
 
 		List<Map<String, Object>> rows = DBUtil.selectRows(dbConn, sql);

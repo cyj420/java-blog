@@ -66,6 +66,7 @@
 	color: red;
 }
 </style>
+
 <div class="con">
 	<div class="con detail-article">
 		<a class="back-to-category" href="./list?cateItemId=${a.cateItemId}&page=1">
@@ -163,6 +164,7 @@
 								</form>
 							</c:if>
 						</c:if>
+					</div>
 				</c:forEach>
 			</c:if>
 			<c:if test="${articleReplies.size() == 0 }">
@@ -173,45 +175,26 @@
 
 	
 	<!-- 다른 게시물로 이동 -->
-	<%-- 
 	<div class="con another-post-con">
 		<c:forEach var="i" begin="0" end="${articles.size() }" step="1">
-			<c:if test="${a.id == articles.id[i] }">
+			<c:if test="${a.id == articles[i].id }">
 				<c:if test="${i != 0 }">
 					<div class="another-post left">
-						<a href="./detail?cateItemId=${a.cateItemId}&id=${articles.id[i]}">이전글</a>
+						<a href="./detail?cateItemId=${a.cateItemId}&id=${articles[i-1].id}">이전글</a>
 					</div>
 				</c:if>
 			</c:if>
 		</c:forEach>
-		<%
-			for (int i = 0; i < articles.size(); i++) {
-				if (a.getId() == articles.get(i).getId()) {
-					if (i != 0) {
-		%>
-		<%
-			}
-				}
-			}
-		%>
 
-
-		<c:forEach var="i" begin="0" end="${a.size() }" step="1">
+		<c:forEach var="i" begin="0" end="${articles.size() }" step="1">
+			<c:if test="${a.id == articles[i].id }">
+				<c:if test="${i != articles.size()-1 }">
+					<div class="another-post right">
+						<a href="./detail?cateItemId=${a.cateItemId}&id=${articles[i+1].id}">다음글</a>
+					</div>
+				</c:if>
+			</c:if>
 		</c:forEach>
-		<%
-			for (int i = 0; i < articles.size(); i++) {
-				if (a.getId() == articles.get(i).getId()) {
-					if (i != articles.size() - 1) {
-		%>
-		<div class="another-post right">
-			<a href="./detail?cateItemId=<%=a.getCateItemId()%>&id=<%=articles.get(i + 1).getId()%>">다음글</a>
-		</div>
-		<%
-			}
-				}
-			}
-		%>
 	</div>
-	 --%>
 </div>
 <%@ include file="/jsp/part/foot.jspf"%>
