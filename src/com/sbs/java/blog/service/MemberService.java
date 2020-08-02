@@ -58,4 +58,8 @@ public class MemberService extends Service{
 	public void doAuthMail(int id) {
 		memberDao.doAuthMail(id);
 	}
+
+	public boolean isJoinableLoginId(String loginId) {
+		return memberDao.isJoinableLoginId(loginId);
+	}
 }

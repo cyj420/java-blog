@@ -64,8 +64,21 @@ public class MemberController extends Controller {
 			return doActionFindId(req, resp);
 		case "doFindId":
 			return doActionDoFindId(req, resp);
+		case "getLoginIdDup":
+			return actionGetLoginIdDup();
 		}
 		return "";
+	}
+
+	private String actionGetLoginIdDup() {
+		String loginId = req.getParameter("loginId");
+		
+		boolean isJoinableLoginId = memberService.isJoinableLoginId(loginId);
+		
+		if(!isJoinableLoginId) {
+			return "json:{\"msg\":\"사용할 수 있는 아이디입니다.\", \"resultCode\": \"S-1\", \"loginId\":\""+loginId +"\"}";
+		}
+		return "json:{\"msg\":\"이미 사용중인 아이디입니다.\", \"resultCode\": \"F-1\", \"loginId\":\""+loginId +"\"}";
 	}
 
 	private String doActionDoFindId(HttpServletRequest req, HttpServletResponse resp) {

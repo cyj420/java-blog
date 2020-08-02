@@ -189,4 +189,16 @@ public class MemberDao extends Dao {
 
 		DBUtil.update(dbConn, sql);
 	}
+
+	public boolean isJoinableLoginId(String loginId) {
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT * FROM member ");
+		sql.append("WHERE loginId = ? ", loginId);
+		
+		if(!DBUtil.selectRow(dbConn, sql).isEmpty()) {
+			return true;
+		}
+		return false;
+	}
 }
