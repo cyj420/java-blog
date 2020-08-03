@@ -10,13 +10,12 @@
 	<!-- 카테고리 리스트 시작 -->
 	<div class="article-list-box-1 con table-box category-list">
 		<c:forEach items="${cateItems}" var="c">
-			<!-- 선택된 카테고리 IF문 구절이 실행되지 않고 있음 -->
-			<c:if test="${c == param.cateItemId}">
+			<c:if test="${ c.id == param.cateItemId}">
 				<div class="category-name selected-category">
 					<a href="./list?cateItemId=${c.id}&page=1">${c.name}</a>
 				</div>
 			</c:if>
-			<c:if test="${c != param.cateItemId}">
+			<c:if test="${c.id != param.cateItemId}">
 				<div class="category-name">
 					<a href="./list?cateItemId=${c.id}&page=1">${c.name}</a>
 				</div>

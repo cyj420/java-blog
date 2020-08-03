@@ -2,6 +2,7 @@ package com.sbs.java.blog.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
@@ -130,23 +131,42 @@ public class MemberController extends Controller {
 	
 	private String doActionDoAuthMail(HttpServletRequest req, HttpServletResponse resp) {
 		if(session.getAttribute("loginedMemberId")!=null) {
-			if(memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getMailAuthStatus()==0) {
-				if(Util.extra_code.trim().length()!=0) {
-					String str = memberService.transformString(""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId());
-					if(req.getParameter("code").equals(str)) {
-						memberService.doAuthMail((int)session.getAttribute("loginedMemberId"));
-						return "html:<script> alert('인증이 되었습니다.'); location.replace('../home/main'); </script>";
-					}
+			int id = (int) session.getAttribute("loginedMemberId");
+			
+			if(memberService.getMemberById(id).getMailAuthStatus()==0) {
+				if(req.getParameter("code").equals(attrService.getValue("member__"+id+"__auth__mailAuthCode"))){
+					memberService.doAuthMail(id);
+					return "html:<script> alert('인증이 되었습니다.'); location.replace('../home/main'); </script>";
 				}
-				return "html:<script> alert('인증 실패 - 인증 신청 계정과 현재 로그인 중인 계정이 다릅니다.'); location.replace('../home/main'); </script>";
+				return "html:<script> alert('인증 실패 01'); location.replace('../home/main'); </script>";
 			}
 			else {
 				return "html:<script> alert('현재 로그인 중인 계정은 이미 인증된 계정입니다.'); location.replace('../home/main'); </script>";
 			}
 		}
 		return "html:<script> alert('인증 실패 - 비로그인 상태'); location.replace('../home/main'); </script>";
+		
+		
+		
+//		if(session.getAttribute("loginedMemberId")!=null) {
+//			if(memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getMailAuthStatus()==0) {
+//				if(Util.extra_code.trim().length()!=0) {
+//					String str = memberService.transformString(""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId());
+//					if(req.getParameter("code").equals(str)) {
+//						memberService.doAuthMail((int)session.getAttribute("loginedMemberId"));
+//						return "html:<script> alert('인증이 되었습니다.'); location.replace('../home/main'); </script>";
+//					}
+//				}
+//				return "html:<script> alert('인증 실패 - 인증 신청 계정과 현재 로그인 중인 계정이 다릅니다.'); location.replace('../home/main'); </script>";
+//			}
+//			else {
+//				return "html:<script> alert('현재 로그인 중인 계정은 이미 인증된 계정입니다.'); location.replace('../home/main'); </script>";
+//			}
+//		}
+//		return "html:<script> alert('인증 실패 - 비로그인 상태'); location.replace('../home/main'); </script>";
 	}
 	
+	// 여기 수정해야 함.
 	private String doActionAuthMail(HttpServletRequest req, HttpServletResponse resp) {
 		String email = req.getParameter("email");
 		String id = ""+memberService.getMemberById((int) session.getAttribute("loginedMemberId")).getId();
@@ -243,23 +263,32 @@ public class MemberController extends Controller {
 		String loginId = req.getParameter("loginId");
 		String name = req.getParameter("name");
 		String nickname = req.getParameter("nickname");
-		String loginPw = req.getParameter("loginPw");
+		String loginPwReal = req.getParameter("loginPwReal");
 		String email = req.getParameter("email");
 		String loginPwConfirm = req.getParameter("loginPwConfirm");
 
 		int id = -1;
-		if (loginPwConfirm.equals(loginPw)) {
-			id = memberService.join(loginId, name, nickname, loginPw, email);
-		} else {
-			return "html:<script> alert('비밀번호 확인이 틀렸습니다.'); history.back(); </script>";
-		}
+		id = memberService.join(loginId, name, nickname, loginPwReal, email);
 
 		if (id > 0) {
-			if (sendingEmail(name + "님의 회원가입을 축하합니다.",
+			SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+			String format_time1 = format1.format (System.currentTimeMillis());
+			
+			String code = format_time1+id;
+			code = memberService.transformString(code);
+			attrService.setValue("member__"+id+"__auth__mailAuthCode", code);
+			
+			
+			
+			
+			
+			if (sendingEmail("가입 인증 메일",
 					"블로그"
-					+ "<br>1. [<a href='https://cho04.my.iu.gy'>cho04-블로그 바로가기</a>]"
-					+ "<br>2. [<a href='http://localhost:8081/blog/s/home/main'>localhost-블로그 바로가기</a>]"
-					+ "<br><br>로그인 시 글쓰기/댓글쓰기가 가능합니다."
+//					+ "<br>1. [<a href='https://cho04.my.iu.gy'>cho04-블로그 바로가기</a>]"
+//					+ "<br>2. [<a href='http://localhost:8081/blog/s/home/main'>localhost-블로그 바로가기</a>]"
+//					+ "<br><br>"
+//					+ "<br>1. [<a href='https://cho04.my.iu.gy/blog/s/member/doAuthMail?code="+code+"'>인증하기</a>]"
+					+ "<br>2. [<a href='http://localhost:8081/blog/s/member/doAuthMail?code="+code+"'>인증하기</a>]"
 					, email) == 1) {
 				return "html:<script> alert('" + id + "번째 회원 가입을 환영합니다.'); location.replace('../home/main'); </script>";
 			} else {

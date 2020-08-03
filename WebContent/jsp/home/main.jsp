@@ -35,7 +35,7 @@ tr > td {
 				<tr>
 					<td class="can-delete">${article.id}</td>
 					<td class="text-align-left"><a
-						href="./detail?cateItemId=${article.cateItemId}&id=${article.id}">${article.title}</a></td>
+						href="../article/detail?cateItemId=${article.cateItemId}&id=${article.id}">${article.title}</a></td>
 					<td class="can-delete">${article.regDate}</td>
 					<td>${article.extra.writer }</td>
 					<td>${article.hit}</td>
@@ -68,7 +68,7 @@ tr > td {
 				<tr>
 					<td class="can-delete">${article.id}</td>
 					<td class="text-align-left"><a
-						href="./detail?cateItemId=${article.cateItemId}&id=${article.id}">${article.title}</a></td>
+						href="../article/detail?cateItemId=${article.cateItemId}&id=${article.id}">${article.title}</a></td>
 					<td class="can-delete">${article.regDate}</td>
 					<td>${article.extra.writer }</td>
 					<td>${article.hit}</td>
