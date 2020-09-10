@@ -19,10 +19,17 @@ import com.sbs.java.blog.util.Util;
 public class App {
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
+	private boolean isDevelServer = true;
 
 	public App(HttpServletRequest req, HttpServletResponse resp) {
 		this.req = req;
 		this.resp = resp;
+		
+		String profilesActive = System.getProperty("spring.profiles.active");
+
+		if (profilesActive != null && profilesActive.equals("production")) {
+			isDevelServer = false;
+		}
 	}
 
 	public void start() throws IOException, ServletException {
@@ -105,15 +112,24 @@ public class App {
 	}
 
 	private String getDbPassword() {
-		return "sbs123414";
+		if (isDevelServer) {
+			return "";
+		}
+		return "1234";
 	}
 
 	private String getDbId() {
-		return "site29";
+		if (isDevelServer) {
+			return "root";
+		}
+		return "juinLocal";
 	}
 
 	private String getDbUrl() {
-		return "jdbc:mysql://site29.iu.gy:3306/site29?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
+		if (isDevelServer) {
+			return "jdbc:mysql://localhost:3306/st_n29_blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
+		}
+		return "jdbc:mysql://localhost:3306/st_n29_blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
 	}
 
 	private void loadDbDriver() throws IOException {
