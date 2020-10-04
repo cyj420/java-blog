@@ -126,13 +126,14 @@ public class ArticleController extends Controller {
 		}
 		int id = Util.getInt(req, "id");
 
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
 		// 게시물 작성자 아이디와 로그인 아이디의 일치 여부를 물어봐야 함.
-		if((int)req.getAttribute("loginedMemberId") != articleService.getArticleById(id).getWriterId()) {
-			return "html:<script> alert('글 삭제는 작성자 본인만 가능합니다.'); history.back(); </script>";
+		if(loginedMemberId == articleService.getArticleById(id).getWriterId() || loginedMemberId == 1) {
+			articleService.delete(id);
+			return "html:<script> alert('" + id + "번 게시물이 삭제되었습니다.'); location.replace('list'); </script>";
 		}
 		
-		articleService.delete(id);
-		return "html:<script> alert('" + id + "번 게시물이 삭제되었습니다.'); location.replace('list'); </script>";
+		return "html:<script> alert('글 삭제는 작성자 본인만 가능합니다.'); history.back(); </script>";
 	}
 
 	private String doActionDoWrite(HttpServletRequest req, HttpServletResponse resp) {

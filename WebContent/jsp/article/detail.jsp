@@ -98,6 +98,8 @@
 				<div class="articleModifyAndDelete">
 					<a href="./modify?id=${a.id}">수정</a>
 				</div>
+			</c:if>	
+			<c:if test="${loginedMemberId == a.writerId || loginedMemberId == 1 }">
 				<div class="articleModifyAndDelete">
 					<a href="./delete?id=${a.id}">삭제</a>
 				</div>
@@ -156,6 +158,8 @@
 									<input name="articleReplyBody" type="hidden" value="${ar.body}"/>
 									<input type="submit" value="수정" />
 								</form>
+							</c:if>
+							<c:if test="${loginedMemberId == ar.writerId || loginedMemberId == 1}">
 								<form action="doArticleReplyDelete" method="POST" class="comment-form">
 									<input name="articleId" type="hidden" value="${a.id}"/>
 									<input name="articleCateId" type="hidden" value="${a.cateItemId}"/>
